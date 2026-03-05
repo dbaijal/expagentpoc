@@ -20,10 +20,18 @@
    - [T8: Support Hub](#t8-support-hub)
    - [T9: Events & Webinars](#t9-events--webinars)
    - [T10: Blog Post (WordPress)](#t10-blog-post-wordpress)
+   - [T11: Brand Hub](#t11-brand-hub)
+   - [T12: Division/Department Hub](#t12-divisiondepartment-hub)
+   - [T13: Resource Hub Card Grid](#t13-resource-hub-card-grid)
+   - [T14: Content Hub with Sub-Navigation](#t14-content-hub-with-sub-navigation)
+   - [T15: Product Directory / Site Map](#t15-product-directory--site-map)
+   - [T16: Product Showcase](#t16-product-showcase)
+   - [T17: Campaign / Storytelling Page](#t17-campaign--storytelling-page)
 3. [Common Elements Across All Templates](#common-elements-across-all-templates)
 4. [Estimated Block Inventory](#estimated-block-inventory)
 5. [Key Migration Considerations](#key-migration-considerations)
 6. [Recommended Migration Priority](#recommended-migration-priority)
+7. [URL Analysis Status](#url-analysis-status)
 
 ---
 
@@ -617,6 +625,345 @@ Example: `https://www.thermofisher.com/us/en/home/life-science/antibodies/primar
 
 ---
 
+### T11: Brand Hub
+
+**Description:** The top-level brands index page that showcases all Thermo Fisher brands. Features a Brightcove video player at the top, followed by an introductory section, and a grid of brand cards, each with the brand logo, name, description, and CTA link.
+
+**Screenshot:** `discovery/brands-hub.png`
+
+#### Sample URLs
+
+| # | URL | Notes |
+|---|-----|-------|
+| 1 | https://www.thermofisher.com/us/en/home/brands.html | Main brands hub page |
+
+#### Layout Structure
+
+```
++-------------------------------------------------------+
+| [Header + Mega Nav]                                    |
++-------------------------------------------------------+
+| [Breadcrumbs: Home > Brands]                           |
++-------------------------------------------------------+
+| [H1 "Our Brands"]                                      |
++-------------------------------------------------------+
+| [Video Player - Brightcove embed]                      |
++-------------------------------------------------------+
+| [H2 Intro heading + description paragraphs]            |
++-------------------------------------------------------+
+| [Brand Cards Grid - 2-3 columns]                       |
+|   +----------------------------+                       |
+|   | Brand Logo (image)         |                       |
+|   | H3 Brand Name              |                       |
+|   | Description paragraph      |                       |
+|   | CTA link ›                 |                       |
+|   +----------------------------+                       |
+|   (repeats for ~10 brands)                             |
++-------------------------------------------------------+
+| [Bottom Promo Cards - 2-col image cards]               |
++-------------------------------------------------------+
+| [Footer]                                               |
++-------------------------------------------------------+
+```
+
+#### Content Sections & EDS Block Mapping
+
+| Section | Content Pattern | Recommended EDS Block |
+|---------|----------------|----------------------|
+| Video Player | Brightcove video embed | `video` (custom, Brightcove variant) |
+| Intro Section | H2 + descriptive paragraphs | Default content |
+| Brand Cards | Grid: logo image + H3 + description + CTA | `cards` (brand variant) |
+| Bottom Promos | 2-col image promo cards | `columns` (promo variant) |
+
+---
+
+### T12: Division/Department Hub
+
+**Description:** Division-level landing pages (e.g., Life Science) that serve as flat category directories. Simple layout with H1, a row of popular quick links, and a 4-column grid of category cards. No sidebar, no hero image.
+
+#### Sample URLs
+
+| # | URL | Notes |
+|---|-----|-------|
+| 1 | https://www.thermofisher.com/us/en/home/life-science.html | Life Science division hub |
+| 2 | https://www.thermofisher.com/us/en/home/industrial.html | Industrial & Applied Sciences hub |
+| 3 | https://www.thermofisher.com/us/en/home/clinical.html | Clinical & Diagnostics hub |
+
+#### Layout Structure
+
+```
++-------------------------------------------------------+
+| [Header + Mega Nav]                                    |
++-------------------------------------------------------+
+| [Breadcrumbs: Home > Life Science]                     |
++-------------------------------------------------------+
+| [H1 "Life Science"]                                    |
++-------------------------------------------------------+
+| [Popular Quick Links Row - inline text links]          |
++-------------------------------------------------------+
+| [Category Cards Grid - 4 columns]                      |
+|   +----------+----------+----------+----------+        |
+|   | H3 Title | H3 Title | H3 Title | H3 Title |       |
+|   | Desc     | Desc     | Desc     | Desc     |       |
+|   +----------+----------+----------+----------+        |
+|   (repeats for ~16-20 categories)                      |
++-------------------------------------------------------+
+| [Footer]                                               |
++-------------------------------------------------------+
+```
+
+#### Content Sections & EDS Block Mapping
+
+| Section | Content Pattern | Recommended EDS Block |
+|---------|----------------|----------------------|
+| Popular Links | Inline row of text links | Default content (styled paragraph with links) |
+| Category Cards | 4-col: H3 title + description (clickable) | `cards` (category variant) |
+
+---
+
+### T13: Resource Hub Card Grid
+
+**Description:** Resource listing pages displaying a grid of resource/learning center cards. Features H1, introductory paragraphs, and a 3-column card grid with images, titles, and descriptions. No sidebar, no hero.
+
+#### Sample URLs
+
+| # | URL | Notes |
+|---|-----|-------|
+| 1 | https://www.thermofisher.com/us/en/home/technical-resources/learning-centers.html | Learning Centers hub |
+| 2 | https://www.thermofisher.com/us/en/home/technical-resources/technical-reference-library.html | Technical Reference Library |
+
+#### Layout Structure
+
+```
++-------------------------------------------------------+
+| [Header + Mega Nav]                                    |
++-------------------------------------------------------+
+| [H1 "Learning Centers"]                                |
++-------------------------------------------------------+
+| [Intro paragraphs - descriptive text]                  |
++-------------------------------------------------------+
+| [Resource Cards Grid - 3 columns]                      |
+|   +---------------+---------------+---------------+    |
+|   | Image         | Image         | Image         |   |
+|   | H3 Title      | H3 Title      | H3 Title      |   |
+|   | Description   | Description   | Description   |   |
+|   +---------------+---------------+---------------+    |
+|   (repeats for ~20+ resources)                         |
++-------------------------------------------------------+
+| [Footer]                                               |
++-------------------------------------------------------+
+```
+
+#### Content Sections & EDS Block Mapping
+
+| Section | Content Pattern | Recommended EDS Block |
+|---------|----------------|----------------------|
+| Intro Text | H1 + descriptive paragraphs | Default content |
+| Resource Cards | 3-col: image + H3 + description (linked) | `cards` (resource variant) |
+
+---
+
+### T14: Content Hub with Sub-Navigation
+
+**Description:** Rich content pages with a left sub-navigation sidebar and multi-section content area. Used for corporate content like sustainability programs and partnering pages. Content includes feature cards (text + image), criteria grids, video embeds, and info stats panels.
+
+#### Sample URLs
+
+| # | URL | Notes |
+|---|-----|-------|
+| 1 | https://www.thermofisher.com/us/en/home/about-us/product-stewardship/sustainable-product-design.html | Greener by Design (sustainable design) |
+| 2 | https://www.thermofisher.com/us/en/home/about-us/partnering-licensing.html | Partnering & Licensing |
+
+#### Layout Structure
+
+```
++-------------------------------------------------------+
+| [Header + Mega Nav]                                    |
++-------------------------------------------------------+
+| [Breadcrumbs]                                          |
++-------------------------------------------------------+
+| [H1 Page Title]                                        |
++-------------------------------------------------------+
+| +------------------+--------------------------------+  |
+| | [Left Sub-Nav]   | [Info Stats Panel]             |  |
+| | - Overview       |   "Global reach" "Innovation"  |  |
+| | - Sub-page 1     |   "Mission" + descriptions     |  |
+| | - Sub-page 2     | [HR]                           |  |
+| | - Sub-page 3     | [Intro paragraphs]             |  |
+| | - Sub-page 4     | [Feature Cards - 2 col]        |  |
+| |                  |   Text+CTA | Image              |  |
+| |                  | [Criteria Cards Grid]           |  |
+| |                  |   Icon + H2 + desc + link       |  |
+| |                  | [Video Player]                  |  |
+| |                  | [Info Cards - 3 col]            |  |
+| |                  |   H3 + image + desc + CTA       |  |
+| +------------------+--------------------------------+  |
++-------------------------------------------------------+
+| [Footer]                                               |
++-------------------------------------------------------+
+```
+
+#### Content Sections & EDS Block Mapping
+
+| Section | Content Pattern | Recommended EDS Block |
+|---------|----------------|----------------------|
+| Sub-Navigation | Vertical list of sub-page links | `sub-navigation` (custom) or `sidebar-nav` (links variant) |
+| Info Stats Panel | Animated stats with labels + descriptions | `columns` (stats variant) |
+| Feature Cards | 2-col: text + CTA left, image right | `columns` (feature variant) |
+| Criteria Cards | Grid: icon + H2 + description + link | `cards` (criteria variant) |
+| Video Player | Brightcove embed | `video` (custom) |
+| Info Cards | 3-col: H3 + image + description + CTA | `cards` (info variant) |
+
+---
+
+### T15: Product Directory / Site Map
+
+**Description:** Large directory pages organized by categories with multi-column link grids. Features an optional collapsible Table of Contents, H2 category headings, and grouped link lists separated by HR dividers. Used for "Shop All Products", "Applications & Techniques", and "Protocols" pages.
+
+#### Sample URLs
+
+| # | URL | Notes |
+|---|-----|-------|
+| 1 | https://www.thermofisher.com/us/en/home/order.html | Shop All Products |
+| 2 | https://www.thermofisher.com/us/en/home/applications-techniques.html | Applications & Techniques |
+| 3 | https://www.thermofisher.com/us/en/home/references/protocols.html | Protocols |
+
+#### Layout Structure
+
+```
++-------------------------------------------------------+
+| [Header + Mega Nav]                                    |
++-------------------------------------------------------+
+| [Breadcrumbs]                                          |
++-------------------------------------------------------+
+| [H1 "Shop All Products" / "Applications & Techniques"] |
++-------------------------------------------------------+
+| [Table of Contents - collapsible (optional)]           |
++-------------------------------------------------------+
+| [Quick Links Row - Promotions, New Products, etc.]     |
++-------------------------------------------------------+
+| [HR]                                                   |
++-------------------------------------------------------+
+| [H2 Category 1]                                        |
+|   2-col link grid (product/topic links)                |
+| [HR]                                                   |
+| [H2 Category 2]                                        |
+|   2-col link grid                                      |
+| [HR]                                                   |
+| ... (repeats for ~6-10 categories)                     |
++-------------------------------------------------------+
+| [Bottom Promo Banners - 2-col: image + text + CTA]     |
++-------------------------------------------------------+
+| [Footer]                                               |
++-------------------------------------------------------+
+```
+
+#### Content Sections & EDS Block Mapping
+
+| Section | Content Pattern | Recommended EDS Block |
+|---------|----------------|----------------------|
+| Table of Contents | Collapsible accordion with anchor links | `table-of-contents` (custom) |
+| Quick Links | Inline row of featured links | Default content (styled links) |
+| Category Link Grids | H2 + 2-col link grids, HR separated | Default content (with section metadata for columns) |
+| Bottom Promos | 2-col: image + text + CTA | `columns` (promo variant) |
+
+---
+
+### T16: Product Showcase
+
+**Description:** Simple product highlight page featuring a few large product cards with images, titles, and CTAs. Used for "New Products" landing. Clean layout with minimal content.
+
+#### Sample URLs
+
+| # | URL | Notes |
+|---|-----|-------|
+| 1 | https://www.thermofisher.com/us/en/home/order/new-products.html | New Products (redirected from products-and-services/new-products.html) |
+
+#### Layout Structure
+
+```
++-------------------------------------------------------+
+| [Header + Mega Nav]                                    |
++-------------------------------------------------------+
+| [Breadcrumbs: Home > Products > New Products]          |
++-------------------------------------------------------+
+| [H1 "New Products"]                                    |
++-------------------------------------------------------+
+| [Product Showcase Cards - large format]                |
+|   +------------------------------------------------+   |
+|   | Large Product Image                            |   |
+|   | Product Title                                  |   |
+|   | "Learn more" CTA link                          |   |
+|   +------------------------------------------------+   |
+|   (2-4 featured products)                              |
++-------------------------------------------------------+
+| [Sticky Bottom Promo Banner]                           |
++-------------------------------------------------------+
+| [Footer]                                               |
++-------------------------------------------------------+
+```
+
+#### Content Sections & EDS Block Mapping
+
+| Section | Content Pattern | Recommended EDS Block |
+|---------|----------------|----------------------|
+| Product Cards | Large: image + title + CTA link | `cards` (showcase variant) |
+| Sticky Banner | Bottom-fixed promotional banner with image + text + CTA | `sticky-banner` (custom) |
+
+---
+
+### T17: Campaign / Storytelling Page
+
+**Description:** Editorial/marketing campaign pages combining video hero, story cards featuring scientists, and feature sections. Used for brand storytelling and inspiration content. Rich visual layout with video integration.
+
+#### Sample URLs
+
+| # | URL | Notes |
+|---|-----|-------|
+| 1 | https://www.thermofisher.com/us/en/home/brands/inspire/keep-seeking.html | Keep Seeking campaign |
+| 2 | https://www.thermofisher.com/us/en/home/brands/inspire/keep-seeking/meet-innovators.html | Meet the Innovators sub-page |
+
+#### Layout Structure
+
+```
++-------------------------------------------------------+
+| [Header + Mega Nav]                                    |
++-------------------------------------------------------+
+| [Hero Section]                                         |
+|   H1 "Keep Seeking"                                    |
+|   H3 Subtitle                                          |
+|   "Watch the video" CTA (Brightcove)                   |
++-------------------------------------------------------+
+| [Intro Section - descriptive paragraph]                |
++-------------------------------------------------------+
+| [Story Cards Grid - 3 columns]                         |
+|   +---------------+---------------+---------------+    |
+|   | Scientist Img | Scientist Img | Scientist Img |    |
+|   | H3 Quote      | H3 Quote      | H3 Quote      |   |
+|   | Person Name   | Person Name   | Person Name   |   |
+|   +---------------+---------------+---------------+    |
+|   (5+ story cards across multiple rows)                |
++-------------------------------------------------------+
+| [Feature Section - alternating layout]                 |
+|   Image + "Meet The Innovators" title + desc + CTA     |
++-------------------------------------------------------+
+| [Feature Section - alternating layout]                 |
+|   "5 Steps to Science-life Balance" + desc + CTA       |
++-------------------------------------------------------+
+| [Footer]                                               |
++-------------------------------------------------------+
+```
+
+#### Content Sections & EDS Block Mapping
+
+| Section | Content Pattern | Recommended EDS Block |
+|---------|----------------|----------------------|
+| Video Hero | H1 + H3 subtitle + video play CTA | `hero` (video variant) + `video` |
+| Story Cards | 3-col: scientist image + H3 quote + name | `cards` (story variant) |
+| Feature Sections | Alternating: image + title + description + CTA | `columns` (feature variant) |
+
+---
+
 ## Common Elements Across All Templates
 
 These elements appear on most or all pages and will need dedicated EDS blocks or integrations:
@@ -642,9 +989,9 @@ These elements appear on most or all pages and will need dedicated EDS blocks or
 
 | Block | Variants Needed | Complexity | Used In Templates |
 |-------|----------------|------------|-------------------|
-| `hero` | default, brand, category, events | Low | T1, T2, T6, T9 |
-| `cards` | icon, feature, promo, blog, product, event, cross-sell, resource, education, link-card, service | Medium (many variants) | T1, T2, T3, T4, T5, T7, T8, T9 |
-| `columns` | default, image-links, comparison, promo, links, support | Low | T2, T3, T5, T6, T8 |
+| `hero` | default, brand, category, events, video | Low | T1, T2, T6, T9, T11, T17 |
+| `cards` | icon, feature, promo, blog, product, event, cross-sell, resource, education, link-card, service, brand, category, criteria, story, showcase, info | Medium (many variants) | T1-T9, T11-T14, T16, T17 |
+| `columns` | default, image-links, comparison, promo, links, support, feature, stats | Low | T2, T3, T5, T6, T8, T14, T15, T17 |
 | `carousel` | hero, product | Medium | T1 |
 | `table` | default, product-variants | Low | T4 |
 
@@ -653,11 +1000,14 @@ These elements appear on most or all pages and will need dedicated EDS blocks or
 | Block | Complexity | Used In Templates | Notes |
 |-------|------------|-------------------|-------|
 | `tabs` | Medium | T4, T6 | Content tab switching (JS) |
-| `table-of-contents` | Low | T5, T8 | Collapsible anchor link list |
+| `table-of-contents` | Low | T5, T8, T15 | Collapsible anchor link list |
 | `sidebar-nav` | High | T3, T6 | Tree nav with expand/collapse |
+| `sub-navigation` | Medium | T14 | Vertical sub-page nav links (simpler than sidebar-nav tree) |
 | `product-detail` | High | T4 | API integration for pricing/inventory |
 | `product-image` | Medium | T4 | Zoomable image gallery |
 | `promo-banner` | Low | T1-T9 (all) | Dismissible top/inline banners |
+| `sticky-banner` | Low | T3, T16 | Bottom-fixed promotional banner |
+| `video` | Medium | T11, T14, T17 | Brightcove video player embed |
 | `filter-bar` | High | T7 | Client-side category filtering (JS) |
 | `event-list` | Medium | T9 | Event cards with date/location |
 | `search-filter` | High | T7, T9 | Search input with live filtering |
@@ -670,9 +1020,9 @@ These elements appear on most or all pages and will need dedicated EDS blocks or
 | Category | Count |
 |----------|-------|
 | Standard blocks (from library) | 5 |
-| Custom blocks (to build) | 12 |
-| Total block variants | ~30+ |
-| **Total blocks** | **~17** |
+| Custom blocks (to build) | 15 |
+| Total block variants | ~45+ |
+| **Total blocks** | **~20** |
 
 ---
 
@@ -750,10 +1100,17 @@ These elements appear on most or all pages and will need dedicated EDS blocks or
 | **P1** | T3: Sub-Category Product | ~500-1,000 | Bulk of navigational content, reusable template |
 | **P2** | T4: Product Detail (PDP) | ~50,000+ | Highest volume, most complex (API dependencies) |
 | **P2** | T6: Brand Pages | ~10 | High brand visibility, limited count |
+| **P2** | T11: Brand Hub | 1 | Brands landing page |
+| **P2** | T12: Division Hub | ~5-10 | Life Science, Industrial, Clinical division hubs |
 | **P3** | T5: Services Landing | ~20 | Text-heavy, simpler layout |
 | **P3** | T8: Support Hub | ~50 | Link directories, relatively straightforward |
 | **P3** | T7: Promotions | ~1 + dynamic | Filter-driven, needs JS infrastructure |
 | **P3** | T9: Events | ~1 + dynamic | API/feed driven listing |
+| **P3** | T13: Resource Hub | ~10 | Learning centers, technical references |
+| **P3** | T14: Content Hub | ~20-30 | Sustainability, partnering, corporate content pages |
+| **P3** | T15: Product Directory | ~3-5 | Order, Applications, Protocols |
+| **P3** | T16: Product Showcase | ~1 | New products landing |
+| **P3** | T17: Campaign Pages | ~5-10 | Marketing/storytelling (Inspire, Keep Seeking) |
 | **P4** | T10: Blog | Hundreds | WordPress - separate platform decision |
 | **P4** | Corporate site | Separate | Different domain, different migration project |
 
@@ -783,6 +1140,58 @@ These elements appear on most or all pages and will need dedicated EDS blocks or
 
 ---
 
+## URL Analysis Status
+
+The following URLs were analyzed during discovery. This tracks which URLs are live, which return 404, and which redirect.
+
+### Live Pages Analyzed
+
+| URL | Template | Key Findings |
+|-----|----------|-------------|
+| `/us/en/home.html` | T1: Homepage | Hero carousel, card grids, promos |
+| `/us/en/home/life-science/antibodies.html` | T2: Category Landing | Full-width, no sidebar |
+| `/us/en/home/life-science/antibodies/primary-antibodies.html` | T3: Sub-Category | Sidebar + main content |
+| `/order/catalog/product/11668019` | T4: PDP | Complex API-driven |
+| `/us/en/home/products-and-services/services.html` | T5: Services | TOC + 2-col service cards |
+| `/us/en/home/brands/thermo-scientific.html` | T6: Brand Page | Sidebar + categorized links |
+| `/us/en/home/products-and-services/promotions.html` | T7: Promotions | Filter tabs + card grid |
+| `/us/en/home/support.html` | T8: Support Hub | Multi-col link directory |
+| `/us/en/home/events.html` | T9: Events | Filterable event listing table |
+| `/us/en/home/brands.html` | T11: Brand Hub | Video + brand cards grid |
+| `/us/en/home/life-science.html` | T12: Division Hub | Flat category card grid |
+| `/us/en/home/life-science/protein-biology.html` | T2/T3 Hybrid | Sidebar + promo banners + category cards |
+| `/us/en/home/brands/invitrogen.html` | T6: Brand Page | Sidebar + hero + categories |
+| `/us/en/home/technical-resources/learning-centers.html` | T13: Resource Hub | 3-col image + title + desc cards |
+| `/us/en/home/about-us/product-stewardship/sustainable-product-design.html` | T14: Content Hub | Sub-nav + feature cards + video |
+| `/us/en/home/about-us/partnering-licensing.html` | T14: Content Hub | Stats panel + sidebar nav + info cards |
+| `/us/en/home/order.html` | T15: Product Directory | TOC + categorized link grids |
+| `/us/en/home/references/protocols.html` | T15: Product Directory | 2-col categorized protocol links |
+| `/us/en/home/applications-techniques.html` | T15: Product Directory | TOC + 6 category sections |
+| `/us/en/home/order/new-products.html` | T16: Product Showcase | Featured product cards + sticky banner |
+| `/us/en/home/brands/inspire/keep-seeking.html` | T17: Campaign | Video hero + story cards + feature sections |
+
+### 404 Pages (Not Found)
+
+| URL | Notes |
+|-----|-------|
+| `/us/en/home/brands/brand-inspire.html` | Brand Inspire — page removed or moved |
+| `/us/en/home/references/gibco-cell-culture-basics/cell-culture-protocols-and-references.html` | Gibco References — likely restructured |
+| `/us/en/home/life-science/antibodies/primary-antibodies/image-gallery.html` | Image Gallery — page removed |
+| `/us/en/home/life-science/cell-culture/cell-lines.html` | Cell Lines — page removed or moved |
+| `/us/en/home/technical-resources/knowledge-base.html` | Knowledge Base — page removed |
+| `/us/en/home/about-us/aspire-member-program.html` | Aspire Member Program — page removed |
+
+### Redirected Pages
+
+| Original URL | Redirected To | Notes |
+|-------------|---------------|-------|
+| `/us/en/home/about-us/product-stewardship.html` | `/us/en/home/about-us/product-stewardship/sustainable-product-design.html` | Redirects to sub-page |
+| `/us/en/home/o.html` (Offers) | `/us/en/home.html` | Redirects to homepage |
+| `/us/en/home/about-us/events.html` | `/us/en/home/events.html` | Redirects to events hub |
+| `/us/en/home/products-and-services/new-products.html` | `/us/en/home/order/new-products.html` | Redirects to order section |
+
+---
+
 ## Appendix: Screenshots
 
 All screenshots captured during discovery are available in the `discovery/` folder:
@@ -797,7 +1206,9 @@ All screenshots captured during discovery are available in the `discovery/` fold
 | `promotions-page.png` | Promotions page with filter tabs |
 | `support-page.png` | Support hub page |
 | `events-page.png` | Events and Webinars page |
+| `brands-hub.png` | Brand Hub page with video + brand cards |
 
 ---
 
 *Report generated as part of AEM 6.4 to AEM Cloud + Edge Delivery Services migration discovery.*
+*Updated: March 2026 — Added templates T11-T17 and URL analysis status from extended URL analysis.*

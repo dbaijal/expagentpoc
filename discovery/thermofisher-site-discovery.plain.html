@@ -15,12 +15,20 @@
 <li><a href="#t8-support-hub">T8: Support Hub</a></li>
 <li><a href="#t9-events--webinars">T9: Events &#x26; Webinars</a></li>
 <li><a href="#t10-blog-post-wordpress">T10: Blog Post (WordPress)</a></li>
+<li><a href="#t11-brand-hub">T11: Brand Hub</a></li>
+<li><a href="#t12-divisiondepartment-hub">T12: Division/Department Hub</a></li>
+<li><a href="#t13-resource-hub-card-grid">T13: Resource Hub Card Grid</a></li>
+<li><a href="#t14-content-hub-with-sub-navigation">T14: Content Hub with Sub-Navigation</a></li>
+<li><a href="#t15-product-directory--site-map">T15: Product Directory / Site Map</a></li>
+<li><a href="#t16-product-showcase">T16: Product Showcase</a></li>
+<li><a href="#t17-campaign--storytelling-page">T17: Campaign / Storytelling Page</a></li>
 </ul>
 </li>
 <li><a href="#common-elements-across-all-templates">Common Elements Across All Templates</a></li>
 <li><a href="#estimated-block-inventory">Estimated Block Inventory</a></li>
 <li><a href="#key-migration-considerations">Key Migration Considerations</a></li>
 <li><a href="#recommended-migration-priority">Recommended Migration Priority</a></li>
+<li><a href="#url-analysis-status">URL Analysis Status</a></li>
 </ol></div>
 <div><h2 id="site-architecture-overview">Site Architecture Overview</h2><p>The Thermo Fisher web presence operates across <strong>multiple domains</strong>:</p>
 
@@ -945,6 +953,491 @@ These differ from the standard <code>/us/en/home/...</code> URL pattern.</li>
 <li>Keep WordPress but integrate header/footer with EDS</li>
 </ol>
 </blockquote></div>
+<div><h3 id="t11-brand-hub">T11: Brand Hub</h3><p><strong>Description:</strong> The top-level brands index page that showcases all Thermo Fisher brands. Features a Brightcove video player at the top, followed by an introductory section, and a grid of brand cards, each with the brand logo, name, description, and CTA link.</p><p><strong>Screenshot:</strong> <code>discovery/brands-hub.png</code></p><h4 id="sample-urls-10">Sample URLs</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div><div><div>1</div><div>https://www.thermofisher.com/us/en/home/brands.html</div><div>Main brands hub page</div></div></div><h4 id="layout-structure-10">Layout Structure</h4><pre><code>+--------------------------------------------------------+----------------------------+-----------------------+
+| [Header + Mega Nav]                                    |
++--------------------------------------------------------+----------------------------+-----------------------+
+| [Breadcrumbs: Home > Brands]                           |
++--------------------------------------------------------+----------------------------+-----------------------+
+| [H1 "Our Brands"]                                      |
++--------------------------------------------------------+----------------------------+-----------------------+
+| [Video Player - Brightcove embed]                      |
++--------------------------------------------------------+----------------------------+-----------------------+
+| [H2 Intro heading + description paragraphs]            |
++--------------------------------------------------------+----------------------------+-----------------------+
+| [Brand Cards Grid - 2-3 columns]                       |
+|   +----------------------------+                       |
+|                                                        | Brand Logo (image)         |                       |
+|                                                        | H3 Brand Name              |                       |
+|                                                        | Description paragraph      |                       |
+|                                                        | CTA link ›                 |                       |
+|   +----------------------------+                       |
+|   (repeats for ~10 brands)                             |
++--------------------------------------------------------+----------------------------+-----------------------+
+| [Bottom Promo Cards - 2-col image cards]               |
++--------------------------------------------------------+----------------------------+-----------------------+
+| [Footer]                                               |
++--------------------------------------------------------+----------------------------+-----------------------+
+</code></pre><h4 id="content-sections--eds-block-mapping-9">Content Sections &#x26; EDS Block Mapping</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section"><div><div>Video Player</div><div>Brightcove video embed</div><div><code>video</code> (custom, Brightcove variant)</div></div><div><div>Intro Section</div><div>H2 + descriptive paragraphs</div><div>Default content</div></div><div><div>Brand Cards</div><div>Grid: logo image + H3 + description + CTA</div><div><code>cards</code> (brand variant)</div></div><div><div>Bottom Promos</div><div>2-col image promo cards</div><div><code>columns</code> (promo variant)</div></div></div></div>
+<div><h3 id="t12-divisiondepartment-hub">T12: Division/Department Hub</h3><p><strong>Description:</strong> Division-level landing pages (e.g., Life Science) that serve as flat category directories. Simple layout with H1, a row of popular quick links, and a 4-column grid of category cards. No sidebar, no hero image.</p><h4 id="sample-urls-11">Sample URLs</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div><div><div>1</div><div>https://www.thermofisher.com/us/en/home/life-science.html</div><div>Life Science division hub</div></div><div><div>2</div><div>https://www.thermofisher.com/us/en/home/industrial.html</div><div>Industrial &#x26; Applied Sciences hub</div></div><div><div>3</div><div>https://www.thermofisher.com/us/en/home/clinical.html</div><div>Clinical &#x26; Diagnostics hub</div></div></div><h4 id="layout-structure-11">Layout Structure</h4><pre><code>+--------------------------------------------------------+----------+----------+----------+----------+-------+
+| [Header + Mega Nav]                                    |
++--------------------------------------------------------+----------+----------+----------+----------+-------+
+| [Breadcrumbs: Home > Life Science]                     |
++--------------------------------------------------------+----------+----------+----------+----------+-------+
+| [H1 "Life Science"]                                    |
++--------------------------------------------------------+----------+----------+----------+----------+-------+
+| [Popular Quick Links Row - inline text links]          |
++--------------------------------------------------------+----------+----------+----------+----------+-------+
+| [Category Cards Grid - 4 columns]                      |
+|   +----------+----------+----------+----------+        |
+|                                                        | H3 Title | H3 Title | H3 Title | H3 Title |       |
+|                                                        | Desc     | Desc     | Desc     | Desc     |       |
+|   +----------+----------+----------+----------+        |
+|   (repeats for ~16-20 categories)                      |
++--------------------------------------------------------+----------+----------+----------+----------+-------+
+| [Footer]                                               |
++--------------------------------------------------------+----------+----------+----------+----------+-------+
+</code></pre><h4 id="content-sections--eds-block-mapping-10">Content Sections &#x26; EDS Block Mapping</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section"><div><div>Popular Links</div><div>Inline row of text links</div><div>Default content (styled paragraph with links)</div></div><div><div>Category Cards</div><div>4-col: H3 title + description (clickable)</div><div><code>cards</code> (category variant)</div></div></div></div>
+<div><h3 id="t13-resource-hub-card-grid">T13: Resource Hub Card Grid</h3><p><strong>Description:</strong> Resource listing pages displaying a grid of resource/learning center cards. Features H1, introductory paragraphs, and a 3-column card grid with images, titles, and descriptions. No sidebar, no hero.</p><h4 id="sample-urls-12">Sample URLs</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div><div><div>1</div><div>https://www.thermofisher.com/us/en/home/technical-resources/learning-centers.html</div><div>Learning Centers hub</div></div><div><div>2</div><div>https://www.thermofisher.com/us/en/home/technical-resources/technical-reference-library.html</div><div>Technical Reference Library</div></div></div><h4 id="layout-structure-12">Layout Structure</h4><pre><code>+--------------------------------------------------------+---------------+---------------+---------------+---+
+| [Header + Mega Nav]                                    |
++--------------------------------------------------------+---------------+---------------+---------------+---+
+| [H1 "Learning Centers"]                                |
++--------------------------------------------------------+---------------+---------------+---------------+---+
+| [Intro paragraphs - descriptive text]                  |
++--------------------------------------------------------+---------------+---------------+---------------+---+
+| [Resource Cards Grid - 3 columns]                      |
+|   +---------------+---------------+---------------+    |
+|                                                        | Image         | Image         | Image         |   |
+|                                                        | H3 Title      | H3 Title      | H3 Title      |   |
+|                                                        | Description   | Description   | Description   |   |
+|   +---------------+---------------+---------------+    |
+|   (repeats for ~20+ resources)                         |
++--------------------------------------------------------+---------------+---------------+---------------+---+
+| [Footer]                                               |
++--------------------------------------------------------+---------------+---------------+---------------+---+
+</code></pre><h4 id="content-sections--eds-block-mapping-11">Content Sections &#x26; EDS Block Mapping</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section"><div><div>Intro Text</div><div>H1 + descriptive paragraphs</div><div>Default content</div></div><div><div>Resource Cards</div><div>3-col: image + H3 + description (linked)</div><div><code>cards</code> (resource variant)</div></div></div></div>
+<div><h3 id="t14-content-hub-with-sub-navigation">T14: Content Hub with Sub-Navigation</h3><p><strong>Description:</strong> Rich content pages with a left sub-navigation sidebar and multi-section content area. Used for corporate content like sustainability programs and partnering pages. Content includes feature cards (text + image), criteria grids, video embeds, and info stats panels.</p><h4 id="sample-urls-13">Sample URLs</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div><div><div>1</div><div>https://www.thermofisher.com/us/en/home/about-us/product-stewardship/sustainable-product-design.html</div><div>Greener by Design (sustainable design)</div></div><div><div>2</div><div>https://www.thermofisher.com/us/en/home/about-us/partnering-licensing.html</div><div>Partnering &#x26; Licensing</div></div></div><h4 id="layout-structure-13">Layout Structure</h4><pre><code>+--------------------------------------------------------+------------------+---------------------------------+--------------------+--+
+| [Header + Mega Nav]                                    |
++--------------------------------------------------------+------------------+---------------------------------+--------------------+--+
+| [Breadcrumbs]                                          |
++--------------------------------------------------------+------------------+---------------------------------+--------------------+--+
+| [H1 Page Title]                                        |
++--------------------------------------------------------+------------------+---------------------------------+--------------------+--+
+| +------------------+--------------------------------+  |
+|                                                        | [Left Sub-Nav]   | [Info Stats Panel]              |                    |
+|                                                        | - Overview       |   "Global reach" "Innovation"   |                    |
+|                                                        | - Sub-page 1     |   "Mission" + descriptions      |                    |
+|                                                        | - Sub-page 2     | [HR]                            |                    |
+|                                                        | - Sub-page 3     | [Intro paragraphs]              |                    |
+|                                                        | - Sub-page 4     | [Feature Cards - 2 col]         |                    |
+|                                                        |                  |   Text+CTA                      | Image              |  |
+|                                                        |                  | [Criteria Cards Grid]           |                    |
+|                                                        |                  |   Icon + H2 + desc + link       |                    |
+|                                                        |                  | [Video Player]                  |                    |
+|                                                        |                  | [Info Cards - 3 col]            |                    |
+|                                                        |                  |   H3 + image + desc + CTA       |                    |
+| +------------------+--------------------------------+  |
++--------------------------------------------------------+------------------+---------------------------------+--------------------+--+
+| [Footer]                                               |
++--------------------------------------------------------+------------------+---------------------------------+--------------------+--+
+</code></pre><h4 id="content-sections--eds-block-mapping-12">Content Sections &#x26; EDS Block Mapping</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section"><div><div>Sub-Navigation</div><div>Vertical list of sub-page links</div><div><code>sub-navigation</code> (custom) or <code>sidebar-nav</code> (links variant)</div></div><div><div>Info Stats Panel</div><div>Animated stats with labels + descriptions</div><div><code>columns</code> (stats variant)</div></div><div><div>Feature Cards</div><div>2-col: text + CTA left, image right</div><div><code>columns</code> (feature variant)</div></div><div><div>Criteria Cards</div><div>Grid: icon + H2 + description + link</div><div><code>cards</code> (criteria variant)</div></div><div><div>Video Player</div><div>Brightcove embed</div><div><code>video</code> (custom)</div></div><div><div>Info Cards</div><div>3-col: H3 + image + description + CTA</div><div><code>cards</code> (info variant)</div></div></div></div>
+<div><h3 id="t15-product-directory--site-map">T15: Product Directory / Site Map</h3><p><strong>Description:</strong> Large directory pages organized by categories with multi-column link grids. Features an optional collapsible Table of Contents, H2 category headings, and grouped link lists separated by HR dividers. Used for "Shop All Products", "Applications &#x26; Techniques", and "Protocols" pages.</p><h4 id="sample-urls-14">Sample URLs</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div><div><div>1</div><div>https://www.thermofisher.com/us/en/home/order.html</div><div>Shop All Products</div></div><div><div>2</div><div>https://www.thermofisher.com/us/en/home/applications-techniques.html</div><div>Applications &#x26; Techniques</div></div><div><div>3</div><div>https://www.thermofisher.com/us/en/home/references/protocols.html</div><div>Protocols</div></div></div><h4 id="layout-structure-14">Layout Structure</h4><pre><code>+--------------------------------------------------------+
+| [Header + Mega Nav]                                    |
++--------------------------------------------------------+
+| [Breadcrumbs]                                          |
++--------------------------------------------------------+
+| [H1 "Shop All Products" / "Applications &#x26; Techniques"] |
++--------------------------------------------------------+
+| [Table of Contents - collapsible (optional)]           |
++--------------------------------------------------------+
+| [Quick Links Row - Promotions, New Products, etc.]     |
++--------------------------------------------------------+
+| [HR]                                                   |
++--------------------------------------------------------+
+| [H2 Category 1]                                        |
+|   2-col link grid (product/topic links)                |
+| [HR]                                                   |
+| [H2 Category 2]                                        |
+|   2-col link grid                                      |
+| [HR]                                                   |
+| ... (repeats for ~6-10 categories)                     |
++--------------------------------------------------------+
+| [Bottom Promo Banners - 2-col: image + text + CTA]     |
++--------------------------------------------------------+
+| [Footer]                                               |
++--------------------------------------------------------+
+</code></pre><h4 id="content-sections--eds-block-mapping-13">Content Sections &#x26; EDS Block Mapping</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section"><div><div>Table of Contents</div><div>Collapsible accordion with anchor links</div><div><code>table-of-contents</code> (custom)</div></div><div><div>Quick Links</div><div>Inline row of featured links</div><div>Default content (styled links)</div></div><div><div>Category Link Grids</div><div>H2 + 2-col link grids, HR separated</div><div>Default content (with section metadata for columns)</div></div><div><div>Bottom Promos</div><div>2-col: image + text + CTA</div><div><code>columns</code> (promo variant)</div></div></div></div>
+<div><h3 id="t16-product-showcase">T16: Product Showcase</h3><p><strong>Description:</strong> Simple product highlight page featuring a few large product cards with images, titles, and CTAs. Used for "New Products" landing. Clean layout with minimal content.</p><h4 id="sample-urls-15">Sample URLs</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div><div><div>1</div><div>https://www.thermofisher.com/us/en/home/order/new-products.html</div><div>New Products (redirected from products-and-services/new-products.html)</div></div></div><h4 id="layout-structure-15">Layout Structure</h4><pre><code>+--------------------------------------------------------+------------------------------------------------+---+
+| [Header + Mega Nav]                                    |
++--------------------------------------------------------+------------------------------------------------+---+
+| [Breadcrumbs: Home > Products > New Products]          |
++--------------------------------------------------------+------------------------------------------------+---+
+| [H1 "New Products"]                                    |
++--------------------------------------------------------+------------------------------------------------+---+
+| [Product Showcase Cards - large format]                |
+|   +------------------------------------------------+   |
+|                                                        | Large Product Image                            |   |
+|                                                        | Product Title                                  |   |
+|                                                        | "Learn more" CTA link                          |   |
+|   +------------------------------------------------+   |
+|   (2-4 featured products)                              |
++--------------------------------------------------------+------------------------------------------------+---+
+| [Sticky Bottom Promo Banner]                           |
++--------------------------------------------------------+------------------------------------------------+---+
+| [Footer]                                               |
++--------------------------------------------------------+------------------------------------------------+---+
+</code></pre><h4 id="content-sections--eds-block-mapping-14">Content Sections &#x26; EDS Block Mapping</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section"><div><div>Product Cards</div><div>Large: image + title + CTA link</div><div><code>cards</code> (showcase variant)</div></div><div><div>Sticky Banner</div><div>Bottom-fixed promotional banner with image + text + CTA</div><div><code>sticky-banner</code> (custom)</div></div></div></div>
+<div><h3 id="t17-campaign--storytelling-page">T17: Campaign / Storytelling Page</h3><p><strong>Description:</strong> Editorial/marketing campaign pages combining video hero, story cards featuring scientists, and feature sections. Used for brand storytelling and inspiration content. Rich visual layout with video integration.</p><h4 id="sample-urls-16">Sample URLs</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div><div><div>1</div><div>https://www.thermofisher.com/us/en/home/brands/inspire/keep-seeking.html</div><div>Keep Seeking campaign</div></div><div><div>2</div><div>https://www.thermofisher.com/us/en/home/brands/inspire/keep-seeking/meet-innovators.html</div><div>Meet the Innovators sub-page</div></div></div><h4 id="layout-structure-16">Layout Structure</h4><pre><code>+--------------------------------------------------------+---------------+---------------+---------------+----+
+| [Header + Mega Nav]                                    |
++--------------------------------------------------------+---------------+---------------+---------------+----+
+| [Hero Section]                                         |
+|   H1 "Keep Seeking"                                    |
+|   H3 Subtitle                                          |
+|   "Watch the video" CTA (Brightcove)                   |
++--------------------------------------------------------+---------------+---------------+---------------+----+
+| [Intro Section - descriptive paragraph]                |
++--------------------------------------------------------+---------------+---------------+---------------+----+
+| [Story Cards Grid - 3 columns]                         |
+|   +---------------+---------------+---------------+    |
+|                                                        | Scientist Img | Scientist Img | Scientist Img |    |
+|                                                        | H3 Quote      | H3 Quote      | H3 Quote      |    |
+|                                                        | Person Name   | Person Name   | Person Name   |    |
+|   +---------------+---------------+---------------+    |
+|   (5+ story cards across multiple rows)                |
++--------------------------------------------------------+---------------+---------------+---------------+----+
+| [Feature Section - alternating layout]                 |
+|   Image + "Meet The Innovators" title + desc + CTA     |
++--------------------------------------------------------+---------------+---------------+---------------+----+
+| [Feature Section - alternating layout]                 |
+|   "5 Steps to Science-life Balance" + desc + CTA       |
++--------------------------------------------------------+---------------+---------------+---------------+----+
+| [Footer]                                               |
++--------------------------------------------------------+---------------+---------------+---------------+----+
+</code></pre><h4 id="content-sections--eds-block-mapping-15">Content Sections &#x26; EDS Block Mapping</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section"><div><div>Video Hero</div><div>H1 + H3 subtitle + video play CTA</div><div><code>hero</code> (video variant) + <code>video</code></div></div><div><div>Story Cards</div><div>3-col: scientist image + H3 quote + name</div><div><code>cards</code> (story variant)</div></div><div><div>Feature Sections</div><div>Alternating: image + title + description + CTA</div><div><code>columns</code> (feature variant)</div></div></div></div>
 <div><h2 id="common-elements-across-all-templates">Common Elements Across All Templates</h2><p>These elements appear on most or all pages and will need dedicated EDS blocks or integrations:</p>
 
 
@@ -1058,7 +1551,7 @@ These differ from the standard <code>/us/en/home/...</code> URL pattern.</li>
 
 
 
-<div class="block"><div><div><code>hero</code></div><div>default, brand, category, events</div><div>Low</div><div>T1, T2, T6, T9</div></div><div><div><code>cards</code></div><div>icon, feature, promo, blog, product, event, cross-sell, resource, education, link-card, service</div><div>Medium (many variants)</div><div>T1, T2, T3, T4, T5, T7, T8, T9</div></div><div><div><code>columns</code></div><div>default, image-links, comparison, promo, links, support</div><div>Low</div><div>T2, T3, T5, T6, T8</div></div><div><div><code>carousel</code></div><div>hero, product</div><div>Medium</div><div>T1</div></div><div><div><code>table</code></div><div>default, product-variants</div><div>Low</div><div>T4</div></div></div><h3 id="custom-blocks-need-to-be-built">Custom Blocks (need to be built)</h3>
+<div class="block"><div><div><code>hero</code></div><div>default, brand, category, events, video</div><div>Low</div><div>T1, T2, T6, T9, T11, T17</div></div><div><div><code>cards</code></div><div>icon, feature, promo, blog, product, event, cross-sell, resource, education, link-card, service, brand, category, criteria, story, showcase, info</div><div>Medium (many variants)</div><div>T1-T9, T11-T14, T16, T17</div></div><div><div><code>columns</code></div><div>default, image-links, comparison, promo, links, support, feature, stats</div><div>Low</div><div>T2, T3, T5, T6, T8, T14, T15, T17</div></div><div><div><code>carousel</code></div><div>hero, product</div><div>Medium</div><div>T1</div></div><div><div><code>table</code></div><div>default, product-variants</div><div>Low</div><div>T4</div></div></div><h3 id="custom-blocks-need-to-be-built">Custom Blocks (need to be built)</h3>
 
 
 
@@ -1141,7 +1634,6 @@ These differ from the standard <code>/us/en/home/...</code> URL pattern.</li>
 
 
 
-<div class="block"><div><div><code>tabs</code></div><div>Medium</div><div>T4, T6</div><div>Content tab switching (JS)</div></div><div><div><code>table-of-contents</code></div><div>Low</div><div>T5, T8</div><div>Collapsible anchor link list</div></div><div><div><code>sidebar-nav</code></div><div>High</div><div>T3, T6</div><div>Tree nav with expand/collapse</div></div><div><div><code>product-detail</code></div><div>High</div><div>T4</div><div>API integration for pricing/inventory</div></div><div><div><code>product-image</code></div><div>Medium</div><div>T4</div><div>Zoomable image gallery</div></div><div><div><code>promo-banner</code></div><div>Low</div><div>T1-T9 (all)</div><div>Dismissible top/inline banners</div></div><div><div><code>filter-bar</code></div><div>High</div><div>T7</div><div>Client-side category filtering (JS)</div></div><div><div><code>event-list</code></div><div>Medium</div><div>T9</div><div>Event cards with date/location</div></div><div><div><code>search-filter</code></div><div>High</div><div>T7, T9</div><div>Search input with live filtering</div></div><div><div><code>ai-search</code></div><div>Medium</div><div>T4</div><div>Conversational product search</div></div><div><div><code>callout</code></div><div>Low</div><div>T3</div><div>Highlighted text/stat callout</div></div><div><div><code>sidebar-links</code></div><div>Low</div><div>T8</div><div>Quick action links</div></div></div><h3 id="summary">Summary</h3>
 
 
 
@@ -1160,13 +1652,32 @@ These differ from the standard <code>/us/en/home/...</code> URL pattern.</li>
 
 
 
+<div class="block"><div><div><code>tabs</code></div><div>Medium</div><div>T4, T6</div><div>Content tab switching (JS)</div></div><div><div><code>table-of-contents</code></div><div>Low</div><div>T5, T8, T15</div><div>Collapsible anchor link list</div></div><div><div><code>sidebar-nav</code></div><div>High</div><div>T3, T6</div><div>Tree nav with expand/collapse</div></div><div><div><code>sub-navigation</code></div><div>Medium</div><div>T14</div><div>Vertical sub-page nav links (simpler than sidebar-nav tree)</div></div><div><div><code>product-detail</code></div><div>High</div><div>T4</div><div>API integration for pricing/inventory</div></div><div><div><code>product-image</code></div><div>Medium</div><div>T4</div><div>Zoomable image gallery</div></div><div><div><code>promo-banner</code></div><div>Low</div><div>T1-T9 (all)</div><div>Dismissible top/inline banners</div></div><div><div><code>sticky-banner</code></div><div>Low</div><div>T3, T16</div><div>Bottom-fixed promotional banner</div></div><div><div><code>video</code></div><div>Medium</div><div>T11, T14, T17</div><div>Brightcove video player embed</div></div><div><div><code>filter-bar</code></div><div>High</div><div>T7</div><div>Client-side category filtering (JS)</div></div><div><div><code>event-list</code></div><div>Medium</div><div>T9</div><div>Event cards with date/location</div></div><div><div><code>search-filter</code></div><div>High</div><div>T7, T9</div><div>Search input with live filtering</div></div><div><div><code>ai-search</code></div><div>Medium</div><div>T4</div><div>Conversational product search</div></div><div><div><code>callout</code></div><div>Low</div><div>T3</div><div>Highlighted text/stat callout</div></div><div><div><code>sidebar-links</code></div><div>Low</div><div>T8</div><div>Quick action links</div></div></div><h3 id="summary">Summary</h3>
 
 
 
 
 
 
-<div class="category"><div><div>Standard blocks (from library)</div><div>5</div></div><div><div>Custom blocks (to build)</div><div>12</div></div><div><div>Total block variants</div><div>~30+</div></div><div><div><strong>Total blocks</strong></div><div><strong>~17</strong></div></div></div></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="category"><div><div>Standard blocks (from library)</div><div>5</div></div><div><div>Custom blocks (to build)</div><div>15</div></div><div><div>Total block variants</div><div>~45+</div></div><div><div><strong>Total blocks</strong></div><div><strong>~20</strong></div></div></div></div>
 <div><h2 id="key-migration-considerations">Key Migration Considerations</h2><h3 id="product-detail-pages-pdp---highest-complexity">1. Product Detail Pages (PDP) - Highest Complexity</h3><ul>
 <li>Pricing, inventory, and SKU data require <strong>real-time API integration</strong></li>
 <li>Recommendation: <strong>Edge Worker</strong> for pricing (SEO-critical) + client-side for cart/interactive features</li>
@@ -1296,7 +1807,49 @@ These differ from the standard <code>/us/en/home/...</code> URL pattern.</li>
 
 
 
-<div class="priority"><div><div><strong>P1</strong></div><div>T1: Homepage</div><div>1 per locale</div><div>Flagship page, establishes design system and global components</div></div><div><div><strong>P1</strong></div><div>T2: Top-Level Category</div><div>~20-30</div><div>High traffic entry points, defines category UX</div></div><div><div><strong>P1</strong></div><div>T3: Sub-Category Product</div><div>~500-1,000</div><div>Bulk of navigational content, reusable template</div></div><div><div><strong>P2</strong></div><div>T4: Product Detail (PDP)</div><div>~50,000+</div><div>Highest volume, most complex (API dependencies)</div></div><div><div><strong>P2</strong></div><div>T6: Brand Pages</div><div>~10</div><div>High brand visibility, limited count</div></div><div><div><strong>P3</strong></div><div>T5: Services Landing</div><div>~20</div><div>Text-heavy, simpler layout</div></div><div><div><strong>P3</strong></div><div>T8: Support Hub</div><div>~50</div><div>Link directories, relatively straightforward</div></div><div><div><strong>P3</strong></div><div>T7: Promotions</div><div>~1 + dynamic</div><div>Filter-driven, needs JS infrastructure</div></div><div><div><strong>P3</strong></div><div>T9: Events</div><div>~1 + dynamic</div><div>API/feed driven listing</div></div><div><div><strong>P4</strong></div><div>T10: Blog</div><div>Hundreds</div><div>WordPress - separate platform decision</div></div><div><div><strong>P4</strong></div><div>Corporate site</div><div>Separate</div><div>Different domain, different migration project</div></div></div><h3 id="suggested-migration-phases">Suggested Migration Phases</h3><p><strong>Phase 1 - Foundation:</strong></p><ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="priority"><div><div><strong>P1</strong></div><div>T1: Homepage</div><div>1 per locale</div><div>Flagship page, establishes design system and global components</div></div><div><div><strong>P1</strong></div><div>T2: Top-Level Category</div><div>~20-30</div><div>High traffic entry points, defines category UX</div></div><div><div><strong>P1</strong></div><div>T3: Sub-Category Product</div><div>~500-1,000</div><div>Bulk of navigational content, reusable template</div></div><div><div><strong>P2</strong></div><div>T4: Product Detail (PDP)</div><div>~50,000+</div><div>Highest volume, most complex (API dependencies)</div></div><div><div><strong>P2</strong></div><div>T6: Brand Pages</div><div>~10</div><div>High brand visibility, limited count</div></div><div><div><strong>P2</strong></div><div>T11: Brand Hub</div><div>1</div><div>Brands landing page</div></div><div><div><strong>P2</strong></div><div>T12: Division Hub</div><div>~5-10</div><div>Life Science, Industrial, Clinical division hubs</div></div><div><div><strong>P3</strong></div><div>T5: Services Landing</div><div>~20</div><div>Text-heavy, simpler layout</div></div><div><div><strong>P3</strong></div><div>T8: Support Hub</div><div>~50</div><div>Link directories, relatively straightforward</div></div><div><div><strong>P3</strong></div><div>T7: Promotions</div><div>~1 + dynamic</div><div>Filter-driven, needs JS infrastructure</div></div><div><div><strong>P3</strong></div><div>T9: Events</div><div>~1 + dynamic</div><div>API/feed driven listing</div></div><div><div><strong>P3</strong></div><div>T13: Resource Hub</div><div>~10</div><div>Learning centers, technical references</div></div><div><div><strong>P3</strong></div><div>T14: Content Hub</div><div>~20-30</div><div>Sustainability, partnering, corporate content pages</div></div><div><div><strong>P3</strong></div><div>T15: Product Directory</div><div>~3-5</div><div>Order, Applications, Protocols</div></div><div><div><strong>P3</strong></div><div>T16: Product Showcase</div><div>~1</div><div>New products landing</div></div><div><div><strong>P3</strong></div><div>T17: Campaign Pages</div><div>~5-10</div><div>Marketing/storytelling (Inspire, Keep Seeking)</div></div><div><div><strong>P4</strong></div><div>T10: Blog</div><div>Hundreds</div><div>WordPress - separate platform decision</div></div><div><div><strong>P4</strong></div><div>Corporate site</div><div>Separate</div><div>Different domain, different migration project</div></div></div><h3 id="suggested-migration-phases">Suggested Migration Phases</h3><p><strong>Phase 1 - Foundation:</strong></p><ul>
 <li>Global components (header, footer, nav)</li>
 <li>Design tokens and styles</li>
 <li>Homepage (T1)</li>
@@ -1315,6 +1868,185 @@ These differ from the standard <code>/us/en/home/...</code> URL pattern.</li>
 <li>Events (T9)</li>
 <li>Blog decision and execution</li>
 </ul></div>
+<div><h2 id="url-analysis-status">URL Analysis Status</h2><p>The following URLs were analyzed during discovery. This tracks which URLs are live, which return 404, and which redirect.</p><h3 id="live-pages-analyzed">Live Pages Analyzed</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="url"><div><div><code>/us/en/home.html</code></div><div>T1: Homepage</div><div>Hero carousel, card grids, promos</div></div><div><div><code>/us/en/home/life-science/antibodies.html</code></div><div>T2: Category Landing</div><div>Full-width, no sidebar</div></div><div><div><code>/us/en/home/life-science/antibodies/primary-antibodies.html</code></div><div>T3: Sub-Category</div><div>Sidebar + main content</div></div><div><div><code>/order/catalog/product/11668019</code></div><div>T4: PDP</div><div>Complex API-driven</div></div><div><div><code>/us/en/home/products-and-services/services.html</code></div><div>T5: Services</div><div>TOC + 2-col service cards</div></div><div><div><code>/us/en/home/brands/thermo-scientific.html</code></div><div>T6: Brand Page</div><div>Sidebar + categorized links</div></div><div><div><code>/us/en/home/products-and-services/promotions.html</code></div><div>T7: Promotions</div><div>Filter tabs + card grid</div></div><div><div><code>/us/en/home/support.html</code></div><div>T8: Support Hub</div><div>Multi-col link directory</div></div><div><div><code>/us/en/home/events.html</code></div><div>T9: Events</div><div>Filterable event listing table</div></div><div><div><code>/us/en/home/brands.html</code></div><div>T11: Brand Hub</div><div>Video + brand cards grid</div></div><div><div><code>/us/en/home/life-science.html</code></div><div>T12: Division Hub</div><div>Flat category card grid</div></div><div><div><code>/us/en/home/life-science/protein-biology.html</code></div><div>T2/T3 Hybrid</div><div>Sidebar + promo banners + category cards</div></div><div><div><code>/us/en/home/brands/invitrogen.html</code></div><div>T6: Brand Page</div><div>Sidebar + hero + categories</div></div><div><div><code>/us/en/home/technical-resources/learning-centers.html</code></div><div>T13: Resource Hub</div><div>3-col image + title + desc cards</div></div><div><div><code>/us/en/home/about-us/product-stewardship/sustainable-product-design.html</code></div><div>T14: Content Hub</div><div>Sub-nav + feature cards + video</div></div><div><div><code>/us/en/home/about-us/partnering-licensing.html</code></div><div>T14: Content Hub</div><div>Stats panel + sidebar nav + info cards</div></div><div><div><code>/us/en/home/order.html</code></div><div>T15: Product Directory</div><div>TOC + categorized link grids</div></div><div><div><code>/us/en/home/references/protocols.html</code></div><div>T15: Product Directory</div><div>2-col categorized protocol links</div></div><div><div><code>/us/en/home/applications-techniques.html</code></div><div>T15: Product Directory</div><div>TOC + 6 category sections</div></div><div><div><code>/us/en/home/order/new-products.html</code></div><div>T16: Product Showcase</div><div>Featured product cards + sticky banner</div></div><div><div><code>/us/en/home/brands/inspire/keep-seeking.html</code></div><div>T17: Campaign</div><div>Video hero + story cards + feature sections</div></div></div><h3 id="pages-not-found">404 Pages (Not Found)</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="url"><div><div><code>/us/en/home/brands/brand-inspire.html</code></div><div>Brand Inspire — page removed or moved</div></div><div><div><code>/us/en/home/references/gibco-cell-culture-basics/cell-culture-protocols-and-references.html</code></div><div>Gibco References — likely restructured</div></div><div><div><code>/us/en/home/life-science/antibodies/primary-antibodies/image-gallery.html</code></div><div>Image Gallery — page removed</div></div><div><div><code>/us/en/home/life-science/cell-culture/cell-lines.html</code></div><div>Cell Lines — page removed or moved</div></div><div><div><code>/us/en/home/technical-resources/knowledge-base.html</code></div><div>Knowledge Base — page removed</div></div><div><div><code>/us/en/home/about-us/aspire-member-program.html</code></div><div>Aspire Member Program — page removed</div></div></div><h3 id="redirected-pages">Redirected Pages</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="original-url"><div><div><code>/us/en/home/about-us/product-stewardship.html</code></div><div><code>/us/en/home/about-us/product-stewardship/sustainable-product-design.html</code></div><div>Redirects to sub-page</div></div><div><div><code>/us/en/home/o.html</code> (Offers)</div><div><code>/us/en/home.html</code></div><div>Redirects to homepage</div></div><div><div><code>/us/en/home/about-us/events.html</code></div><div><code>/us/en/home/events.html</code></div><div>Redirects to events hub</div></div><div><div><code>/us/en/home/products-and-services/new-products.html</code></div><div><code>/us/en/home/order/new-products.html</code></div><div>Redirects to order section</div></div></div></div>
 <div><h2 id="appendix-screenshots">Appendix: Screenshots</h2><p>All screenshots captured during discovery are available in the <code>discovery/</code> folder:</p>
 
 
@@ -1356,5 +2088,10 @@ These differ from the standard <code>/us/en/home/...</code> URL pattern.</li>
 
 
 
-<div class="file"><div><div><code>homepage-full.png</code></div><div>Homepage full-page screenshot</div></div><div><div><code>antibodies-category.png</code></div><div>Top-level category (Antibodies)</div></div><div><div><code>product-detail.png</code></div><div>Product Detail Page (Lipofectamine 2000)</div></div><div><div><code>services-page.png</code></div><div>Services landing page</div></div><div><div><code>brand-page.png</code></div><div>Brand page (Thermo Scientific)</div></div><div><div><code>promotions-page.png</code></div><div>Promotions page with filter tabs</div></div><div><div><code>support-page.png</code></div><div>Support hub page</div></div><div><div><code>events-page.png</code></div><div>Events and Webinars page</div></div></div></div>
-<div><p><em>Report generated as part of AEM 6.4 to AEM Cloud + Edge Delivery Services migration discovery.</em></p></div>
+
+
+
+
+<div class="file"><div><div><code>homepage-full.png</code></div><div>Homepage full-page screenshot</div></div><div><div><code>antibodies-category.png</code></div><div>Top-level category (Antibodies)</div></div><div><div><code>product-detail.png</code></div><div>Product Detail Page (Lipofectamine 2000)</div></div><div><div><code>services-page.png</code></div><div>Services landing page</div></div><div><div><code>brand-page.png</code></div><div>Brand page (Thermo Scientific)</div></div><div><div><code>promotions-page.png</code></div><div>Promotions page with filter tabs</div></div><div><div><code>support-page.png</code></div><div>Support hub page</div></div><div><div><code>events-page.png</code></div><div>Events and Webinars page</div></div><div><div><code>brands-hub.png</code></div><div>Brand Hub page with video + brand cards</div></div></div></div>
+<div><p><em>Report generated as part of AEM 6.4 to AEM Cloud + Edge Delivery Services migration discovery.</em>
+<em>Updated: March 2026 — Added templates T11-T17 and URL analysis status from extended URL analysis.</em></p></div>
