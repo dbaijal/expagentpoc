@@ -254,7 +254,7 @@
     "fields": [
       {
         "component": "select",
-        "name": "actionType",
+        "name": "action",
         "label": "Action Type",
         "description": "Backend integration for form submission",
         "valueType": "string",
@@ -321,27 +321,27 @@
     "fields": [
       {
         "component": "text",
-        "name": "fieldType",
+        "name": "field_type",
         "label": "Component",
         "valueType": "string",
         "value": "input"
       },
       {
         "component": "text",
-        "name": "name",
+        "name": "field_name",
         "label": "Field Name",
         "description": "Name used in form submission data",
         "valueType": "string"
       },
       {
         "component": "text",
-        "name": "label",
+        "name": "field_label",
         "label": "Label",
         "valueType": "string"
       },
       {
         "component": "select",
-        "name": "inputType",
+        "name": "config_inputType",
         "label": "Input Type",
         "valueType": "string",
         "options": [
@@ -369,13 +369,13 @@
       },
       {
         "component": "text",
-        "name": "placeholder",
+        "name": "config_placeholder",
         "label": "Placeholder",
         "valueType": "string"
       },
       {
         "component": "select",
-        "name": "required",
+        "name": "validation_required",
         "label": "Required",
         "valueType": "string",
         "options": [
@@ -396,26 +396,26 @@
     "fields": [
       {
         "component": "text",
-        "name": "fieldType",
+        "name": "field_type",
         "label": "Component",
         "valueType": "string",
         "value": "options"
       },
       {
         "component": "text",
-        "name": "name",
+        "name": "field_name",
         "label": "Field Name",
         "valueType": "string"
       },
       {
         "component": "text",
-        "name": "label",
+        "name": "field_label",
         "label": "Label",
         "valueType": "string"
       },
       {
         "component": "select",
-        "name": "optionType",
+        "name": "config_optionType",
         "label": "Display Type",
         "valueType": "string",
         "options": [
@@ -435,21 +435,21 @@
       },
       {
         "component": "text",
-        "name": "options",
+        "name": "config_options",
         "label": "Options",
         "description": "Comma-separated list of options",
         "valueType": "string"
       },
       {
         "component": "text",
-        "name": "placeholder",
+        "name": "config_placeholder",
         "label": "Placeholder",
         "description": "Placeholder for dropdown (e.g., Please Select)",
         "valueType": "string"
       },
       {
         "component": "select",
-        "name": "required",
+        "name": "validation_required",
         "label": "Required",
         "valueType": "string",
         "options": [
@@ -470,32 +470,32 @@
     "fields": [
       {
         "component": "text",
-        "name": "fieldType",
+        "name": "field_type",
         "label": "Component",
         "valueType": "string",
         "value": "textarea"
       },
       {
         "component": "text",
-        "name": "name",
+        "name": "field_name",
         "label": "Field Name",
         "valueType": "string"
       },
       {
         "component": "text",
-        "name": "label",
+        "name": "field_label",
         "label": "Label",
         "valueType": "string"
       },
       {
         "component": "text",
-        "name": "placeholder",
+        "name": "config_placeholder",
         "label": "Placeholder",
         "valueType": "string"
       },
       {
         "component": "select",
-        "name": "required",
+        "name": "validation_required",
         "label": "Required",
         "valueType": "string",
         "options": [
@@ -516,27 +516,27 @@
     "fields": [
       {
         "component": "text",
-        "name": "fieldType",
+        "name": "field_type",
         "label": "Component",
         "valueType": "string",
         "value": "hidden"
       },
       {
         "component": "text",
-        "name": "name",
+        "name": "field_name",
         "label": "Field Name",
         "valueType": "string"
       },
       {
         "component": "text",
-        "name": "value",
+        "name": "config_value",
         "label": "Value",
         "description": "Static value or parameter name",
         "valueType": "string"
       },
       {
         "component": "select",
-        "name": "valueSource",
+        "name": "config_valueSource",
         "label": "Value Source",
         "valueType": "string",
         "options": [
@@ -565,26 +565,26 @@
     "fields": [
       {
         "component": "text",
-        "name": "fieldType",
+        "name": "field_type",
         "label": "Component",
         "valueType": "string",
         "value": "upload"
       },
       {
         "component": "text",
-        "name": "name",
+        "name": "field_name",
         "label": "Field Name",
         "valueType": "string"
       },
       {
         "component": "text",
-        "name": "label",
+        "name": "field_label",
         "label": "Label",
         "valueType": "string"
       },
       {
         "component": "text",
-        "name": "buttonText",
+        "name": "config_buttonText",
         "label": "Button Text",
         "description": "Text for file selection button",
         "valueType": "string",
@@ -592,7 +592,7 @@
       },
       {
         "component": "select",
-        "name": "required",
+        "name": "validation_required",
         "label": "Required",
         "valueType": "string",
         "options": [
@@ -613,21 +613,21 @@
     "fields": [
       {
         "component": "text",
-        "name": "fieldType",
+        "name": "field_type",
         "label": "Component",
         "valueType": "string",
         "value": "button"
       },
       {
         "component": "text",
-        "name": "label",
+        "name": "field_label",
         "label": "Button Label",
         "valueType": "string",
         "value": "Submit"
       },
       {
         "component": "select",
-        "name": "buttonType",
+        "name": "config_buttonType",
         "label": "Button Type",
         "valueType": "string",
         "options": [
@@ -648,14 +648,14 @@
     "fields": [
       {
         "component": "text",
-        "name": "fieldType",
+        "name": "field_type",
         "label": "Component",
         "valueType": "string",
         "value": "label"
       },
       {
         "component": "richtext",
-        "name": "text",
+        "name": "content_text",
         "label": "Text",
         "valueType": "string"
       }

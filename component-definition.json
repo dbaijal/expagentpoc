@@ -230,9 +230,12 @@
                 "template": {
                   "name": "Input Field",
                   "model": "form-input",
-                  "fieldType": "input",
-                  "inputType": "text",
-                  "required": "false"
+                  "field_type": "input",
+                  "field_name": "",
+                  "field_label": "",
+                  "config_inputType": "text",
+                  "config_placeholder": "",
+                  "validation_required": "false"
                 }
               }
             }
@@ -248,9 +251,13 @@
                 "template": {
                   "name": "Options Field",
                   "model": "form-options",
-                  "fieldType": "options",
-                  "optionType": "select",
-                  "required": "false"
+                  "field_type": "options",
+                  "field_name": "",
+                  "field_label": "",
+                  "config_optionType": "select",
+                  "config_options": "",
+                  "config_placeholder": "",
+                  "validation_required": "false"
                 }
               }
             }
@@ -266,8 +273,11 @@
                 "template": {
                   "name": "Text Area",
                   "model": "form-textarea",
-                  "fieldType": "textarea",
-                  "required": "false"
+                  "field_type": "textarea",
+                  "field_name": "",
+                  "field_label": "",
+                  "config_placeholder": "",
+                  "validation_required": "false"
                 }
               }
             }
@@ -283,7 +293,10 @@
                 "template": {
                   "name": "Hidden Field",
                   "model": "form-hidden",
-                  "fieldType": "hidden"
+                  "field_type": "hidden",
+                  "field_name": "",
+                  "config_value": "",
+                  "config_valueSource": "static"
                 }
               }
             }
@@ -299,8 +312,11 @@
                 "template": {
                   "name": "Upload Field",
                   "model": "form-upload",
-                  "fieldType": "upload",
-                  "required": "false"
+                  "field_type": "upload",
+                  "field_name": "",
+                  "field_label": "",
+                  "config_buttonText": "Choose File",
+                  "validation_required": "false"
                 }
               }
             }
@@ -316,8 +332,9 @@
                 "template": {
                   "name": "Form Button",
                   "model": "form-button",
-                  "fieldType": "button",
-                  "buttonType": "submit"
+                  "field_type": "button",
+                  "field_label": "Submit",
+                  "config_buttonType": "submit"
                 }
               }
             }
@@ -333,7 +350,8 @@
                 "template": {
                   "name": "Form Label",
                   "model": "form-label",
-                  "fieldType": "label"
+                  "field_type": "label",
+                  "content_text": ""
                 }
               }
             }
@@ -559,141 +577,6 @@
                   "name": "Video",
                   "model": "video",
                   "filter": "video"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Form Container",
-          "id": "form-container",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block",
-                "template": {
-                  "name": "Form Container",
-                  "model": "form-container",
-                  "filter": "form-container"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Input Field",
-          "id": "form-input",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Input Field",
-                  "model": "form-input",
-                  "fieldType": "input",
-                  "inputType": "text",
-                  "required": "false"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Options Field",
-          "id": "form-options",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Options Field",
-                  "model": "form-options",
-                  "fieldType": "options",
-                  "optionType": "select",
-                  "required": "false"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Text Area",
-          "id": "form-textarea",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Text Area",
-                  "model": "form-textarea",
-                  "fieldType": "textarea",
-                  "required": "false"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Hidden Field",
-          "id": "form-hidden",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Hidden Field",
-                  "model": "form-hidden",
-                  "fieldType": "hidden"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Upload Field",
-          "id": "form-upload",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Upload Field",
-                  "model": "form-upload",
-                  "fieldType": "upload",
-                  "required": "false"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Form Button",
-          "id": "form-button",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Form Button",
-                  "model": "form-button",
-                  "fieldType": "button",
-                  "buttonType": "submit"
-                }
-              }
-            }
-          }
-        },
-        {
-          "title": "Form Label",
-          "id": "form-label",
-          "plugins": {
-            "xwalk": {
-              "page": {
-                "resourceType": "core/franklin/components/block/v1/block/item",
-                "template": {
-                  "name": "Form Label",
-                  "model": "form-label",
-                  "fieldType": "label"
                 }
               }
             }

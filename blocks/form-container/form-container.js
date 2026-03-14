@@ -1,21 +1,33 @@
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 /**
- * Reads text content from a block cell, trimming whitespace.
- * @param {Element} cell - The cell element
- * @returns {string} The trimmed text content
+ * Gets the inner container of a cell. EDS wrapTextNodes wraps cell
+ * contents in a <p> tag (cell > p > div*), so we look through that wrapper.
  */
-function getCellText(cell) {
-  return cell ? cell.textContent.trim() : '';
+function getCellContainer(cell) {
+  if (!cell) return null;
+  return cell.querySelector(':scope > p') || cell;
 }
 
 /**
- * Reads rich HTML content from a block cell.
- * @param {Element} cell - The cell element
- * @returns {string} The inner HTML
+ * Reads text from a child element within a cell by index.
+ * Handles the EDS <p> wrapper from wrapTextNodes.
  */
-function getCellHTML(cell) {
-  return cell ? cell.innerHTML.trim() : '';
+function getChild(cell, index) {
+  const container = getCellContainer(cell);
+  if (!container) return '';
+  const child = container.children[index];
+  return child ? child.textContent.trim() : '';
+}
+
+/**
+ * Reads rich HTML from a child element within a cell by index.
+ */
+function getChildHTML(cell, index) {
+  const container = getCellContainer(cell);
+  if (!container) return '';
+  const child = container.children[index];
+  return child ? child.innerHTML.trim() : '';
 }
 
 /**
@@ -31,20 +43,23 @@ function generateId(name) {
 
 /**
  * Creates an input field (text, email, tel, number, date).
- * Model columns: fieldType | name | label | inputType | placeholder | required
+ * Cell 0 (field): [type, name, label]
+ * Cell 1 (config): [inputType, placeholder]
+ * Cell 2 (validation): [required]
  */
-function createInputField(cols) {
-  const name = getCellText(cols[1]);
-  const label = getCellText(cols[2]);
-  const inputType = getCellText(cols[3]) || 'text';
-  const placeholder = getCellText(cols[4]);
-  const required = getCellText(cols[5]) === 'true';
+function createInputField(fieldCell, configCell, validationCell) {
+  const name = getChild(fieldCell, 1);
+  const label = getChild(fieldCell, 2);
+  const inputType = getChild(configCell, 0) || 'text';
+  const placeholder = getChild(configCell, 1);
+  const required = getChild(validationCell, 0) === 'true';
   const id = generateId(name);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper input-wrapper';
 
   const labelEl = document.createElement('label');
+  labelEl.id = `${id}-label`;
   labelEl.setAttribute('for', id);
   labelEl.textContent = label || name;
   if (required) labelEl.dataset.required = 'true';
@@ -56,7 +71,6 @@ function createInputField(cols) {
   if (placeholder) input.placeholder = placeholder;
   if (required) input.required = true;
   input.setAttribute('aria-labelledby', `${id}-label`);
-  labelEl.id = `${id}-label`;
 
   wrapper.append(labelEl, input);
   return wrapper;
@@ -64,15 +78,17 @@ function createInputField(cols) {
 
 /**
  * Creates an options field (select dropdown, radio buttons, or checkboxes).
- * Model columns: fieldType | name | label | optionType | options | placeholder | required
+ * Cell 0 (field): [type, name, label]
+ * Cell 1 (config): [optionType, options, placeholder]
+ * Cell 2 (validation): [required]
  */
-function createOptionsField(cols) {
-  const name = getCellText(cols[1]);
-  const label = getCellText(cols[2]);
-  const optionType = getCellText(cols[3]) || 'select';
-  const optionsStr = getCellText(cols[4]);
-  const placeholder = getCellText(cols[5]);
-  const required = getCellText(cols[6]) === 'true';
+function createOptionsField(fieldCell, configCell, validationCell) {
+  const name = getChild(fieldCell, 1);
+  const label = getChild(fieldCell, 2);
+  const optionType = getChild(configCell, 0) || 'select';
+  const optionsStr = getChild(configCell, 1);
+  const placeholder = getChild(configCell, 2);
+  const required = getChild(validationCell, 0) === 'true';
   const id = generateId(name);
   const options = optionsStr ? optionsStr.split(',').map((o) => o.trim()) : [];
 
@@ -109,7 +125,6 @@ function createOptionsField(cols) {
 
     wrapper.append(labelEl, select);
   } else {
-    // radio or checkbox
     wrapper.append(labelEl);
     const groupDiv = document.createElement('div');
     groupDiv.className = `${optionType}-group`;
@@ -144,21 +159,23 @@ function createOptionsField(cols) {
 
 /**
  * Creates a textarea field.
- * Model columns: fieldType | name | label | placeholder | required
+ * Cell 0 (field): [type, name, label]
+ * Cell 1 (config): [placeholder]
+ * Cell 2 (validation): [required]
  */
-function createTextareaField(cols) {
-  const name = getCellText(cols[1]);
-  const label = getCellText(cols[2]);
-  const placeholder = getCellText(cols[3]);
-  const required = getCellText(cols[4]) === 'true';
+function createTextareaField(fieldCell, configCell, validationCell) {
+  const name = getChild(fieldCell, 1);
+  const label = getChild(fieldCell, 2);
+  const placeholder = getChild(configCell, 0);
+  const required = getChild(validationCell, 0) === 'true';
   const id = generateId(name);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper textarea-wrapper';
 
   const labelEl = document.createElement('label');
-  labelEl.setAttribute('for', id);
   labelEl.id = `${id}-label`;
+  labelEl.setAttribute('for', id);
   labelEl.textContent = label || name;
   if (required) labelEl.dataset.required = 'true';
 
@@ -175,12 +192,13 @@ function createTextareaField(cols) {
 
 /**
  * Creates a hidden field.
- * Model columns: fieldType | name | value | valueSource
+ * Cell 0 (field): [type, name]
+ * Cell 1 (config): [value, valueSource]
  */
-function createHiddenField(cols) {
-  const name = getCellText(cols[1]);
-  const value = getCellText(cols[2]);
-  const valueSource = getCellText(cols[3]) || 'static';
+function createHiddenField(fieldCell, configCell) {
+  const name = getChild(fieldCell, 1);
+  const value = getChild(configCell, 0);
+  const valueSource = getChild(configCell, 1) || 'static';
 
   const input = document.createElement('input');
   input.type = 'hidden';
@@ -209,21 +227,23 @@ function createHiddenField(cols) {
 
 /**
  * Creates a file upload field.
- * Model columns: fieldType | name | label | buttonText | required
+ * Cell 0 (field): [type, name, label]
+ * Cell 1 (config): [buttonText]
+ * Cell 2 (validation): [required]
  */
-function createUploadField(cols) {
-  const name = getCellText(cols[1]);
-  const label = getCellText(cols[2]);
-  const buttonText = getCellText(cols[3]) || 'Choose File';
-  const required = getCellText(cols[4]) === 'true';
+function createUploadField(fieldCell, configCell, validationCell) {
+  const name = getChild(fieldCell, 1);
+  const label = getChild(fieldCell, 2);
+  const buttonText = getChild(configCell, 0) || 'Choose File';
+  const required = getChild(validationCell, 0) === 'true';
   const id = generateId(name);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper upload-wrapper';
 
   const labelEl = document.createElement('label');
-  labelEl.setAttribute('for', id);
   labelEl.id = `${id}-label`;
+  labelEl.setAttribute('for', id);
   labelEl.textContent = label || name;
   if (required) labelEl.dataset.required = 'true';
 
@@ -254,11 +274,12 @@ function createUploadField(cols) {
 
 /**
  * Creates a form button (submit or reset).
- * Model columns: fieldType | label | buttonType
+ * Cell 0 (field): [type, label]
+ * Cell 1 (config): [buttonType]
  */
-function createButtonField(cols) {
-  const label = getCellText(cols[1]) || 'Submit';
-  const buttonType = getCellText(cols[2]) || 'submit';
+function createButtonField(fieldCell, configCell) {
+  const label = getChild(fieldCell, 1) || 'Submit';
+  const buttonType = getChild(configCell, 0) || 'submit';
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper button-wrapper';
@@ -274,10 +295,11 @@ function createButtonField(cols) {
 
 /**
  * Creates a label / rich text element.
- * Model columns: fieldType | text (richtext)
+ * Cell 0 (field): [type]
+ * Cell 1 (content): [text as richtext]
  */
-function createLabelField(cols) {
-  const html = getCellHTML(cols[1]);
+function createLabelField(_fieldCell, contentCell) {
+  const html = getChildHTML(contentCell, 0);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper label-wrapper';
@@ -334,12 +356,12 @@ async function handleSubmit(form, block) {
     if (submit) submit.disabled = true;
 
     const payload = generatePayload(form);
-    const actionType = block.dataset.actionType || 'API';
+    const action = block.dataset.action || 'API';
     const formId = block.dataset.formId || '';
 
     const response = await fetch(form.action, {
       method: 'POST',
-      body: JSON.stringify({ data: payload, actionType, formId }),
+      body: JSON.stringify({ data: payload, action, formId }),
       headers: { 'Content-Type': 'application/json' },
     });
 
@@ -370,33 +392,41 @@ async function handleSubmit(form, block) {
 /**
  * Form Container block — renders a form from authored child components.
  *
- * Block structure (each row = a field component):
- *   Row columns vary by fieldType (first column):
- *   - input:    fieldType | name | label | inputType | placeholder | required
- *   - options:  fieldType | name | label | optionType | options | placeholder | required
- *   - textarea: fieldType | name | label | placeholder | required
- *   - hidden:   fieldType | name | value | valueSource
- *   - upload:   fieldType | name | label | buttonText | required
- *   - button:   fieldType | label | buttonType
- *   - label:    fieldType | text (richtext)
+ * With underscore field grouping, each row has up to 3 cells:
+ *   Cell 0 (field_*):      type, name, label
+ *   Cell 1 (config_*):     type-specific settings
+ *   Cell 2 (validation_*): required flag
+ *
+ * Field types and their cell contents:
+ *   input:    field[type,name,label] | config[inputType,placeholder]     | validation[required]
+ *   options:  field[type,name,label] | config[optionType,options,placeholder]
+ *             | validation[required]
+ *   textarea: field[type,name,label] | config[placeholder]              | validation[required]
+ *   hidden:   field[type,name]       | config[value,valueSource]
+ *   upload:   field[type,name,label] | config[buttonText]               | validation[required]
+ *   button:   field[type,label]      | config[buttonType]
+ *   label:    field[type]            | content[text]
  */
 export default function decorate(block) {
   const form = document.createElement('form');
   form.className = 'form-container-form';
   form.noValidate = false;
 
-  // Set form action from block data attributes (set by UE properties panel)
   const actionUrl = block.dataset.actionUrl || '#';
   form.action = actionUrl;
   form.method = 'POST';
 
   [...block.children].forEach((row) => {
-    const cols = [...row.children];
-    const fieldType = getCellText(cols[0]).toLowerCase();
+    const cells = [...row.children];
+    const fieldCell = cells[0];
+    const configCell = cells[1];
+    const validationCell = cells[2];
+
+    const fieldType = getChild(fieldCell, 0).toLowerCase();
     const creator = FIELD_CREATORS[fieldType];
 
     if (creator) {
-      const fieldEl = creator(cols);
+      const fieldEl = creator(fieldCell, configCell, validationCell);
       if (fieldEl) {
         moveInstrumentation(row, fieldEl);
         form.append(fieldEl);
@@ -407,7 +437,6 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(form);
 
-  // Handle form submission
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (form.checkValidity()) {
