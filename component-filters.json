@@ -16,6 +16,7 @@
       "embed",
       "fragment",
       "form",
+      "form-container",
       "hero",
       "image",
       "quote",
@@ -58,6 +59,18 @@
       "image",
       "button",
       "title"
+    ]
+  },
+  {
+    "id": "form-container",
+    "components": [
+      "form-input",
+      "form-options",
+      "form-textarea",
+      "form-hidden",
+      "form-upload",
+      "form-button",
+      "form-label"
     ]
   },
   {
