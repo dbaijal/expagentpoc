@@ -177,21 +177,21 @@
         },
         {
           "component": "text",
-          "name": "formId",
+          "name": "formid",
           "label": "Form ID",
           "description": "Unique identifier for this form",
           "valueType": "string"
         },
         {
           "component": "text",
-          "name": "redirectUrl",
+          "name": "redirect",
           "label": "Redirect URL",
           "description": "Page to redirect after successful submission",
           "valueType": "string"
         },
         {
           "component": "text",
-          "name": "thankYouMessage",
+          "name": "thankyou",
           "label": "Thank You Message",
           "description": "Message shown on successful submission (if no redirect)",
           "valueType": "string"

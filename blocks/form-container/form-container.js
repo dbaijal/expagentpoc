@@ -357,7 +357,7 @@ async function handleSubmit(form, block) {
 
     const payload = generatePayload(form);
     const action = block.dataset.action || 'API';
-    const formId = block.dataset.formId || '';
+    const formId = block.dataset.formid || '';
 
     const response = await fetch(form.action, {
       method: 'POST',
@@ -366,15 +366,14 @@ async function handleSubmit(form, block) {
     });
 
     if (response.ok) {
-      const { redirectUrl } = block.dataset;
-      const { thankYouMessage } = block.dataset;
+      const { redirect, thankyou } = block.dataset;
 
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else if (thankYouMessage) {
+      if (redirect) {
+        window.location.href = redirect;
+      } else if (thankyou) {
         const msg = document.createElement('div');
         msg.className = 'form-success';
-        msg.textContent = thankYouMessage;
+        msg.textContent = thankyou;
         form.replaceWith(msg);
       }
     } else {
