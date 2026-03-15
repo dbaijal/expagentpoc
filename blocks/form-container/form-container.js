@@ -458,18 +458,14 @@ export default function decorate(block) {
   form.action = '#';
   form.method = 'POST';
 
+  form.dataset.action = formConfig.action;
+  if (formConfig.formid) form.dataset.formid = formConfig.formid;
+  if (formConfig.redirect) form.dataset.redirect = formConfig.redirect;
+  if (formConfig.thankyou) form.dataset.thankyou = formConfig.thankyou;
+
   if (configRow) {
     const configEl = document.createElement('div');
-    configEl.className = 'form-config-summary';
-    const label = document.createElement('span');
-    label.className = 'config-label';
-    label.textContent = 'Form Config';
-    const details = document.createElement('span');
-    details.className = 'config-details';
-    const parts = [`Action: ${formConfig.action}`];
-    if (formConfig.formid) parts.push(`ID: ${formConfig.formid}`);
-    details.textContent = parts.join(' | ');
-    configEl.append(label, details);
+    configEl.className = 'form-config-anchor';
     moveInstrumentation(configRow, configEl);
     form.append(configEl);
   }

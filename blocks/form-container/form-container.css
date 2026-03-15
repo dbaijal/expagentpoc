@@ -178,26 +178,9 @@
   margin: 0;
 }
 
-/* Config Summary — visible in authoring, subtle on delivery */
-.form-container .form-config-summary {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
-  background-color: #f5f5f5;
-  border: 1px dashed #ccc;
-  border-radius: 4px;
-  font-size: var(--body-font-size-xs, 12px);
-  color: #666;
-}
-
-.form-container .form-config-summary .config-label {
-  font-weight: 700;
-  white-space: nowrap;
-}
-
-.form-container .form-config-summary .config-details {
-  color: #888;
+/* Config anchor — hidden on delivery, selectable in UE content tree */
+.form-container .form-config-anchor {
+  display: none;
 }
 
 /* Success Message */
