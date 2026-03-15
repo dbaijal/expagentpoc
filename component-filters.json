@@ -64,6 +64,7 @@
   {
     "id": "form-container",
     "components": [
+      "form-config",
       "form-input",
       "form-options",
       "form-textarea",

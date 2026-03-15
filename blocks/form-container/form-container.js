@@ -193,7 +193,7 @@ function createTextareaField(fieldCell, configCell, validationCell) {
 /**
  * Creates a hidden field.
  * Cell 0 (field): [type, name]
- * Cell 1 (config): [value, valueSource]
+ * Cell 1 (config): [value, source]
  */
 function createHiddenField(fieldCell, configCell) {
   const name = getChild(fieldCell, 1);
@@ -345,9 +345,39 @@ function generatePayload(form) {
 }
 
 /**
+ * Reads form-level config from a "config" type child row.
+ * Cell 0 (field): [type, action]
+ * Cell 1 (config): [formid, redirect, thankyou]
+ */
+function extractFormConfig(rows) {
+  const config = {
+    action: 'API', formid: '', redirect: '', thankyou: '',
+  };
+  const remaining = [];
+
+  rows.forEach((row) => {
+    const cells = [...row.children];
+    const fieldCell = cells[0];
+    const fieldType = getChild(fieldCell, 0).toLowerCase();
+
+    if (fieldType === 'config') {
+      config.action = getChild(fieldCell, 1) || config.action;
+      const configCell = cells[1];
+      config.formid = getChild(configCell, 0) || config.formid;
+      config.redirect = getChild(configCell, 1) || config.redirect;
+      config.thankyou = getChild(configCell, 2) || config.thankyou;
+    } else {
+      remaining.push(row);
+    }
+  });
+
+  return { config, remaining };
+}
+
+/**
  * Handles form submission.
  */
-async function handleSubmit(form, block) {
+async function handleSubmit(form, formConfig) {
   if (form.getAttribute('data-submitting') === 'true') return;
 
   const submit = form.querySelector('button[type="submit"]');
@@ -356,24 +386,24 @@ async function handleSubmit(form, block) {
     if (submit) submit.disabled = true;
 
     const payload = generatePayload(form);
-    const action = block.dataset.action || 'API';
-    const formId = block.dataset.formid || '';
 
     const response = await fetch(form.action, {
       method: 'POST',
-      body: JSON.stringify({ data: payload, action, formId }),
+      body: JSON.stringify({
+        data: payload,
+        action: formConfig.action,
+        formId: formConfig.formid,
+      }),
       headers: { 'Content-Type': 'application/json' },
     });
 
     if (response.ok) {
-      const { redirect, thankyou } = block.dataset;
-
-      if (redirect) {
-        window.location.href = redirect;
-      } else if (thankyou) {
+      if (formConfig.redirect) {
+        window.location.href = formConfig.redirect;
+      } else if (formConfig.thankyou) {
         const msg = document.createElement('div');
         msg.className = 'form-success';
-        msg.textContent = thankyou;
+        msg.textContent = formConfig.thankyou;
         form.replaceWith(msg);
       }
     } else {
@@ -397,25 +427,28 @@ async function handleSubmit(form, block) {
  *   Cell 2 (validation_*): required flag
  *
  * Field types and their cell contents:
- *   input:    field[type,name,label] | config[inputType,placeholder]     | validation[required]
- *   options:  field[type,name,label] | config[optionType,options,placeholder]
+ *   config:   field[type,action]     | config[formid,redirect,thankyou]
+ *   input:    field[type,name,label] | config[type,placeholder]         | validation[required]
+ *   options:  field[type,name,label] | config[display,options,placeholder]
  *             | validation[required]
  *   textarea: field[type,name,label] | config[placeholder]              | validation[required]
- *   hidden:   field[type,name]       | config[value,valueSource]
- *   upload:   field[type,name,label] | config[buttonText]               | validation[required]
- *   button:   field[type,label]      | config[buttonType]
+ *   hidden:   field[type,name]       | config[value,source]
+ *   upload:   field[type,name,label] | config[label]                    | validation[required]
+ *   button:   field[type,label]      | config[role]
  *   label:    field[type]            | content[text]
  */
 export default function decorate(block) {
+  const { config: formConfig, remaining } = extractFormConfig(
+    [...block.children],
+  );
+
   const form = document.createElement('form');
   form.className = 'form-container-form';
   form.noValidate = false;
-
-  const actionUrl = block.dataset.actionUrl || '#';
-  form.action = actionUrl;
+  form.action = '#';
   form.method = 'POST';
 
-  [...block.children].forEach((row) => {
+  remaining.forEach((row) => {
     const cells = [...row.children];
     const fieldCell = cells[0];
     const configCell = cells[1];
@@ -439,7 +472,7 @@ export default function decorate(block) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (form.checkValidity()) {
-      handleSubmit(form, block);
+      handleSubmit(form, formConfig);
     } else {
       const firstInvalid = form.querySelector(':invalid:not(fieldset)');
       if (firstInvalid) {

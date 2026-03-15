@@ -213,8 +213,27 @@
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
                   "name": "Form Container",
-                  "model": "form-container",
                   "filter": "form-container"
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Form Config",
+          "id": "form-config",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Form Config",
+                  "model": "form-config",
+                  "field_type": "config",
+                  "field_action": "ELOQUA",
+                  "config_formid": "",
+                  "config_redirect": "",
+                  "config_thankyou": ""
                 }
               }
             }
@@ -296,7 +315,7 @@
                   "field_type": "hidden",
                   "field_name": "",
                   "config_value": "",
-                  "config_valueSource": "static"
+                  "config_source": "static"
                 }
               }
             }

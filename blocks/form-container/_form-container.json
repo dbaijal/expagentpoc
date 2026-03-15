@@ -9,8 +9,27 @@
             "resourceType": "core/franklin/components/block/v1/block",
             "template": {
               "name": "Form Container",
-              "model": "form-container",
               "filter": "form-container"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Form Config",
+      "id": "form-config",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Form Config",
+              "model": "form-config",
+              "field_type": "config",
+              "field_action": "ELOQUA",
+              "config_formid": "",
+              "config_redirect": "",
+              "config_thankyou": ""
             }
           }
         }
@@ -92,7 +111,7 @@
               "field_type": "hidden",
               "field_name": "",
               "config_value": "",
-              "config_valueSource": "static"
+              "config_source": "static"
             }
           }
         }
@@ -156,11 +175,18 @@
   ],
   "models": [
     {
-      "id": "form-container",
+      "id": "form-config",
       "fields": [
         {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "config"
+        },
+        {
           "component": "select",
-          "name": "action",
+          "name": "field_action",
           "label": "Action Type",
           "description": "Backend integration for form submission",
           "valueType": "string",
@@ -177,21 +203,21 @@
         },
         {
           "component": "text",
-          "name": "formid",
+          "name": "config_formid",
           "label": "Form ID",
           "description": "Unique identifier for this form",
           "valueType": "string"
         },
         {
           "component": "text",
-          "name": "redirect",
+          "name": "config_redirect",
           "label": "Redirect URL",
           "description": "Page to redirect after successful submission",
           "valueType": "string"
         },
         {
           "component": "text",
-          "name": "thankyou",
+          "name": "config_thankyou",
           "label": "Thank You Message",
           "description": "Message shown on successful submission (if no redirect)",
           "valueType": "string"
@@ -376,7 +402,7 @@
         },
         {
           "component": "select",
-          "name": "config_valueSource",
+          "name": "config_source",
           "label": "Value Source",
           "valueType": "string",
           "options": [
@@ -482,6 +508,7 @@
     {
       "id": "form-container",
       "components": [
+        "form-config",
         "form-input",
         "form-options",
         "form-textarea",
