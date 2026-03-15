@@ -1,0 +1,217 @@
+/* Form Container Block */
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+.form-container-form {
+  display: grid;
+  grid-auto-flow: row;
+  gap: 24px;
+}
+
+/* Field Wrappers */
+.form-container .field-wrapper {
+  display: grid;
+  grid-auto-flow: row;
+  align-items: start;
+}
+
+/* Labels */
+.form-container label {
+  margin-bottom: 0.25em;
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
+}
+
+.form-container label[data-required]::after {
+  content: '*';
+  color: firebrick;
+  margin-inline-start: 0.5ch;
+}
+
+/* Inputs, Selects, Textareas */
+.form-container input,
+.form-container select,
+.form-container textarea {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.5em;
+  border-radius: 4px;
+  border: 1px solid var(--dark-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+  transition: border-color 0.2s;
+}
+
+.form-container textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-container .selection-wrapper input {
+  width: auto;
+}
+
+.form-container .selection-wrapper label {
+  margin: 0;
+  font-weight: normal;
+}
+
+.form-container input:hover,
+.form-container select:hover,
+.form-container textarea:hover {
+  border-color: var(--text-color);
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+.form-container input:invalid:not(:placeholder-shown),
+.form-container select:invalid,
+.form-container textarea:invalid:not(:placeholder-shown) {
+  border-color: firebrick;
+}
+
+/* Hidden fields */
+.form-container input[type="hidden"] {
+  display: none;
+}
+
+/* Radio and Checkbox Groups */
+.form-container .radio-group,
+.form-container .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.form-container .selection-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Upload Field */
+.form-container .upload-wrapper {
+  position: relative;
+}
+
+.form-container .upload-wrapper input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+}
+
+.form-container .upload-btn {
+  display: inline-block;
+  width: max-content;
+  padding: 8px 16px;
+  background-color: var(--link-color);
+  color: var(--background-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: var(--body-font-size-s);
+  transition: background-color 0.2s;
+}
+
+.form-container .upload-btn:hover {
+  background-color: var(--link-hover-color);
+}
+
+.form-container .upload-filename {
+  display: inline-block;
+  margin-left: 12px;
+  font-size: var(--body-font-size-s);
+  color: var(--dark-color);
+}
+
+/* Button */
+.form-container .button-wrapper {
+  margin-top: 8px;
+}
+
+.form-container .button-wrapper .button {
+  display: inline-block;
+  padding: 12px 32px;
+  background-color: var(--link-color);
+  color: var(--background-color);
+  border: none;
+  border-radius: 4px;
+  font-size: var(--body-font-size-m);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.form-container .button-wrapper .button:hover {
+  background-color: var(--link-hover-color);
+}
+
+.form-container .button-wrapper .button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Label / Rich Text */
+.form-container .label-wrapper {
+  font-size: var(--body-font-size-s);
+  color: var(--dark-color);
+}
+
+.form-container .label-wrapper p {
+  margin: 0;
+}
+
+/* Success Message */
+.form-container .form-success {
+  padding: 24px;
+  background-color: #e8f5e9;
+  border: 1px solid #4caf50;
+  border-radius: 4px;
+  color: #2e7d32;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Responsive */
+@media (width >= 600px) {
+  .form-container input,
+  .form-container select,
+  .form-container textarea {
+    max-width: 50vw;
+  }
+
+  .form-container .button-wrapper .button {
+    max-width: max-content;
+  }
+
+  .form-container .radio-group,
+  .form-container .checkbox-group {
+    flex-flow: row wrap;
+    gap: 16px;
+  }
+}
+
+@media (width >= 900px) {
+  .form-container input,
+  .form-container select,
+  .form-container textarea {
+    max-width: 33vw;
+  }
+}
