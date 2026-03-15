@@ -362,6 +362,7 @@ function extractFormConfig(rows) {
     action: 'API', formid: '', redirect: '', thankyou: '',
   };
   const remaining = [];
+  let configRow = null;
 
   rows.forEach((row) => {
     const cells = [...row.children];
@@ -374,12 +375,13 @@ function extractFormConfig(rows) {
       config.formid = getChild(configCell, 0) || config.formid;
       config.redirect = getChild(configCell, 1) || config.redirect;
       config.thankyou = getChild(configCell, 2) || config.thankyou;
+      if (!configRow) configRow = row;
     } else {
       remaining.push(row);
     }
   });
 
-  return { config, remaining };
+  return { config, remaining, configRow };
 }
 
 /**
@@ -446,7 +448,7 @@ async function handleSubmit(form, formConfig) {
  *   label:    field[type]            | content[text]
  */
 export default function decorate(block) {
-  const { config: formConfig, remaining } = extractFormConfig(
+  const { config: formConfig, remaining, configRow } = extractFormConfig(
     [...block.children],
   );
 
@@ -455,6 +457,22 @@ export default function decorate(block) {
   form.noValidate = false;
   form.action = '#';
   form.method = 'POST';
+
+  if (configRow) {
+    const configEl = document.createElement('div');
+    configEl.className = 'form-config-summary';
+    const label = document.createElement('span');
+    label.className = 'config-label';
+    label.textContent = 'Form Config';
+    const details = document.createElement('span');
+    details.className = 'config-details';
+    const parts = [`Action: ${formConfig.action}`];
+    if (formConfig.formid) parts.push(`ID: ${formConfig.formid}`);
+    details.textContent = parts.join(' | ');
+    configEl.append(label, details);
+    moveInstrumentation(configRow, configEl);
+    form.append(configEl);
+  }
 
   remaining.forEach((row) => {
     const cells = [...row.children];
