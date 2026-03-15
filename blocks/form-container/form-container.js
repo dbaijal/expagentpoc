@@ -1,33 +1,41 @@
 import { moveInstrumentation } from '../../scripts/scripts.js';
 
 /**
- * Gets the inner container of a cell. EDS wrapTextNodes wraps cell
- * contents in a <p> tag (cell > p > div*), so we look through that wrapper.
- */
-function getCellContainer(cell) {
-  if (!cell) return null;
-  return cell.querySelector(':scope > p') || cell;
-}
-
-/**
- * Reads text from a child element within a cell by index.
- * Handles the EDS <p> wrapper from wrapTextNodes.
+ * Reads text from a cell by child-element index.
+ * Handles three AEM delivery patterns:
+ *   - Multiple child elements (div/p per value): cell.children[index]
+ *   - Single <p> wrapper around block children (wrapTextNodes): cell > p > children[index]
+ *   - Single text node (one value, no wrapper): cell.textContent for index 0
  */
 function getChild(cell, index) {
-  const container = getCellContainer(cell);
-  if (!container) return '';
-  const child = container.children[index];
-  return child ? child.textContent.trim() : '';
+  if (!cell) return '';
+  const { children } = cell;
+  if (children.length === 1
+    && children[0].tagName === 'P'
+    && children[0].children.length > 0) {
+    return children[0].children[index]?.textContent?.trim() || '';
+  }
+  if (children.length > 0) {
+    return children[index]?.textContent?.trim() || '';
+  }
+  return index === 0 ? cell.textContent.trim() : '';
 }
 
 /**
- * Reads rich HTML from a child element within a cell by index.
+ * Reads rich HTML from a cell by child-element index.
  */
 function getChildHTML(cell, index) {
-  const container = getCellContainer(cell);
-  if (!container) return '';
-  const child = container.children[index];
-  return child ? child.innerHTML.trim() : '';
+  if (!cell) return '';
+  const { children } = cell;
+  if (children.length === 1
+    && children[0].tagName === 'P'
+    && children[0].children.length > 0) {
+    return children[0].children[index]?.innerHTML?.trim() || '';
+  }
+  if (children.length > 0) {
+    return children[index]?.innerHTML?.trim() || '';
+  }
+  return index === 0 ? cell.innerHTML.trim() : '';
 }
 
 /**
