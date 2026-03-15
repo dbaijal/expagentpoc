@@ -1,0 +1,495 @@
+{
+  "definitions": [
+    {
+      "title": "Form Container",
+      "id": "form-container",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block",
+            "template": {
+              "name": "Form Container",
+              "model": "form-container",
+              "filter": "form-container"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Input Field",
+      "id": "form-input",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Input Field",
+              "model": "form-input",
+              "field_type": "input",
+              "field_name": "",
+              "field_label": "",
+              "config_inputType": "text",
+              "config_placeholder": "",
+              "validation_required": "false"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Options Field",
+      "id": "form-options",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Options Field",
+              "model": "form-options",
+              "field_type": "options",
+              "field_name": "",
+              "field_label": "",
+              "config_optionType": "select",
+              "config_options": "",
+              "config_placeholder": "",
+              "validation_required": "false"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Text Area",
+      "id": "form-textarea",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Text Area",
+              "model": "form-textarea",
+              "field_type": "textarea",
+              "field_name": "",
+              "field_label": "",
+              "config_placeholder": "",
+              "validation_required": "false"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Hidden Field",
+      "id": "form-hidden",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Hidden Field",
+              "model": "form-hidden",
+              "field_type": "hidden",
+              "field_name": "",
+              "config_value": "",
+              "config_valueSource": "static"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Upload Field",
+      "id": "form-upload",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Upload Field",
+              "model": "form-upload",
+              "field_type": "upload",
+              "field_name": "",
+              "field_label": "",
+              "config_buttonText": "Choose File",
+              "validation_required": "false"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Form Button",
+      "id": "form-button",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Form Button",
+              "model": "form-button",
+              "field_type": "button",
+              "field_label": "Submit",
+              "config_buttonType": "submit"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Form Label",
+      "id": "form-label",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Form Label",
+              "model": "form-label",
+              "field_type": "label",
+              "content_text": ""
+            }
+          }
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "form-container",
+      "fields": [
+        {
+          "component": "select",
+          "name": "action",
+          "label": "Action Type",
+          "description": "Backend integration for form submission",
+          "valueType": "string",
+          "options": [
+            { "name": "Eloqua", "value": "ELOQUA" },
+            { "name": "GCMS", "value": "GCMS" },
+            { "name": "LSG", "value": "LSG" },
+            { "name": "Non-LSG", "value": "NONLSG" },
+            { "name": "Marketo", "value": "MARKETO" },
+            { "name": "Email", "value": "EMAIL" },
+            { "name": "CORA", "value": "CORA" },
+            { "name": "Custom API", "value": "API" }
+          ]
+        },
+        {
+          "component": "text",
+          "name": "formid",
+          "label": "Form ID",
+          "description": "Unique identifier for this form",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "redirect",
+          "label": "Redirect URL",
+          "description": "Page to redirect after successful submission",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "thankyou",
+          "label": "Thank You Message",
+          "description": "Message shown on successful submission (if no redirect)",
+          "valueType": "string"
+        }
+      ]
+    },
+    {
+      "id": "form-input",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "input"
+        },
+        {
+          "component": "text",
+          "name": "field_name",
+          "label": "Field Name",
+          "description": "Name used in form submission data",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "field_label",
+          "label": "Label",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "config_inputType",
+          "label": "Input Type",
+          "valueType": "string",
+          "options": [
+            { "name": "Text", "value": "text" },
+            { "name": "Email", "value": "email" },
+            { "name": "Phone", "value": "tel" },
+            { "name": "Number", "value": "number" },
+            { "name": "Date", "value": "date" }
+          ]
+        },
+        {
+          "component": "text",
+          "name": "config_placeholder",
+          "label": "Placeholder",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "validation_required",
+          "label": "Required",
+          "valueType": "string",
+          "options": [
+            { "name": "No", "value": "false" },
+            { "name": "Yes", "value": "true" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form-options",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "options"
+        },
+        {
+          "component": "text",
+          "name": "field_name",
+          "label": "Field Name",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "field_label",
+          "label": "Label",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "config_optionType",
+          "label": "Display Type",
+          "valueType": "string",
+          "options": [
+            { "name": "Dropdown", "value": "select" },
+            { "name": "Radio Buttons", "value": "radio" },
+            { "name": "Checkboxes", "value": "checkbox" }
+          ]
+        },
+        {
+          "component": "text",
+          "name": "config_options",
+          "label": "Options",
+          "description": "Comma-separated list of options",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "config_placeholder",
+          "label": "Placeholder",
+          "description": "Placeholder for dropdown (e.g., Please Select)",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "validation_required",
+          "label": "Required",
+          "valueType": "string",
+          "options": [
+            { "name": "No", "value": "false" },
+            { "name": "Yes", "value": "true" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form-textarea",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "textarea"
+        },
+        {
+          "component": "text",
+          "name": "field_name",
+          "label": "Field Name",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "field_label",
+          "label": "Label",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "config_placeholder",
+          "label": "Placeholder",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "validation_required",
+          "label": "Required",
+          "valueType": "string",
+          "options": [
+            { "name": "No", "value": "false" },
+            { "name": "Yes", "value": "true" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form-hidden",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "hidden"
+        },
+        {
+          "component": "text",
+          "name": "field_name",
+          "label": "Field Name",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "config_value",
+          "label": "Value",
+          "description": "Static value or parameter name",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "config_valueSource",
+          "label": "Value Source",
+          "valueType": "string",
+          "options": [
+            { "name": "Static Value", "value": "static" },
+            { "name": "URL Parameter", "value": "query" },
+            { "name": "Cookie", "value": "cookie" },
+            { "name": "Timestamp", "value": "timestamp" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form-upload",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "upload"
+        },
+        {
+          "component": "text",
+          "name": "field_name",
+          "label": "Field Name",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "field_label",
+          "label": "Label",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "config_buttonText",
+          "label": "Button Text",
+          "description": "Text for file selection button",
+          "valueType": "string",
+          "value": "Choose File"
+        },
+        {
+          "component": "select",
+          "name": "validation_required",
+          "label": "Required",
+          "valueType": "string",
+          "options": [
+            { "name": "No", "value": "false" },
+            { "name": "Yes", "value": "true" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form-button",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "button"
+        },
+        {
+          "component": "text",
+          "name": "field_label",
+          "label": "Button Label",
+          "valueType": "string",
+          "value": "Submit"
+        },
+        {
+          "component": "select",
+          "name": "config_buttonType",
+          "label": "Button Type",
+          "valueType": "string",
+          "options": [
+            { "name": "Submit", "value": "submit" },
+            { "name": "Reset", "value": "reset" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "form-label",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "label"
+        },
+        {
+          "component": "richtext",
+          "name": "content_text",
+          "label": "Text",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "form-container",
+      "components": [
+        "form-input",
+        "form-options",
+        "form-textarea",
+        "form-hidden",
+        "form-upload",
+        "form-button",
+        "form-label"
+      ]
+    }
+  ]
+}
