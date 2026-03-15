@@ -341,7 +341,7 @@
       },
       {
         "component": "select",
-        "name": "config_inputType",
+        "name": "config_type",
         "label": "Input Type",
         "valueType": "string",
         "options": [
@@ -415,7 +415,7 @@
       },
       {
         "component": "select",
-        "name": "config_optionType",
+        "name": "config_display",
         "label": "Display Type",
         "valueType": "string",
         "options": [
@@ -584,7 +584,7 @@
       },
       {
         "component": "text",
-        "name": "config_buttonText",
+        "name": "config_label",
         "label": "Button Text",
         "description": "Text for file selection button",
         "valueType": "string",
@@ -627,7 +627,7 @@
       },
       {
         "component": "select",
-        "name": "config_buttonType",
+        "name": "config_role",
         "label": "Button Type",
         "valueType": "string",
         "options": [

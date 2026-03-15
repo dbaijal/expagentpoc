@@ -29,7 +29,7 @@
               "field_type": "input",
               "field_name": "",
               "field_label": "",
-              "config_inputType": "text",
+              "config_type": "text",
               "config_placeholder": "",
               "validation_required": "false"
             }
@@ -50,7 +50,7 @@
               "field_type": "options",
               "field_name": "",
               "field_label": "",
-              "config_optionType": "select",
+              "config_display": "select",
               "config_options": "",
               "config_placeholder": "",
               "validation_required": "false"
@@ -111,7 +111,7 @@
               "field_type": "upload",
               "field_name": "",
               "field_label": "",
-              "config_buttonText": "Choose File",
+              "config_label": "Choose File",
               "validation_required": "false"
             }
           }
@@ -130,7 +130,7 @@
               "model": "form-button",
               "field_type": "button",
               "field_label": "Submit",
-              "config_buttonType": "submit"
+              "config_role": "submit"
             }
           }
         }
@@ -223,7 +223,7 @@
         },
         {
           "component": "select",
-          "name": "config_inputType",
+          "name": "config_type",
           "label": "Input Type",
           "valueType": "string",
           "options": [
@@ -276,7 +276,7 @@
         },
         {
           "component": "select",
-          "name": "config_optionType",
+          "name": "config_display",
           "label": "Display Type",
           "valueType": "string",
           "options": [
@@ -412,7 +412,7 @@
         },
         {
           "component": "text",
-          "name": "config_buttonText",
+          "name": "config_label",
           "label": "Button Text",
           "description": "Text for file selection button",
           "valueType": "string",
@@ -449,7 +449,7 @@
         },
         {
           "component": "select",
-          "name": "config_buttonType",
+          "name": "config_role",
           "label": "Button Type",
           "valueType": "string",
           "options": [
