@@ -171,6 +171,23 @@
           }
         }
       }
+    },
+    {
+      "title": "Form Step",
+      "id": "form-step",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Form Step",
+              "model": "form-step",
+              "field_type": "step",
+              "field_title": ""
+            }
+          }
+        }
+      }
     }
   ],
   "models": [
@@ -502,6 +519,25 @@
           "valueType": "string"
         }
       ]
+    },
+    {
+      "id": "form-step",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "step"
+        },
+        {
+          "component": "text",
+          "name": "field_title",
+          "label": "Step Title",
+          "description": "Title shown in the progress bar and step heading (e.g., Contact Information)",
+          "valueType": "string"
+        }
+      ]
     }
   ],
   "filters": [
@@ -515,7 +551,8 @@
         "form-hidden",
         "form-upload",
         "form-button",
-        "form-label"
+        "form-label",
+        "form-step"
       ]
     }
   ]

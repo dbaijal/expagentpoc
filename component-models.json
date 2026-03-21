@@ -669,6 +669,25 @@
     ]
   },
   {
+    "id": "form-step",
+    "fields": [
+      {
+        "component": "text",
+        "name": "field_type",
+        "label": "Component",
+        "valueType": "string",
+        "value": "step"
+      },
+      {
+        "component": "text",
+        "name": "field_title",
+        "label": "Step Title",
+        "description": "Title shown in the progress bar and step heading (e.g., Contact Information)",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "form",
     "fields": [
       {

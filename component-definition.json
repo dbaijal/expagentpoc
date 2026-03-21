@@ -377,6 +377,23 @@
           }
         },
         {
+          "title": "Form Step",
+          "id": "form-step",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Form Step",
+                  "model": "form-step",
+                  "field_type": "step",
+                  "field_title": ""
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Form",
           "id": "form",
           "plugins": {
