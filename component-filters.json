@@ -71,18 +71,6 @@
       "form-hidden",
       "form-upload",
       "form-button",
-      "form-label",
-      "form-step"
-    ]
-  },
-  {
-    "id": "form-step",
-    "components": [
-      "form-input",
-      "form-options",
-      "form-textarea",
-      "form-hidden",
-      "form-upload",
       "form-label"
     ]
   },

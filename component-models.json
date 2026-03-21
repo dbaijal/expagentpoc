@@ -320,6 +320,13 @@
         "label": "Thank You Message",
         "description": "Message shown on successful submission (if no redirect)",
         "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "config_steptitles",
+        "label": "Wizard Step Titles",
+        "description": "Comma-separated step titles for wizard mode (e.g., Contact Info, Preferences, Review). Leave empty for single-page forms.",
+        "valueType": "string"
       }
     ]
   },
@@ -345,6 +352,39 @@
         "name": "field_label",
         "label": "Label",
         "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "field_step",
+        "label": "Wizard Step",
+        "description": "Assign this field to a wizard step (leave empty for non-wizard forms)",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "—",
+            "value": ""
+          },
+          {
+            "name": "Step 1",
+            "value": "1"
+          },
+          {
+            "name": "Step 2",
+            "value": "2"
+          },
+          {
+            "name": "Step 3",
+            "value": "3"
+          },
+          {
+            "name": "Step 4",
+            "value": "4"
+          },
+          {
+            "name": "Step 5",
+            "value": "5"
+          }
+        ]
       },
       {
         "component": "select",
@@ -422,6 +462,39 @@
       },
       {
         "component": "select",
+        "name": "field_step",
+        "label": "Wizard Step",
+        "description": "Assign this field to a wizard step",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "—",
+            "value": ""
+          },
+          {
+            "name": "Step 1",
+            "value": "1"
+          },
+          {
+            "name": "Step 2",
+            "value": "2"
+          },
+          {
+            "name": "Step 3",
+            "value": "3"
+          },
+          {
+            "name": "Step 4",
+            "value": "4"
+          },
+          {
+            "name": "Step 5",
+            "value": "5"
+          }
+        ]
+      },
+      {
+        "component": "select",
         "name": "config_display",
         "label": "Display Type",
         "valueType": "string",
@@ -495,6 +568,39 @@
         "valueType": "string"
       },
       {
+        "component": "select",
+        "name": "field_step",
+        "label": "Wizard Step",
+        "description": "Assign this field to a wizard step",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "—",
+            "value": ""
+          },
+          {
+            "name": "Step 1",
+            "value": "1"
+          },
+          {
+            "name": "Step 2",
+            "value": "2"
+          },
+          {
+            "name": "Step 3",
+            "value": "3"
+          },
+          {
+            "name": "Step 4",
+            "value": "4"
+          },
+          {
+            "name": "Step 5",
+            "value": "5"
+          }
+        ]
+      },
+      {
         "component": "text",
         "name": "config_placeholder",
         "label": "Placeholder",
@@ -533,6 +639,39 @@
         "name": "field_name",
         "label": "Field Name",
         "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "field_step",
+        "label": "Wizard Step",
+        "description": "Assign this field to a wizard step",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "—",
+            "value": ""
+          },
+          {
+            "name": "Step 1",
+            "value": "1"
+          },
+          {
+            "name": "Step 2",
+            "value": "2"
+          },
+          {
+            "name": "Step 3",
+            "value": "3"
+          },
+          {
+            "name": "Step 4",
+            "value": "4"
+          },
+          {
+            "name": "Step 5",
+            "value": "5"
+          }
+        ]
       },
       {
         "component": "text",
@@ -588,6 +727,39 @@
         "name": "field_label",
         "label": "Label",
         "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "field_step",
+        "label": "Wizard Step",
+        "description": "Assign this field to a wizard step",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "—",
+            "value": ""
+          },
+          {
+            "name": "Step 1",
+            "value": "1"
+          },
+          {
+            "name": "Step 2",
+            "value": "2"
+          },
+          {
+            "name": "Step 3",
+            "value": "3"
+          },
+          {
+            "name": "Step 4",
+            "value": "4"
+          },
+          {
+            "name": "Step 5",
+            "value": "5"
+          }
+        ]
       },
       {
         "component": "text",
@@ -661,28 +833,42 @@
         "value": "label"
       },
       {
+        "component": "select",
+        "name": "field_step",
+        "label": "Wizard Step",
+        "description": "Assign this label to a wizard step",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "—",
+            "value": ""
+          },
+          {
+            "name": "Step 1",
+            "value": "1"
+          },
+          {
+            "name": "Step 2",
+            "value": "2"
+          },
+          {
+            "name": "Step 3",
+            "value": "3"
+          },
+          {
+            "name": "Step 4",
+            "value": "4"
+          },
+          {
+            "name": "Step 5",
+            "value": "5"
+          }
+        ]
+      },
+      {
         "component": "richtext",
         "name": "content_text",
         "label": "Text",
-        "valueType": "string"
-      }
-    ]
-  },
-  {
-    "id": "form-step",
-    "fields": [
-      {
-        "component": "text",
-        "name": "field_type",
-        "label": "Component",
-        "valueType": "string",
-        "value": "step"
-      },
-      {
-        "component": "text",
-        "name": "field_title",
-        "label": "Step Title",
-        "description": "Title shown in the progress bar and step heading (e.g., Contact Information)",
         "valueType": "string"
       }
     ]

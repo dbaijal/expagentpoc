@@ -51,13 +51,14 @@ function generateId(name) {
 
 /**
  * Creates an input field (text, email, tel, number, date).
- * Cell 0 (field): [type, name, label]
+ * Cell 0 (field): [type, name, label, step]
  * Cell 1 (config): [inputType, placeholder]
  * Cell 2 (validation): [required]
  */
 function createInputField(fieldCell, configCell, validationCell) {
   const name = getChild(fieldCell, 1);
   const label = getChild(fieldCell, 2);
+  const step = getChild(fieldCell, 3);
   const inputType = getChild(configCell, 0) || 'text';
   const placeholder = getChild(configCell, 1);
   const required = getChild(validationCell, 0) === 'true';
@@ -65,6 +66,7 @@ function createInputField(fieldCell, configCell, validationCell) {
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper input-wrapper';
+  if (step) wrapper.dataset.step = step;
 
   const labelEl = document.createElement('label');
   labelEl.id = `${id}-label`;
@@ -86,13 +88,14 @@ function createInputField(fieldCell, configCell, validationCell) {
 
 /**
  * Creates an options field (select dropdown, radio buttons, or checkboxes).
- * Cell 0 (field): [type, name, label]
+ * Cell 0 (field): [type, name, label, step]
  * Cell 1 (config): [optionType, options, placeholder]
  * Cell 2 (validation): [required]
  */
 function createOptionsField(fieldCell, configCell, validationCell) {
   const name = getChild(fieldCell, 1);
   const label = getChild(fieldCell, 2);
+  const step = getChild(fieldCell, 3);
   const optionType = getChild(configCell, 0) || 'select';
   const optionsStr = getChild(configCell, 1);
   const placeholder = getChild(configCell, 2);
@@ -102,6 +105,7 @@ function createOptionsField(fieldCell, configCell, validationCell) {
 
   const wrapper = document.createElement('div');
   wrapper.className = `field-wrapper ${optionType}-wrapper`;
+  if (step) wrapper.dataset.step = step;
 
   const labelEl = document.createElement('label');
   labelEl.id = `${id}-label`;
@@ -167,19 +171,21 @@ function createOptionsField(fieldCell, configCell, validationCell) {
 
 /**
  * Creates a textarea field.
- * Cell 0 (field): [type, name, label]
+ * Cell 0 (field): [type, name, label, step]
  * Cell 1 (config): [placeholder]
  * Cell 2 (validation): [required]
  */
 function createTextareaField(fieldCell, configCell, validationCell) {
   const name = getChild(fieldCell, 1);
   const label = getChild(fieldCell, 2);
+  const step = getChild(fieldCell, 3);
   const placeholder = getChild(configCell, 0);
   const required = getChild(validationCell, 0) === 'true';
   const id = generateId(name);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper textarea-wrapper';
+  if (step) wrapper.dataset.step = step;
 
   const labelEl = document.createElement('label');
   labelEl.id = `${id}-label`;
@@ -200,17 +206,19 @@ function createTextareaField(fieldCell, configCell, validationCell) {
 
 /**
  * Creates a hidden field.
- * Cell 0 (field): [type, name]
+ * Cell 0 (field): [type, name, step]
  * Cell 1 (config): [value, source]
  */
 function createHiddenField(fieldCell, configCell) {
   const name = getChild(fieldCell, 1);
+  const step = getChild(fieldCell, 2);
   const value = getChild(configCell, 0);
   const valueSource = getChild(configCell, 1) || 'static';
 
   const input = document.createElement('input');
   input.type = 'hidden';
   input.name = name;
+  if (step) input.dataset.step = step;
 
   switch (valueSource) {
     case 'query': {
@@ -235,19 +243,21 @@ function createHiddenField(fieldCell, configCell) {
 
 /**
  * Creates a file upload field.
- * Cell 0 (field): [type, name, label]
+ * Cell 0 (field): [type, name, label, step]
  * Cell 1 (config): [buttonText]
  * Cell 2 (validation): [required]
  */
 function createUploadField(fieldCell, configCell, validationCell) {
   const name = getChild(fieldCell, 1);
   const label = getChild(fieldCell, 2);
+  const step = getChild(fieldCell, 3);
   const buttonText = getChild(configCell, 0) || 'Choose File';
   const required = getChild(validationCell, 0) === 'true';
   const id = generateId(name);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper upload-wrapper';
+  if (step) wrapper.dataset.step = step;
 
   const labelEl = document.createElement('label');
   labelEl.id = `${id}-label`;
@@ -303,29 +313,19 @@ function createButtonField(fieldCell, configCell) {
 
 /**
  * Creates a label / rich text element.
- * Cell 0 (field): [type]
+ * Cell 0 (field): [type, step]
  * Cell 1 (content): [text as richtext]
  */
-function createLabelField(_fieldCell, contentCell) {
+function createLabelField(fieldCell, contentCell) {
+  const step = getChild(fieldCell, 1);
   const html = getChildHTML(contentCell, 0);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper label-wrapper';
+  if (step) wrapper.dataset.step = step;
   wrapper.innerHTML = html;
 
   return wrapper;
-}
-
-/**
- * Creates a step separator marker.
- * Cell 0 (field): [type, title]
- */
-function createStepField(fieldCell) {
-  const title = getChild(fieldCell, 1);
-  const marker = document.createElement('div');
-  marker.className = 'form-step-marker';
-  marker.dataset.stepTitle = title;
-  return marker;
 }
 
 /** Maps fieldType to its creator function. */
@@ -337,7 +337,6 @@ const FIELD_CREATORS = {
   upload: createUploadField,
   button: createButtonField,
   label: createLabelField,
-  step: createStepField,
 };
 
 /**
@@ -368,11 +367,11 @@ function generatePayload(form) {
 /**
  * Reads form-level config from a "config" type child row.
  * Cell 0 (field): [type, action]
- * Cell 1 (config): [formid, redirect, thankyou]
+ * Cell 1 (config): [formid, redirect, thankyou, steptitles]
  */
 function extractFormConfig(rows) {
   const config = {
-    action: 'API', formid: '', redirect: '', thankyou: '',
+    action: 'API', formid: '', redirect: '', thankyou: '', steptitles: '',
   };
   const remaining = [];
   let configRow = null;
@@ -388,6 +387,7 @@ function extractFormConfig(rows) {
       config.formid = getChild(configCell, 0) || config.formid;
       config.redirect = getChild(configCell, 1) || config.redirect;
       config.thankyou = getChild(configCell, 2) || config.thankyou;
+      config.steptitles = getChild(configCell, 3) || config.steptitles;
       if (!configRow) configRow = row;
     } else {
       remaining.push(row);
@@ -398,60 +398,53 @@ function extractFormConfig(rows) {
 }
 
 /**
- * Checks whether the form has any step markers, indicating multi-step mode.
+ * Checks whether the form has any fields with data-step attributes.
  */
 function isMultiStep(form) {
-  return form.querySelectorAll('.form-step-marker').length > 0;
+  return form.querySelectorAll('[data-step]').length > 0;
 }
 
 /**
- * Groups form fields between step markers into fieldset panels.
+ * Groups form fields by their data-step attribute into fieldset panels.
  * Returns array of { title, element } for each step.
  */
-function groupFieldsByStep(form) {
-  const children = [...form.children];
-  const steps = [];
-  let currentFields = [];
-  let currentTitle = '';
-  let currentMarker = null;
+function groupFieldsByStep(form, stepTitles) {
+  const titles = stepTitles
+    ? stepTitles.split(',').map((t) => t.trim())
+    : [];
+  const stepMap = new Map();
 
-  children.forEach((child) => {
-    if (child.classList.contains('form-step-marker')) {
-      if (currentFields.length > 0) {
-        steps.push({ title: currentTitle, fields: currentFields, marker: currentMarker });
-      }
-      currentTitle = child.dataset.stepTitle;
-      currentMarker = child;
-      currentFields = [];
-    } else if (!child.classList.contains('form-config-anchor')) {
-      currentFields.push(child);
+  // Collect fields by step number
+  [...form.children].forEach((child) => {
+    const stepNum = child.dataset?.step;
+    if (stepNum) {
+      if (!stepMap.has(stepNum)) stepMap.set(stepNum, []);
+      stepMap.get(stepNum).push(child);
     }
   });
 
-  // Last group of fields after the final step marker
-  if (currentFields.length > 0) {
-    steps.push({ title: currentTitle, fields: currentFields, marker: currentMarker });
-  }
+  // Sort step numbers and create fieldsets
+  const sortedKeys = [...stepMap.keys()].sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+  const steps = [];
 
-  // Wrap each group in a fieldset
-  steps.forEach((step, i) => {
+  sortedKeys.forEach((key, i) => {
+    const stepIndex = parseInt(key, 10) - 1;
+    const title = titles[stepIndex] || `Step ${key}`;
+
     const fieldset = document.createElement('fieldset');
     fieldset.className = 'form-step';
-    fieldset.dataset.step = i + 1;
+    fieldset.dataset.step = key;
     if (i > 0) fieldset.hidden = true;
 
     const legend = document.createElement('legend');
     legend.className = 'form-step-title';
-    legend.textContent = `${i + 1} of ${steps.length}: ${step.title}`;
+    legend.textContent = `${i + 1} of ${sortedKeys.length}: ${title}`;
     fieldset.append(legend);
 
-    step.fields.forEach((f) => fieldset.append(f));
-
-    // Keep the step marker as a sibling before its fieldset (not inside it)
-    // so UE doesn't interpret field wrappers as children of the step marker
-    if (step.marker) form.append(step.marker);
+    stepMap.get(key).forEach((f) => fieldset.append(f));
     form.append(fieldset);
-    step.element = fieldset;
+
+    steps.push({ title, element: fieldset });
   });
 
   return steps;
@@ -469,7 +462,6 @@ function buildProgressBar(steps) {
     if (i > 0) {
       const connector = document.createElement('span');
       connector.className = 'form-progress-connector';
-      if (i === 0) connector.classList.add('completed');
       bar.append(connector);
     }
 
@@ -551,14 +543,6 @@ function navigateToStep(form, steps, target) {
     conn.classList.toggle('completed', (i + 1) < target);
   });
 
-  // Update legend text
-  steps.forEach((step, i) => {
-    const legend = step.element.querySelector('.form-step-title');
-    if (legend) {
-      legend.textContent = `${i + 1} of ${steps.length}: ${step.title}`;
-    }
-  });
-
   // Update nav buttons
   const backBtn = form.querySelector('.form-back');
   const nextBtn = form.querySelector('.form-next');
@@ -572,10 +556,10 @@ function navigateToStep(form, steps, target) {
 }
 
 /**
- * Sets up the multi-step wizard: groups fields, adds progress bar and nav.
+ * Sets up the multi-step wizard: groups fields by data-step, adds progress bar and nav.
  */
-function setupWizard(form) {
-  const steps = groupFieldsByStep(form);
+function setupWizard(form, stepTitles) {
+  const steps = groupFieldsByStep(form, stepTitles);
   if (steps.length < 2) return;
 
   let currentStep = 1;
@@ -619,7 +603,6 @@ function setupWizard(form) {
   progressBar.querySelectorAll('.form-progress-step').forEach((dot) => {
     dot.addEventListener('click', () => {
       const target = parseInt(dot.dataset.step, 10);
-      // Only allow clicking on completed (previous) steps
       if (target < currentStep) {
         currentStep = target;
         navigateToStep(form, steps, currentStep);
@@ -678,20 +661,20 @@ async function handleSubmit(form, formConfig) {
  * Form Container block — renders a form from authored child components.
  *
  * With underscore field grouping, each row has up to 3 cells:
- *   Cell 0 (field_*):      type, name, label
+ *   Cell 0 (field_*):      type, name, label, step
  *   Cell 1 (config_*):     type-specific settings
  *   Cell 2 (validation_*): required flag
  *
  * Field types and their cell contents:
- *   config:   field[type,action]     | config[formid,redirect,thankyou]
- *   input:    field[type,name,label] | config[type,placeholder]         | validation[required]
- *   options:  field[type,name,label] | config[display,options,placeholder]
- *             | validation[required]
- *   textarea: field[type,name,label] | config[placeholder]              | validation[required]
- *   hidden:   field[type,name]       | config[value,source]
- *   upload:   field[type,name,label] | config[label]                    | validation[required]
- *   button:   field[type,label]      | config[role]
- *   label:    field[type]            | content[text]
+ *   config:   field[type,action]          | config[formid,redirect,thankyou,steptitles]
+ *   input:    field[type,name,label,step] | config[type,placeholder]       | validation[required]
+ *   options:  field[type,name,label,step] | config[display,options,placeholder]
+ *                                         | validation[required]
+ *   textarea: field[type,name,label,step] | config[placeholder]            | validation[required]
+ *   hidden:   field[type,name,step]       | config[value,source]
+ *   upload:   field[type,name,label,step] | config[label]                  | validation[required]
+ *   button:   field[type,label]           | config[role]
+ *   label:    field[type,step]            | content[text]
  */
 export default function decorate(block) {
   const { config: formConfig, remaining, configRow } = extractFormConfig(
@@ -737,9 +720,9 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(form);
 
-  // If step markers exist, set up multi-step wizard
+  // If any fields have step assignments, set up multi-step wizard
   if (isMultiStep(form)) {
-    setupWizard(form);
+    setupWizard(form, formConfig.steptitles);
   }
 
   form.addEventListener('submit', (e) => {
