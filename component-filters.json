@@ -77,7 +77,14 @@
   },
   {
     "id": "form-step",
-    "components": []
+    "components": [
+      "form-input",
+      "form-options",
+      "form-textarea",
+      "form-hidden",
+      "form-upload",
+      "form-label"
+    ]
   },
   {
     "id": "table",

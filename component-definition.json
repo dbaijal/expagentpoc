@@ -386,6 +386,7 @@
                 "template": {
                   "name": "Form Step",
                   "model": "form-step",
+                  "filter": "form-step",
                   "field_type": "step",
                   "field_title": ""
                 }
