@@ -316,6 +316,18 @@ function createLabelField(_fieldCell, contentCell) {
   return wrapper;
 }
 
+/**
+ * Creates a step separator marker.
+ * Cell 0 (field): [type, title]
+ */
+function createStepField(fieldCell) {
+  const title = getChild(fieldCell, 1);
+  const marker = document.createElement('div');
+  marker.className = 'form-step-marker';
+  marker.dataset.stepTitle = title;
+  return marker;
+}
+
 /** Maps fieldType to its creator function. */
 const FIELD_CREATORS = {
   input: createInputField,
@@ -325,6 +337,7 @@ const FIELD_CREATORS = {
   upload: createUploadField,
   button: createButtonField,
   label: createLabelField,
+  step: createStepField,
 };
 
 /**
@@ -382,6 +395,234 @@ function extractFormConfig(rows) {
   });
 
   return { config, remaining, configRow };
+}
+
+/**
+ * Checks whether the form has any step markers, indicating multi-step mode.
+ */
+function isMultiStep(form) {
+  return form.querySelectorAll('.form-step-marker').length > 0;
+}
+
+/**
+ * Groups form fields between step markers into fieldset panels.
+ * Returns array of { title, element } for each step.
+ */
+function groupFieldsByStep(form) {
+  const children = [...form.children];
+  const steps = [];
+  let currentFields = [];
+  let currentTitle = '';
+
+  children.forEach((child) => {
+    if (child.classList.contains('form-step-marker')) {
+      if (currentFields.length > 0) {
+        steps.push({ title: currentTitle, fields: currentFields });
+      }
+      currentTitle = child.dataset.stepTitle;
+      currentFields = [];
+      child.remove();
+    } else if (!child.classList.contains('form-config-anchor')) {
+      currentFields.push(child);
+    }
+  });
+
+  // Last group of fields after the final step marker
+  if (currentFields.length > 0) {
+    steps.push({ title: currentTitle, fields: currentFields });
+  }
+
+  // Wrap each group in a fieldset
+  steps.forEach((step, i) => {
+    const fieldset = document.createElement('fieldset');
+    fieldset.className = 'form-step';
+    fieldset.dataset.step = i + 1;
+    if (i > 0) fieldset.hidden = true;
+
+    const legend = document.createElement('legend');
+    legend.className = 'form-step-title';
+    legend.textContent = `${i + 1} of ${steps.length}: ${step.title}`;
+    fieldset.append(legend);
+
+    step.fields.forEach((f) => fieldset.append(f));
+    form.append(fieldset);
+    step.element = fieldset;
+  });
+
+  return steps;
+}
+
+/**
+ * Builds a progress bar showing step indicators.
+ */
+function buildProgressBar(steps) {
+  const bar = document.createElement('nav');
+  bar.className = 'form-progress';
+  bar.setAttribute('aria-label', 'Form steps');
+
+  steps.forEach((step, i) => {
+    if (i > 0) {
+      const connector = document.createElement('span');
+      connector.className = 'form-progress-connector';
+      if (i === 0) connector.classList.add('completed');
+      bar.append(connector);
+    }
+
+    const dot = document.createElement('span');
+    dot.className = 'form-progress-step';
+    dot.dataset.step = i + 1;
+    dot.setAttribute('aria-label', step.title);
+    dot.textContent = i + 1;
+    if (i === 0) dot.classList.add('active', 'current');
+    bar.append(dot);
+  });
+
+  return bar;
+}
+
+/**
+ * Builds Back / Next / Submit navigation buttons.
+ */
+function buildStepNavigation(steps) {
+  const nav = document.createElement('div');
+  nav.className = 'form-step-nav';
+
+  const backBtn = document.createElement('button');
+  backBtn.type = 'button';
+  backBtn.className = 'button form-back';
+  backBtn.textContent = 'Back';
+  backBtn.hidden = true;
+
+  const nextBtn = document.createElement('button');
+  nextBtn.type = 'button';
+  nextBtn.className = 'button form-next';
+  nextBtn.textContent = 'Next';
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'submit';
+  submitBtn.className = 'button form-submit';
+  submitBtn.textContent = 'Submit';
+  submitBtn.hidden = steps.length > 1;
+
+  nav.append(backBtn, nextBtn, submitBtn);
+  return nav;
+}
+
+/**
+ * Validates all visible required fields in the given step fieldset.
+ * Returns true if all pass, false and focuses the first invalid field otherwise.
+ */
+function validateStep(stepElement) {
+  const fields = stepElement.querySelectorAll('input, select, textarea');
+  let firstInvalid = null;
+  fields.forEach((field) => {
+    if (!field.checkValidity() && !firstInvalid) {
+      firstInvalid = field;
+    }
+  });
+  if (firstInvalid) {
+    firstInvalid.reportValidity();
+    firstInvalid.focus();
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Navigates to a specific step, updating visibility, progress bar, and buttons.
+ */
+function navigateToStep(form, steps, target) {
+  steps.forEach((step, i) => {
+    step.element.hidden = (i + 1) !== target;
+  });
+
+  // Update progress bar
+  form.querySelectorAll('.form-progress-step').forEach((dot) => {
+    const stepNum = parseInt(dot.dataset.step, 10);
+    dot.classList.toggle('active', stepNum <= target);
+    dot.classList.toggle('current', stepNum === target);
+  });
+  form.querySelectorAll('.form-progress-connector').forEach((conn, i) => {
+    conn.classList.toggle('completed', (i + 1) < target);
+  });
+
+  // Update legend text
+  steps.forEach((step, i) => {
+    const legend = step.element.querySelector('.form-step-title');
+    if (legend) {
+      legend.textContent = `${i + 1} of ${steps.length}: ${step.title}`;
+    }
+  });
+
+  // Update nav buttons
+  const backBtn = form.querySelector('.form-back');
+  const nextBtn = form.querySelector('.form-next');
+  const submitBtn = form.querySelector('.form-submit');
+  if (backBtn) backBtn.hidden = target === 1;
+  if (nextBtn) nextBtn.hidden = target === steps.length;
+  if (submitBtn) submitBtn.hidden = target !== steps.length;
+
+  // Scroll to top of form
+  form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/**
+ * Sets up the multi-step wizard: groups fields, adds progress bar and nav.
+ */
+function setupWizard(form) {
+  const steps = groupFieldsByStep(form);
+  if (steps.length < 2) return;
+
+  let currentStep = 1;
+
+  // Remove any authored submit buttons (wizard adds its own)
+  form.querySelectorAll('.button-wrapper').forEach((bw) => {
+    const btn = bw.querySelector('button[type="submit"]');
+    if (btn) bw.remove();
+  });
+
+  // Build and insert progress bar at the top (after config anchor)
+  const progressBar = buildProgressBar(steps);
+  const configAnchor = form.querySelector('.form-config-anchor');
+  if (configAnchor) {
+    configAnchor.after(progressBar);
+  } else {
+    form.prepend(progressBar);
+  }
+
+  // Build and append navigation
+  const nav = buildStepNavigation(steps);
+  form.append(nav);
+
+  // Next button handler
+  nav.querySelector('.form-next').addEventListener('click', () => {
+    if (validateStep(steps[currentStep - 1].element)) {
+      currentStep += 1;
+      navigateToStep(form, steps, currentStep);
+    }
+  });
+
+  // Back button handler
+  nav.querySelector('.form-back').addEventListener('click', () => {
+    if (currentStep > 1) {
+      currentStep -= 1;
+      navigateToStep(form, steps, currentStep);
+    }
+  });
+
+  // Progress dot click handlers
+  progressBar.querySelectorAll('.form-progress-step').forEach((dot) => {
+    dot.addEventListener('click', () => {
+      const target = parseInt(dot.dataset.step, 10);
+      // Only allow clicking on completed (previous) steps
+      if (target < currentStep) {
+        currentStep = target;
+        navigateToStep(form, steps, currentStep);
+      }
+    });
+  });
+
+  form.classList.add('form-wizard');
 }
 
 /**
@@ -490,6 +731,11 @@ export default function decorate(block) {
 
   block.textContent = '';
   block.append(form);
+
+  // If step markers exist, set up multi-step wizard
+  if (isMultiStep(form)) {
+    setupWizard(form);
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();

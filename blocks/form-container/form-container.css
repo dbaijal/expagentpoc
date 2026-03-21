@@ -194,6 +194,135 @@
   text-align: center;
 }
 
+/* ===== Multi-Step Wizard ===== */
+
+/* Progress Bar */
+.form-container .form-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0 0 24px;
+}
+
+.form-container .form-progress-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--dark-color, #ccc);
+  background-color: var(--background-color, #fff);
+  color: var(--dark-color, #999);
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.form-container .form-progress-step.active {
+  border-color: var(--link-color, #e00);
+  color: var(--link-color, #e00);
+}
+
+.form-container .form-progress-step.current {
+  background-color: var(--link-color, #e00);
+  border-color: var(--link-color, #e00);
+  color: #fff;
+}
+
+.form-container .form-progress-step.active:not(.current) {
+  cursor: pointer;
+}
+
+.form-container .form-progress-connector {
+  flex: 1;
+  height: 2px;
+  max-width: 120px;
+  background-color: var(--dark-color, #ccc);
+  transition: background-color 0.3s;
+}
+
+.form-container .form-progress-connector.completed {
+  background-color: var(--link-color, #e00);
+}
+
+/* Step Fieldsets */
+.form-container .form-step {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-auto-flow: row;
+  gap: 20px;
+}
+
+.form-container .form-step[hidden] {
+  display: none;
+}
+
+.form-container .form-step-title {
+  font-size: var(--body-font-size-m);
+  font-weight: 700;
+  color: var(--text-color);
+  padding: 0 0 8px;
+  margin: 0 0 8px;
+  border-bottom: 1px solid var(--dark-color, #ccc);
+}
+
+/* Step Navigation */
+.form-container .form-step-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+}
+
+.form-container .form-step-nav .form-back,
+.form-container .form-step-nav .form-next,
+.form-container .form-step-nav .form-submit {
+  display: inline-block;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 4px;
+  font-size: var(--body-font-size-m);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.form-container .form-step-nav .form-next,
+.form-container .form-step-nav .form-submit {
+  background-color: var(--link-color, #e00);
+  color: #fff;
+  margin-left: auto;
+}
+
+.form-container .form-step-nav .form-next:hover,
+.form-container .form-step-nav .form-submit:hover {
+  background-color: var(--link-hover-color, #c00);
+}
+
+.form-container .form-step-nav .form-back {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--dark-color, #ccc);
+}
+
+.form-container .form-step-nav .form-back:hover {
+  background-color: var(--dark-color, #f5f5f5);
+}
+
+.form-container .form-step-nav [hidden] {
+  display: none;
+}
+
+.form-container .form-step-nav .form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* Responsive */
 @media (width >= 600px) {
   .form-container input,
