@@ -51,14 +51,13 @@ function generateId(name) {
 
 /**
  * Creates an input field (text, email, tel, number, date).
- * Cell 0 (field): [type, name, label, step]
+ * Cell 0 (field): [type, name, label]
  * Cell 1 (config): [inputType, placeholder]
  * Cell 2 (validation): [required]
  */
 function createInputField(fieldCell, configCell, validationCell) {
   const name = getChild(fieldCell, 1);
   const label = getChild(fieldCell, 2);
-  const step = getChild(fieldCell, 3);
   const inputType = getChild(configCell, 0) || 'text';
   const placeholder = getChild(configCell, 1);
   const required = getChild(validationCell, 0) === 'true';
@@ -66,7 +65,6 @@ function createInputField(fieldCell, configCell, validationCell) {
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper input-wrapper';
-  if (step) wrapper.dataset.step = step;
 
   const labelEl = document.createElement('label');
   labelEl.id = `${id}-label`;
@@ -88,14 +86,13 @@ function createInputField(fieldCell, configCell, validationCell) {
 
 /**
  * Creates an options field (select dropdown, radio buttons, or checkboxes).
- * Cell 0 (field): [type, name, label, step]
+ * Cell 0 (field): [type, name, label]
  * Cell 1 (config): [optionType, options, placeholder]
  * Cell 2 (validation): [required]
  */
 function createOptionsField(fieldCell, configCell, validationCell) {
   const name = getChild(fieldCell, 1);
   const label = getChild(fieldCell, 2);
-  const step = getChild(fieldCell, 3);
   const optionType = getChild(configCell, 0) || 'select';
   const optionsStr = getChild(configCell, 1);
   const placeholder = getChild(configCell, 2);
@@ -105,7 +102,6 @@ function createOptionsField(fieldCell, configCell, validationCell) {
 
   const wrapper = document.createElement('div');
   wrapper.className = `field-wrapper ${optionType}-wrapper`;
-  if (step) wrapper.dataset.step = step;
 
   const labelEl = document.createElement('label');
   labelEl.id = `${id}-label`;
@@ -171,21 +167,19 @@ function createOptionsField(fieldCell, configCell, validationCell) {
 
 /**
  * Creates a textarea field.
- * Cell 0 (field): [type, name, label, step]
+ * Cell 0 (field): [type, name, label]
  * Cell 1 (config): [placeholder]
  * Cell 2 (validation): [required]
  */
 function createTextareaField(fieldCell, configCell, validationCell) {
   const name = getChild(fieldCell, 1);
   const label = getChild(fieldCell, 2);
-  const step = getChild(fieldCell, 3);
   const placeholder = getChild(configCell, 0);
   const required = getChild(validationCell, 0) === 'true';
   const id = generateId(name);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper textarea-wrapper';
-  if (step) wrapper.dataset.step = step;
 
   const labelEl = document.createElement('label');
   labelEl.id = `${id}-label`;
@@ -206,19 +200,17 @@ function createTextareaField(fieldCell, configCell, validationCell) {
 
 /**
  * Creates a hidden field.
- * Cell 0 (field): [type, name, step]
+ * Cell 0 (field): [type, name]
  * Cell 1 (config): [value, source]
  */
 function createHiddenField(fieldCell, configCell) {
   const name = getChild(fieldCell, 1);
-  const step = getChild(fieldCell, 2);
   const value = getChild(configCell, 0);
   const valueSource = getChild(configCell, 1) || 'static';
 
   const input = document.createElement('input');
   input.type = 'hidden';
   input.name = name;
-  if (step) input.dataset.step = step;
 
   switch (valueSource) {
     case 'query': {
@@ -243,21 +235,19 @@ function createHiddenField(fieldCell, configCell) {
 
 /**
  * Creates a file upload field.
- * Cell 0 (field): [type, name, label, step]
+ * Cell 0 (field): [type, name, label]
  * Cell 1 (config): [buttonText]
  * Cell 2 (validation): [required]
  */
 function createUploadField(fieldCell, configCell, validationCell) {
   const name = getChild(fieldCell, 1);
   const label = getChild(fieldCell, 2);
-  const step = getChild(fieldCell, 3);
   const buttonText = getChild(configCell, 0) || 'Choose File';
   const required = getChild(validationCell, 0) === 'true';
   const id = generateId(name);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper upload-wrapper';
-  if (step) wrapper.dataset.step = step;
 
   const labelEl = document.createElement('label');
   labelEl.id = `${id}-label`;
@@ -313,16 +303,14 @@ function createButtonField(fieldCell, configCell) {
 
 /**
  * Creates a label / rich text element.
- * Cell 0 (field): [type, step]
+ * Cell 0 (field): [type]
  * Cell 1 (content): [text as richtext]
  */
 function createLabelField(fieldCell, contentCell) {
-  const step = getChild(fieldCell, 1);
   const html = getChildHTML(contentCell, 0);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper label-wrapper';
-  if (step) wrapper.dataset.step = step;
   wrapper.innerHTML = html;
 
   return wrapper;
@@ -338,6 +326,19 @@ const FIELD_CREATORS = {
   button: createButtonField,
   label: createLabelField,
 };
+
+/**
+ * Reads wizard step from the last cell in a row (wizard_* prefix group).
+ * The wizard_step property uses a separate prefix so it gets its own cell,
+ * preventing xWalk empty-value skipping from shifting other cell positions.
+ * Valid step values are "1" through "5".
+ */
+function getWizardStep(cells) {
+  if (cells.length < 2) return '';
+  const lastCell = cells[cells.length - 1];
+  const value = getChild(lastCell, 0);
+  return /^[1-5]$/.test(value) ? value : '';
+}
 
 /**
  * Collects form payload from all fields.
@@ -660,21 +661,25 @@ async function handleSubmit(form, formConfig) {
 /**
  * Form Container block — renders a form from authored child components.
  *
- * With underscore field grouping, each row has up to 3 cells:
- *   Cell 0 (field_*):      type, name, label, step
+ * With underscore field grouping, each row has up to 4 cells:
+ *   Cell 0 (field_*):      type, name, label
  *   Cell 1 (config_*):     type-specific settings
  *   Cell 2 (validation_*): required flag
+ *   Cell 3 (wizard_*):     step number (separate cell to avoid xWalk empty-value shifting)
  *
  * Field types and their cell contents:
- *   config:   field[type,action]          | config[formid,redirect,thankyou,steptitles]
- *   input:    field[type,name,label,step] | config[type,placeholder]       | validation[required]
- *   options:  field[type,name,label,step] | config[display,options,placeholder]
- *                                         | validation[required]
- *   textarea: field[type,name,label,step] | config[placeholder]            | validation[required]
- *   hidden:   field[type,name,step]       | config[value,source]
- *   upload:   field[type,name,label,step] | config[label]                  | validation[required]
- *   button:   field[type,label]           | config[role]
- *   label:    field[type,step]            | content[text]
+ *   config:   field[type,action] | config[formid,redirect,thankyou,steptitles]
+ *   input:    field[type,name,label] | config[type,placeholder]
+ *             | validation[required] | wizard[step]
+ *   options:  field[type,name,label] | config[display,options,placeholder]
+ *             | validation[required] | wizard[step]
+ *   textarea: field[type,name,label] | config[placeholder]
+ *             | validation[required] | wizard[step]
+ *   hidden:   field[type,name] | config[value,source] | wizard[step]
+ *   upload:   field[type,name,label] | config[label]
+ *             | validation[required] | wizard[step]
+ *   button:   field[type,label] | config[role]
+ *   label:    field[type] | content[text] | wizard[step]
  */
 export default function decorate(block) {
   const { config: formConfig, remaining, configRow } = extractFormConfig(
@@ -711,6 +716,8 @@ export default function decorate(block) {
     if (creator) {
       const fieldEl = creator(fieldCell, configCell, validationCell);
       if (fieldEl) {
+        const step = getWizardStep(cells);
+        if (step) fieldEl.dataset.step = step;
         moveInstrumentation(row, fieldEl);
         form.append(fieldEl);
       }

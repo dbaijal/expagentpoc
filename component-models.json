@@ -355,39 +355,6 @@
       },
       {
         "component": "select",
-        "name": "field_step",
-        "label": "Wizard Step",
-        "description": "Assign this field to a wizard step (leave empty for non-wizard forms)",
-        "valueType": "string",
-        "options": [
-          {
-            "name": "—",
-            "value": ""
-          },
-          {
-            "name": "Step 1",
-            "value": "1"
-          },
-          {
-            "name": "Step 2",
-            "value": "2"
-          },
-          {
-            "name": "Step 3",
-            "value": "3"
-          },
-          {
-            "name": "Step 4",
-            "value": "4"
-          },
-          {
-            "name": "Step 5",
-            "value": "5"
-          }
-        ]
-      },
-      {
-        "component": "select",
         "name": "config_type",
         "label": "Input Type",
         "valueType": "string",
@@ -435,36 +402,12 @@
             "value": "true"
           }
         ]
-      }
-    ]
-  },
-  {
-    "id": "form-options",
-    "fields": [
-      {
-        "component": "text",
-        "name": "field_type",
-        "label": "Component",
-        "valueType": "string",
-        "value": "options"
-      },
-      {
-        "component": "text",
-        "name": "field_name",
-        "label": "Field Name",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "field_label",
-        "label": "Label",
-        "valueType": "string"
       },
       {
         "component": "select",
-        "name": "field_step",
+        "name": "wizard_step",
         "label": "Wizard Step",
-        "description": "Assign this field to a wizard step",
+        "description": "Assign this field to a wizard step (leave empty for non-wizard forms)",
         "valueType": "string",
         "options": [
           {
@@ -492,6 +435,30 @@
             "value": "5"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "form-options",
+    "fields": [
+      {
+        "component": "text",
+        "name": "field_type",
+        "label": "Component",
+        "valueType": "string",
+        "value": "options"
+      },
+      {
+        "component": "text",
+        "name": "field_name",
+        "label": "Field Name",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "field_label",
+        "label": "Label",
+        "valueType": "string"
       },
       {
         "component": "select",
@@ -542,6 +509,39 @@
             "value": "true"
           }
         ]
+      },
+      {
+        "component": "select",
+        "name": "wizard_step",
+        "label": "Wizard Step",
+        "description": "Assign this field to a wizard step",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "—",
+            "value": ""
+          },
+          {
+            "name": "Step 1",
+            "value": "1"
+          },
+          {
+            "name": "Step 2",
+            "value": "2"
+          },
+          {
+            "name": "Step 3",
+            "value": "3"
+          },
+          {
+            "name": "Step 4",
+            "value": "4"
+          },
+          {
+            "name": "Step 5",
+            "value": "5"
+          }
+        ]
       }
     ]
   },
@@ -568,39 +568,6 @@
         "valueType": "string"
       },
       {
-        "component": "select",
-        "name": "field_step",
-        "label": "Wizard Step",
-        "description": "Assign this field to a wizard step",
-        "valueType": "string",
-        "options": [
-          {
-            "name": "—",
-            "value": ""
-          },
-          {
-            "name": "Step 1",
-            "value": "1"
-          },
-          {
-            "name": "Step 2",
-            "value": "2"
-          },
-          {
-            "name": "Step 3",
-            "value": "3"
-          },
-          {
-            "name": "Step 4",
-            "value": "4"
-          },
-          {
-            "name": "Step 5",
-            "value": "5"
-          }
-        ]
-      },
-      {
         "component": "text",
         "name": "config_placeholder",
         "label": "Placeholder",
@@ -621,28 +588,10 @@
             "value": "true"
           }
         ]
-      }
-    ]
-  },
-  {
-    "id": "form-hidden",
-    "fields": [
-      {
-        "component": "text",
-        "name": "field_type",
-        "label": "Component",
-        "valueType": "string",
-        "value": "hidden"
-      },
-      {
-        "component": "text",
-        "name": "field_name",
-        "label": "Field Name",
-        "valueType": "string"
       },
       {
         "component": "select",
-        "name": "field_step",
+        "name": "wizard_step",
         "label": "Wizard Step",
         "description": "Assign this field to a wizard step",
         "valueType": "string",
@@ -672,6 +621,24 @@
             "value": "5"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "form-hidden",
+    "fields": [
+      {
+        "component": "text",
+        "name": "field_type",
+        "label": "Component",
+        "valueType": "string",
+        "value": "hidden"
+      },
+      {
+        "component": "text",
+        "name": "field_name",
+        "label": "Field Name",
+        "valueType": "string"
       },
       {
         "component": "text",
@@ -703,34 +670,10 @@
             "value": "timestamp"
           }
         ]
-      }
-    ]
-  },
-  {
-    "id": "form-upload",
-    "fields": [
-      {
-        "component": "text",
-        "name": "field_type",
-        "label": "Component",
-        "valueType": "string",
-        "value": "upload"
-      },
-      {
-        "component": "text",
-        "name": "field_name",
-        "label": "Field Name",
-        "valueType": "string"
-      },
-      {
-        "component": "text",
-        "name": "field_label",
-        "label": "Label",
-        "valueType": "string"
       },
       {
         "component": "select",
-        "name": "field_step",
+        "name": "wizard_step",
         "label": "Wizard Step",
         "description": "Assign this field to a wizard step",
         "valueType": "string",
@@ -760,6 +703,30 @@
             "value": "5"
           }
         ]
+      }
+    ]
+  },
+  {
+    "id": "form-upload",
+    "fields": [
+      {
+        "component": "text",
+        "name": "field_type",
+        "label": "Component",
+        "valueType": "string",
+        "value": "upload"
+      },
+      {
+        "component": "text",
+        "name": "field_name",
+        "label": "Field Name",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "field_label",
+        "label": "Label",
+        "valueType": "string"
       },
       {
         "component": "text",
@@ -782,6 +749,39 @@
           {
             "name": "Yes",
             "value": "true"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "wizard_step",
+        "label": "Wizard Step",
+        "description": "Assign this field to a wizard step",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "—",
+            "value": ""
+          },
+          {
+            "name": "Step 1",
+            "value": "1"
+          },
+          {
+            "name": "Step 2",
+            "value": "2"
+          },
+          {
+            "name": "Step 3",
+            "value": "3"
+          },
+          {
+            "name": "Step 4",
+            "value": "4"
+          },
+          {
+            "name": "Step 5",
+            "value": "5"
           }
         ]
       }
@@ -833,8 +833,14 @@
         "value": "label"
       },
       {
+        "component": "richtext",
+        "name": "content_text",
+        "label": "Text",
+        "valueType": "string"
+      },
+      {
         "component": "select",
-        "name": "field_step",
+        "name": "wizard_step",
         "label": "Wizard Step",
         "description": "Assign this label to a wizard step",
         "valueType": "string",
@@ -864,12 +870,6 @@
             "value": "5"
           }
         ]
-      },
-      {
-        "component": "richtext",
-        "name": "content_text",
-        "label": "Text",
-        "valueType": "string"
       }
     ]
   },

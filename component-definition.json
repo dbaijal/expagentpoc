@@ -253,10 +253,10 @@
                   "field_type": "input",
                   "field_name": "",
                   "field_label": "",
-                  "field_step": "",
                   "config_type": "text",
                   "config_placeholder": "",
-                  "validation_required": "false"
+                  "validation_required": "false",
+                  "wizard_step": ""
                 }
               }
             }
@@ -275,11 +275,11 @@
                   "field_type": "options",
                   "field_name": "",
                   "field_label": "",
-                  "field_step": "",
                   "config_display": "select",
                   "config_options": "",
                   "config_placeholder": "",
-                  "validation_required": "false"
+                  "validation_required": "false",
+                  "wizard_step": ""
                 }
               }
             }
@@ -298,9 +298,9 @@
                   "field_type": "textarea",
                   "field_name": "",
                   "field_label": "",
-                  "field_step": "",
                   "config_placeholder": "",
-                  "validation_required": "false"
+                  "validation_required": "false",
+                  "wizard_step": ""
                 }
               }
             }
@@ -318,9 +318,9 @@
                   "model": "form-hidden",
                   "field_type": "hidden",
                   "field_name": "",
-                  "field_step": "",
                   "config_value": "",
-                  "config_source": "static"
+                  "config_source": "static",
+                  "wizard_step": ""
                 }
               }
             }
@@ -339,9 +339,9 @@
                   "field_type": "upload",
                   "field_name": "",
                   "field_label": "",
-                  "field_step": "",
                   "config_label": "Choose File",
-                  "validation_required": "false"
+                  "validation_required": "false",
+                  "wizard_step": ""
                 }
               }
             }
@@ -376,8 +376,8 @@
                   "name": "Form Label",
                   "model": "form-label",
                   "field_type": "label",
-                  "field_step": "",
-                  "content_text": ""
+                  "content_text": "",
+                  "wizard_step": ""
                 }
               }
             }
