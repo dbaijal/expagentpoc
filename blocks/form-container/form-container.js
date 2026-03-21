@@ -413,15 +413,16 @@ function groupFieldsByStep(form) {
   const steps = [];
   let currentFields = [];
   let currentTitle = '';
+  let currentMarker = null;
 
   children.forEach((child) => {
     if (child.classList.contains('form-step-marker')) {
       if (currentFields.length > 0) {
-        steps.push({ title: currentTitle, fields: currentFields });
+        steps.push({ title: currentTitle, fields: currentFields, marker: currentMarker });
       }
       currentTitle = child.dataset.stepTitle;
+      currentMarker = child;
       currentFields = [];
-      child.remove();
     } else if (!child.classList.contains('form-config-anchor')) {
       currentFields.push(child);
     }
@@ -429,7 +430,7 @@ function groupFieldsByStep(form) {
 
   // Last group of fields after the final step marker
   if (currentFields.length > 0) {
-    steps.push({ title: currentTitle, fields: currentFields });
+    steps.push({ title: currentTitle, fields: currentFields, marker: currentMarker });
   }
 
   // Wrap each group in a fieldset
@@ -438,6 +439,9 @@ function groupFieldsByStep(form) {
     fieldset.className = 'form-step';
     fieldset.dataset.step = i + 1;
     if (i > 0) fieldset.hidden = true;
+
+    // Keep the step marker inside the fieldset so UE instrumentation is preserved
+    if (step.marker) fieldset.append(step.marker);
 
     const legend = document.createElement('legend');
     legend.className = 'form-step-title';

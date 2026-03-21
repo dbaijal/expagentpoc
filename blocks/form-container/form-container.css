@@ -178,8 +178,9 @@
   margin: 0;
 }
 
-/* Config anchor — hidden on delivery, selectable in UE content tree */
-.form-container .form-config-anchor {
+/* Config anchor and step markers — hidden on delivery, selectable in UE content tree */
+.form-container .form-config-anchor,
+.form-container .form-step-marker {
   display: none;
 }
 
