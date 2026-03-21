@@ -554,6 +554,10 @@
         "form-label",
         "form-step"
       ]
+    },
+    {
+      "id": "form-step",
+      "components": []
     }
   ]
 }

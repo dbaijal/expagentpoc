@@ -440,15 +440,16 @@ function groupFieldsByStep(form) {
     fieldset.dataset.step = i + 1;
     if (i > 0) fieldset.hidden = true;
 
-    // Keep the step marker inside the fieldset so UE instrumentation is preserved
-    if (step.marker) fieldset.append(step.marker);
-
     const legend = document.createElement('legend');
     legend.className = 'form-step-title';
     legend.textContent = `${i + 1} of ${steps.length}: ${step.title}`;
     fieldset.append(legend);
 
     step.fields.forEach((f) => fieldset.append(f));
+
+    // Keep the step marker as a sibling before its fieldset (not inside it)
+    // so UE doesn't interpret field wrappers as children of the step marker
+    if (step.marker) form.append(step.marker);
     form.append(fieldset);
     step.element = fieldset;
   });

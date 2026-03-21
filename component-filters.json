@@ -76,6 +76,10 @@
     ]
   },
   {
+    "id": "form-step",
+    "components": []
+  },
+  {
     "id": "table",
     "components": [
       "table-row"
