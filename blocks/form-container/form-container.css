@@ -1,5 +1,8 @@
 /* Form Container Block */
 .form-container {
+  --form-accent: #e00;
+  --form-accent-hover: #c00;
+
   max-width: 800px;
   margin: 0 auto;
   padding: 24px 0;
@@ -246,13 +249,13 @@
 }
 
 .form-container .form-progress-step.active {
-  border-color: var(--link-color, #e00);
-  color: var(--link-color, #e00);
+  border-color: var(--form-accent);
+  color: var(--form-accent);
 }
 
 .form-container .form-progress-step.current {
-  background-color: var(--link-color, #e00);
-  border-color: var(--link-color, #e00);
+  background-color: var(--form-accent);
+  border-color: var(--form-accent);
   color: #fff;
 }
 
@@ -270,7 +273,7 @@
 }
 
 .form-container .form-progress-connector.completed {
-  background-color: var(--link-color, #e00);
+  background-color: var(--form-accent);
 }
 
 /* Step Fieldsets — also use 12-column grid */
@@ -292,13 +295,7 @@
 }
 
 .form-container .form-step-title {
-  grid-column: 1 / -1;
-  font-size: var(--body-font-size-m);
-  font-weight: 700;
-  color: var(--text-color);
-  padding: 0 0 8px;
-  margin: 0 0 8px;
-  border-bottom: 1px solid var(--dark-color, #ccc);
+  display: none;
 }
 
 /* Step Navigation */
@@ -325,14 +322,14 @@
 
 .form-container .form-step-nav .form-next,
 .form-container .form-step-nav .form-submit {
-  background-color: var(--link-color, #e00);
+  background-color: var(--form-accent);
   color: #fff;
   margin-left: auto;
 }
 
 .form-container .form-step-nav .form-next:hover,
 .form-container .form-step-nav .form-submit:hover {
-  background-color: var(--link-hover-color, #c00);
+  background-color: var(--form-accent-hover);
 }
 
 .form-container .form-step-nav .form-back {
