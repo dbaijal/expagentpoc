@@ -22,23 +22,6 @@ function getChild(cell, index) {
 }
 
 /**
- * Reads rich HTML from a cell by child-element index.
- */
-function getChildHTML(cell, index) {
-  if (!cell) return '';
-  const { children } = cell;
-  if (children.length === 1
-    && children[0].tagName === 'P'
-    && children[0].children.length > 0) {
-    return children[0].children[index]?.innerHTML?.trim() || '';
-  }
-  if (children.length > 0) {
-    return children[index]?.innerHTML?.trim() || '';
-  }
-  return index === 0 ? cell.innerHTML.trim() : '';
-}
-
-/**
  * Generates a unique field ID based on field name.
  */
 const idCounters = {};
@@ -307,11 +290,9 @@ function createButtonField(fieldCell, configCell) {
  * Cell 1 (content): [text as richtext]
  */
 function createLabelField(fieldCell, contentCell) {
-  const html = getChildHTML(contentCell, 0);
-
   const wrapper = document.createElement('div');
   wrapper.className = 'field-wrapper label-wrapper';
-  wrapper.innerHTML = html;
+  if (contentCell) wrapper.innerHTML = contentCell.innerHTML;
 
   return wrapper;
 }
