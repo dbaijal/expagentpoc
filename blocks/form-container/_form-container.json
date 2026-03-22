@@ -184,6 +184,25 @@
           }
         }
       }
+    },
+    {
+      "title": "Form Fragment",
+      "id": "form-fragment",
+      "plugins": {
+        "xwalk": {
+          "page": {
+            "resourceType": "core/franklin/components/block/v1/block/item",
+            "template": {
+              "name": "Form Fragment",
+              "model": "form-fragment",
+              "field_type": "fragment",
+              "field_path": "",
+              "meta_step": "-",
+              "meta_span": "12"
+            }
+          }
+        }
+      }
     }
   ],
   "models": [
@@ -708,6 +727,55 @@
           ]
         }
       ]
+    },
+    {
+      "id": "form-fragment",
+      "fields": [
+        {
+          "component": "text",
+          "name": "field_type",
+          "label": "Component",
+          "valueType": "string",
+          "value": "fragment"
+        },
+        {
+          "component": "aem-content",
+          "name": "field_path",
+          "label": "Fragment Page",
+          "description": "Select a page containing a form-container block to include its fields"
+        },
+        {
+          "component": "select",
+          "name": "meta_step",
+          "label": "Wizard Step",
+          "description": "Override step for all fields from this fragment (leave as — to use each field's own step)",
+          "valueType": "string",
+          "value": "-",
+          "options": [
+            { "name": "\u2014", "value": "-" },
+            { "name": "Step 1", "value": "1" },
+            { "name": "Step 2", "value": "2" },
+            { "name": "Step 3", "value": "3" },
+            { "name": "Step 4", "value": "4" },
+            { "name": "Step 5", "value": "5" }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "meta_span",
+          "label": "Column Span",
+          "description": "Not used for fragments — individual fields define their own spans",
+          "valueType": "string",
+          "value": "12",
+          "options": [
+            { "name": "Full Width", "value": "12" },
+            { "name": "Half", "value": "6" },
+            { "name": "One Third", "value": "4" },
+            { "name": "Two Thirds", "value": "8" },
+            { "name": "One Quarter", "value": "3" }
+          ]
+        }
+      ]
     }
   ],
   "filters": [
@@ -721,7 +789,8 @@
         "form-hidden",
         "form-upload",
         "form-button",
-        "form-label"
+        "form-label",
+        "form-fragment"
       ]
     }
   ]

@@ -192,6 +192,11 @@
   display: none;
 }
 
+/* Fragment anchor — hidden on delivery, selectable in UE content tree */
+.form-container .form-fragment-anchor {
+  display: none;
+}
+
 /* Success Message */
 .form-container .form-success {
   padding: 24px;

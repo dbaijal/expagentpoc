@@ -390,6 +390,25 @@
           }
         },
         {
+          "title": "Form Fragment",
+          "id": "form-fragment",
+          "plugins": {
+            "xwalk": {
+              "page": {
+                "resourceType": "core/franklin/components/block/v1/block/item",
+                "template": {
+                  "name": "Form Fragment",
+                  "model": "form-fragment",
+                  "field_type": "fragment",
+                  "field_path": "",
+                  "meta_step": "-",
+                  "meta_span": "12"
+                }
+              }
+            }
+          }
+        },
+        {
           "title": "Form",
           "id": "form",
           "plugins": {

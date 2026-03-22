@@ -71,7 +71,8 @@
       "form-hidden",
       "form-upload",
       "form-button",
-      "form-label"
+      "form-label",
+      "form-fragment"
     ]
   },
   {

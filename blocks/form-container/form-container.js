@@ -417,6 +417,47 @@ function extractFormConfig(rows) {
 }
 
 /**
+ * Fetches a form fragment and returns its field rows.
+ * Tries .plain.html first (AEM CDN), falls back to .html (local dev).
+ * Finds the form-container block, strips config and button rows,
+ * and returns an array of DOM row elements for field processing.
+ *
+ * @param {string} path Absolute content path (e.g., /content/form-fragments/address)
+ * @returns {Promise<Element[]>} Array of row elements (empty on failure)
+ */
+async function loadFormFragment(path) {
+  if (!path || !path.startsWith('/')) return [];
+
+  try {
+    let resp = await fetch(`${path}.plain.html`);
+    if (!resp.ok) {
+      resp = await fetch(`${path}.html`);
+    }
+    if (!resp.ok) return [];
+
+    const html = await resp.text();
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+
+    const formBlock = temp.querySelector('.form-container');
+    if (!formBlock) return [];
+
+    const allRows = [...formBlock.children];
+    const { remaining: fieldRows } = extractFormConfig(allRows);
+
+    return fieldRows.filter((row) => {
+      const cells = [...row.children];
+      const fieldType = getChild(cells[0], 0).toLowerCase();
+      return fieldType !== 'button';
+    });
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(`Failed to load form fragment: ${path}`, e);
+    return [];
+  }
+}
+
+/**
  * Checks whether the form has any fields with data-step attributes.
  */
 function isMultiStep(form) {
@@ -714,8 +755,9 @@ async function handleSubmit(form, formConfig) {
  *   button:   field[type,label] | config[role]
  *   label:    field[type] | content[text]
  *             | meta[step,span]
+ *   fragment: field[type,path] | meta[step,span]
  */
-export default function decorate(block) {
+export default async function decorate(block) {
   const { config: formConfig, remaining, configRow } = extractFormConfig(
     [...block.children],
   );
@@ -738,28 +780,71 @@ export default function decorate(block) {
     form.append(configEl);
   }
 
-  remaining.forEach((row) => {
+  await remaining.reduce(async (prev, row) => {
+    await prev;
     const cells = [...row.children];
     const fieldCell = cells[0];
     const configCell = cells[1];
     const validationCell = cells[2];
 
     const fieldType = getChild(fieldCell, 0).toLowerCase();
-    const creator = FIELD_CREATORS[fieldType];
 
-    if (creator) {
-      const fieldEl = creator(fieldCell, configCell, validationCell);
-      if (fieldEl) {
-        const meta = getFieldMeta(cells);
-        if (meta.step) fieldEl.dataset.step = meta.step;
-        if (meta.span && meta.span !== '12') {
-          fieldEl.style.setProperty('--field-span', meta.span);
+    if (fieldType === 'fragment') {
+      // Extract path: try <a> href first, fall back to text content
+      const link = fieldCell.querySelector('a');
+      const fragmentPath = link ? link.getAttribute('href') : getChild(fieldCell, 1);
+      const fragmentMeta = getFieldMeta(cells);
+
+      const fragmentRows = await loadFormFragment(fragmentPath);
+
+      fragmentRows.forEach((fragRow) => {
+        const fragCells = [...fragRow.children];
+        const fragFieldType = getChild(fragCells[0], 0).toLowerCase();
+        const fragCreator = FIELD_CREATORS[fragFieldType];
+
+        if (fragCreator) {
+          const fieldEl = fragCreator(fragCells[0], fragCells[1], fragCells[2]);
+          if (fieldEl) {
+            const fragMeta = getFieldMeta(fragCells);
+
+            // Step inheritance: fragment row's step overrides individual field steps
+            if (fragmentMeta.step) {
+              fieldEl.dataset.step = fragmentMeta.step;
+            } else if (fragMeta.step) {
+              fieldEl.dataset.step = fragMeta.step;
+            }
+
+            if (fragMeta.span && fragMeta.span !== '12') {
+              fieldEl.style.setProperty('--field-span', fragMeta.span);
+            }
+
+            form.append(fieldEl);
+          }
         }
-        moveInstrumentation(row, fieldEl);
-        form.append(fieldEl);
+      });
+
+      // Hidden anchor preserves UE instrumentation for the fragment row
+      const fragAnchor = document.createElement('div');
+      fragAnchor.className = 'form-fragment-anchor';
+      fragAnchor.hidden = true;
+      moveInstrumentation(row, fragAnchor);
+      form.append(fragAnchor);
+    } else {
+      const creator = FIELD_CREATORS[fieldType];
+      if (creator) {
+        const fieldEl = creator(fieldCell, configCell, validationCell);
+        if (fieldEl) {
+          const meta = getFieldMeta(cells);
+          if (meta.step) fieldEl.dataset.step = meta.step;
+          if (meta.span && meta.span !== '12') {
+            fieldEl.style.setProperty('--field-span', meta.span);
+          }
+          moveInstrumentation(row, fieldEl);
+          form.append(fieldEl);
+        }
       }
     }
-  });
+  }, Promise.resolve());
 
   block.textContent = '';
   block.append(form);
