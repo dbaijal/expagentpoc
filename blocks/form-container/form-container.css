@@ -5,10 +5,16 @@
   padding: 24px 0;
 }
 
+/* ===== 12-Column Grid Layout ===== */
 .form-container-form {
   display: grid;
-  grid-auto-flow: row;
+  grid-template-columns: repeat(12, 1fr);
   gap: 24px;
+}
+
+/* Default: all children span full width */
+.form-container-form > * {
+  grid-column: span var(--field-span, 12);
 }
 
 /* Field Wrappers */
@@ -248,14 +254,18 @@
   background-color: var(--link-color, #e00);
 }
 
-/* Step Fieldsets */
+/* Step Fieldsets — also use 12-column grid */
 .form-container .form-step {
   border: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-auto-flow: row;
+  grid-template-columns: repeat(12, 1fr);
   gap: 20px;
+}
+
+.form-container .form-step > * {
+  grid-column: span var(--field-span, 12);
 }
 
 .form-container .form-step[hidden] {
@@ -263,6 +273,7 @@
 }
 
 .form-container .form-step-title {
+  grid-column: 1 / -1;
   font-size: var(--body-font-size-m);
   font-weight: 700;
   color: var(--text-color);
@@ -273,6 +284,7 @@
 
 /* Step Navigation */
 .form-container .form-step-nav {
+  grid-column: 1 / -1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -323,14 +335,8 @@
   cursor: not-allowed;
 }
 
-/* Responsive */
+/* ===== Responsive ===== */
 @media (width >= 600px) {
-  .form-container input,
-  .form-container select,
-  .form-container textarea {
-    max-width: 50vw;
-  }
-
   .form-container .button-wrapper .button {
     max-width: max-content;
   }
@@ -342,10 +348,10 @@
   }
 }
 
-@media (width >= 900px) {
-  .form-container input,
-  .form-container select,
-  .form-container textarea {
-    max-width: 33vw;
+/* Mobile: collapse grid to single column */
+@media (width < 600px) {
+  .form-container-form > *,
+  .form-container .form-step > * {
+    grid-column: 1 / -1;
   }
 }

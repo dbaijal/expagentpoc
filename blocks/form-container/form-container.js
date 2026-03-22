@@ -328,16 +328,58 @@ const FIELD_CREATORS = {
 };
 
 /**
- * Reads wizard step from the last cell in a row (wizard_* prefix group).
- * The wizard_step property uses a separate prefix so it gets its own cell,
- * preventing xWalk empty-value skipping from shifting other cell positions.
- * Valid step values are "1" through "5".
+ * Valid column span values in the 12-column grid.
  */
-function getWizardStep(cells) {
-  if (cells.length < 2) return '';
-  const lastCell = cells[cells.length - 1];
-  const value = getChild(lastCell, 0);
-  return /^[1-5]$/.test(value) ? value : '';
+const VALID_SPANS = new Set(['3', '4', '6', '8', '12']);
+
+/**
+ * Reads wizard step and layout span from the trailing cells of a row.
+ *
+ * Supports two formats:
+ *   New (both cells):  [..., wizard_step, layout_span]
+ *   Old (step only):   [..., wizard_step]
+ *
+ * Disambiguation for overlapping values ("3", "4"):
+ *   - If the cell before the last holds a wizard value ("-" or "1"-"5"),
+ *     the last cell is layout_span and the previous is wizard_step.
+ *   - Otherwise the last cell is a wizard_step (old format).
+ */
+function getFieldMeta(cells) {
+  const meta = { step: '', span: '' };
+  if (cells.length < 3) return meta;
+
+  const lastVal = getChild(cells[cells.length - 1], 0);
+  const isStep = /^[1-5]$/.test(lastVal);
+  const isSpan = VALID_SPANS.has(lastVal);
+
+  if (isSpan && !isStep) {
+    // Unambiguous span (6, 8, 12) — new format
+    meta.span = lastVal;
+    if (cells.length >= 4) {
+      const sv = getChild(cells[cells.length - 2], 0);
+      if (/^[1-5]$/.test(sv)) meta.step = sv;
+    }
+  } else if (isStep && !isSpan) {
+    // Unambiguous step (1, 2, 5) — old or new format
+    meta.step = lastVal;
+  } else if (isStep && isSpan) {
+    // Ambiguous (3, 4): check cell before to decide
+    if (cells.length >= 4) {
+      const prevVal = getChild(cells[cells.length - 2], 0);
+      if (/^[1-5]$/.test(prevVal) || prevVal === '-') {
+        // Previous cell is a wizard value → last is span
+        meta.span = lastVal;
+        if (/^[1-5]$/.test(prevVal)) meta.step = prevVal;
+      } else {
+        // Previous cell is not a wizard value → old format step
+        meta.step = lastVal;
+      }
+    } else {
+      meta.step = lastVal;
+    }
+  }
+
+  return meta;
 }
 
 /**
@@ -661,25 +703,33 @@ async function handleSubmit(form, formConfig) {
 /**
  * Form Container block — renders a form from authored child components.
  *
- * With underscore field grouping, each row has up to 4 cells:
+ * With underscore field grouping, each row has up to 5 cells:
  *   Cell 0 (field_*):      type, name, label
  *   Cell 1 (config_*):     type-specific settings
  *   Cell 2 (validation_*): required flag
- *   Cell 3 (wizard_*):     step number (separate cell to avoid xWalk empty-value shifting)
+ *   Cell 3 (wizard_*):     step number (default "-")
+ *   Cell 4 (layout_*):     column span (default "12")
+ *
+ * Both wizard_step and layout_span use non-empty defaults so
+ * their cells are always rendered, giving reliable positions.
  *
  * Field types and their cell contents:
- *   config:   field[type,action] | config[formid,redirect,thankyou,steptitles]
+ *   config:   field[type,action]
+ *             | config[formid,redirect,thankyou,steptitles]
  *   input:    field[type,name,label] | config[type,placeholder]
- *             | validation[required] | wizard[step]
- *   options:  field[type,name,label] | config[display,options,placeholder]
- *             | validation[required] | wizard[step]
+ *             | validation[required] | wizard[step] | layout[span]
+ *   options:  field[type,name,label]
+ *             | config[display,options,placeholder]
+ *             | validation[required] | wizard[step] | layout[span]
  *   textarea: field[type,name,label] | config[placeholder]
- *             | validation[required] | wizard[step]
- *   hidden:   field[type,name] | config[value,source] | wizard[step]
+ *             | validation[required] | wizard[step] | layout[span]
+ *   hidden:   field[type,name] | config[value,source]
+ *             | wizard[step] | layout[span]
  *   upload:   field[type,name,label] | config[label]
- *             | validation[required] | wizard[step]
+ *             | validation[required] | wizard[step] | layout[span]
  *   button:   field[type,label] | config[role]
- *   label:    field[type] | content[text] | wizard[step]
+ *   label:    field[type] | content[text]
+ *             | wizard[step] | layout[span]
  */
 export default function decorate(block) {
   const { config: formConfig, remaining, configRow } = extractFormConfig(
@@ -716,8 +766,11 @@ export default function decorate(block) {
     if (creator) {
       const fieldEl = creator(fieldCell, configCell, validationCell);
       if (fieldEl) {
-        const step = getWizardStep(cells);
-        if (step) fieldEl.dataset.step = step;
+        const meta = getFieldMeta(cells);
+        if (meta.step) fieldEl.dataset.step = meta.step;
+        if (meta.span && meta.span !== '12') {
+          fieldEl.style.setProperty('--field-span', meta.span);
+        }
         moveInstrumentation(row, fieldEl);
         form.append(fieldEl);
       }

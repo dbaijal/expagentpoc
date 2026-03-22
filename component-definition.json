@@ -256,7 +256,8 @@
                   "config_type": "text",
                   "config_placeholder": "",
                   "validation_required": "false",
-                  "wizard_step": ""
+                  "wizard_step": "-",
+                  "layout_span": "12"
                 }
               }
             }
@@ -279,7 +280,8 @@
                   "config_options": "",
                   "config_placeholder": "",
                   "validation_required": "false",
-                  "wizard_step": ""
+                  "wizard_step": "-",
+                  "layout_span": "12"
                 }
               }
             }
@@ -300,7 +302,8 @@
                   "field_label": "",
                   "config_placeholder": "",
                   "validation_required": "false",
-                  "wizard_step": ""
+                  "wizard_step": "-",
+                  "layout_span": "12"
                 }
               }
             }
@@ -320,7 +323,8 @@
                   "field_name": "",
                   "config_value": "",
                   "config_source": "static",
-                  "wizard_step": ""
+                  "wizard_step": "-",
+                  "layout_span": "12"
                 }
               }
             }
@@ -341,7 +345,8 @@
                   "field_label": "",
                   "config_label": "Choose File",
                   "validation_required": "false",
-                  "wizard_step": ""
+                  "wizard_step": "-",
+                  "layout_span": "12"
                 }
               }
             }
@@ -377,7 +382,8 @@
                   "model": "form-label",
                   "field_type": "label",
                   "content_text": "",
-                  "wizard_step": ""
+                  "wizard_step": "-",
+                  "layout_span": "12"
                 }
               }
             }

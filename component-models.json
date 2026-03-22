@@ -409,10 +409,11 @@
         "label": "Wizard Step",
         "description": "Assign this field to a wizard step (leave empty for non-wizard forms)",
         "valueType": "string",
+        "value": "-",
         "options": [
           {
             "name": "—",
-            "value": ""
+            "value": "-"
           },
           {
             "name": "Step 1",
@@ -433,6 +434,36 @@
           {
             "name": "Step 5",
             "value": "5"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "layout_span",
+        "label": "Column Span",
+        "description": "Width of this field in a 12-column grid. Use 6 for half-width (2 columns), 12 for full-width.",
+        "valueType": "string",
+        "value": "12",
+        "options": [
+          {
+            "name": "Full Width",
+            "value": "12"
+          },
+          {
+            "name": "Half",
+            "value": "6"
+          },
+          {
+            "name": "One Third",
+            "value": "4"
+          },
+          {
+            "name": "Two Thirds",
+            "value": "8"
+          },
+          {
+            "name": "One Quarter",
+            "value": "3"
           }
         ]
       }
@@ -516,10 +547,11 @@
         "label": "Wizard Step",
         "description": "Assign this field to a wizard step",
         "valueType": "string",
+        "value": "-",
         "options": [
           {
             "name": "—",
-            "value": ""
+            "value": "-"
           },
           {
             "name": "Step 1",
@@ -540,6 +572,36 @@
           {
             "name": "Step 5",
             "value": "5"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "layout_span",
+        "label": "Column Span",
+        "description": "Width of this field in a 12-column grid. Use 6 for half-width (2 columns), 12 for full-width.",
+        "valueType": "string",
+        "value": "12",
+        "options": [
+          {
+            "name": "Full Width",
+            "value": "12"
+          },
+          {
+            "name": "Half",
+            "value": "6"
+          },
+          {
+            "name": "One Third",
+            "value": "4"
+          },
+          {
+            "name": "Two Thirds",
+            "value": "8"
+          },
+          {
+            "name": "One Quarter",
+            "value": "3"
           }
         ]
       }
@@ -595,10 +657,11 @@
         "label": "Wizard Step",
         "description": "Assign this field to a wizard step",
         "valueType": "string",
+        "value": "-",
         "options": [
           {
             "name": "—",
-            "value": ""
+            "value": "-"
           },
           {
             "name": "Step 1",
@@ -619,6 +682,36 @@
           {
             "name": "Step 5",
             "value": "5"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "layout_span",
+        "label": "Column Span",
+        "description": "Width of this field in a 12-column grid.",
+        "valueType": "string",
+        "value": "12",
+        "options": [
+          {
+            "name": "Full Width",
+            "value": "12"
+          },
+          {
+            "name": "Half",
+            "value": "6"
+          },
+          {
+            "name": "One Third",
+            "value": "4"
+          },
+          {
+            "name": "Two Thirds",
+            "value": "8"
+          },
+          {
+            "name": "One Quarter",
+            "value": "3"
           }
         ]
       }
@@ -677,10 +770,11 @@
         "label": "Wizard Step",
         "description": "Assign this field to a wizard step",
         "valueType": "string",
+        "value": "-",
         "options": [
           {
             "name": "—",
-            "value": ""
+            "value": "-"
           },
           {
             "name": "Step 1",
@@ -701,6 +795,36 @@
           {
             "name": "Step 5",
             "value": "5"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "layout_span",
+        "label": "Column Span",
+        "description": "Width of this field in a 12-column grid.",
+        "valueType": "string",
+        "value": "12",
+        "options": [
+          {
+            "name": "Full Width",
+            "value": "12"
+          },
+          {
+            "name": "Half",
+            "value": "6"
+          },
+          {
+            "name": "One Third",
+            "value": "4"
+          },
+          {
+            "name": "Two Thirds",
+            "value": "8"
+          },
+          {
+            "name": "One Quarter",
+            "value": "3"
           }
         ]
       }
@@ -758,10 +882,11 @@
         "label": "Wizard Step",
         "description": "Assign this field to a wizard step",
         "valueType": "string",
+        "value": "-",
         "options": [
           {
             "name": "—",
-            "value": ""
+            "value": "-"
           },
           {
             "name": "Step 1",
@@ -782,6 +907,36 @@
           {
             "name": "Step 5",
             "value": "5"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "layout_span",
+        "label": "Column Span",
+        "description": "Width of this field in a 12-column grid.",
+        "valueType": "string",
+        "value": "12",
+        "options": [
+          {
+            "name": "Full Width",
+            "value": "12"
+          },
+          {
+            "name": "Half",
+            "value": "6"
+          },
+          {
+            "name": "One Third",
+            "value": "4"
+          },
+          {
+            "name": "Two Thirds",
+            "value": "8"
+          },
+          {
+            "name": "One Quarter",
+            "value": "3"
           }
         ]
       }
@@ -844,10 +999,11 @@
         "label": "Wizard Step",
         "description": "Assign this label to a wizard step",
         "valueType": "string",
+        "value": "-",
         "options": [
           {
             "name": "—",
-            "value": ""
+            "value": "-"
           },
           {
             "name": "Step 1",
@@ -868,6 +1024,36 @@
           {
             "name": "Step 5",
             "value": "5"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "layout_span",
+        "label": "Column Span",
+        "description": "Width of this field in a 12-column grid.",
+        "valueType": "string",
+        "value": "12",
+        "options": [
+          {
+            "name": "Full Width",
+            "value": "12"
+          },
+          {
+            "name": "Half",
+            "value": "6"
+          },
+          {
+            "name": "One Third",
+            "value": "4"
+          },
+          {
+            "name": "Two Thirds",
+            "value": "8"
+          },
+          {
+            "name": "One Quarter",
+            "value": "3"
           }
         ]
       }
