@@ -205,10 +205,19 @@
 /* Progress Bar */
 .form-container .form-progress {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 0;
   padding: 0 0 24px;
+}
+
+.form-container .form-progress-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 80px;
+  max-width: 120px;
 }
 
 .form-container .form-progress-step {
@@ -225,6 +234,15 @@
   font-weight: 700;
   flex-shrink: 0;
   transition: all 0.3s;
+}
+
+.form-container .form-progress-title {
+  margin-top: 8px;
+  font-size: var(--body-font-size-xs, 12px);
+  color: var(--dark-color, #666);
+  text-align: center;
+  line-height: 1.3;
+  overflow-wrap: break-word;
 }
 
 .form-container .form-progress-step.active {
@@ -246,6 +264,7 @@
   flex: 1;
   height: 2px;
   max-width: 120px;
+  margin-top: 18px;
   background-color: var(--dark-color, #ccc);
   transition: background-color 0.3s;
 }

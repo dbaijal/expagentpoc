@@ -470,7 +470,7 @@ function groupFieldsByStep(form, stepTitles) {
 }
 
 /**
- * Builds a progress bar showing step indicators.
+ * Builds a progress bar showing step indicators with titles below each number.
  */
 function buildProgressBar(steps) {
   const bar = document.createElement('nav');
@@ -484,13 +484,22 @@ function buildProgressBar(steps) {
       bar.append(connector);
     }
 
+    const stepItem = document.createElement('div');
+    stepItem.className = 'form-progress-item';
+
     const dot = document.createElement('span');
     dot.className = 'form-progress-step';
     dot.dataset.step = i + 1;
     dot.setAttribute('aria-label', step.title);
     dot.textContent = i + 1;
     if (i === 0) dot.classList.add('active', 'current');
-    bar.append(dot);
+
+    const title = document.createElement('span');
+    title.className = 'form-progress-title';
+    title.textContent = step.title;
+
+    stepItem.append(dot, title);
+    bar.append(stepItem);
   });
 
   return bar;
