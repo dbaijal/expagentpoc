@@ -368,6 +368,12 @@ function generatePayload(form) {
  * Reads form-level config from a "config" type child row.
  * Cell 0 (field): [type, action]
  * Cell 1 (config): [formid, redirect, thankyou, steptitles]
+ *
+ * Uses value-pattern classification to handle empty-value shifts
+ * from xWalk (when empty properties are skipped in delivery).
+ *   - redirect: starts with "/" or "http"
+ *   - steptitles: contains commas (multiple step titles)
+ *   - thankyou: everything else
  */
 function extractFormConfig(rows) {
   const config = {
@@ -385,9 +391,22 @@ function extractFormConfig(rows) {
       config.action = getChild(fieldCell, 1) || config.action;
       const configCell = cells[1];
       config.formid = getChild(configCell, 0) || config.formid;
-      config.redirect = getChild(configCell, 1) || config.redirect;
-      config.thankyou = getChild(configCell, 2) || config.thankyou;
-      config.steptitles = getChild(configCell, 3) || config.steptitles;
+      if (config.formid === '-') config.formid = '';
+
+      // Classify remaining values by pattern to handle shifted cells
+      for (let i = 1; i <= 3; i += 1) {
+        const val = getChild(configCell, i);
+        if (val && val !== '-') {
+          if (!config.redirect && /^(\/|https?:\/\/)/.test(val)) {
+            config.redirect = val;
+          } else if (!config.steptitles && val.includes(',')) {
+            config.steptitles = val;
+          } else if (!config.thankyou) {
+            config.thankyou = val;
+          }
+        }
+      }
+
       if (!configRow) configRow = row;
     } else {
       remaining.push(row);
@@ -438,7 +457,7 @@ function groupFieldsByStep(form, stepTitles) {
 
     const legend = document.createElement('legend');
     legend.className = 'form-step-title';
-    legend.textContent = `${i + 1} of ${sortedKeys.length}: ${title}`;
+    legend.textContent = title;
     fieldset.append(legend);
 
     stepMap.get(key).forEach((f) => fieldset.append(f));

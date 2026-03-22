@@ -28,9 +28,9 @@
               "field_type": "config",
               "field_action": "ELOQUA",
               "config_formid": "",
-              "config_redirect": "",
-              "config_thankyou": "",
-              "config_steptitles": ""
+              "config_redirect": "-",
+              "config_thankyou": "-",
+              "config_steptitles": "-"
             }
           }
         }
