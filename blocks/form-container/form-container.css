@@ -192,9 +192,16 @@
   display: none;
 }
 
-/* Fragment anchor — hidden on delivery, selectable in UE content tree */
+/* Fragment anchor — wraps fragment fields; carries UE instrumentation */
 .form-container .form-fragment-anchor {
-  display: none;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+
+.form-container .form-fragment-anchor > * {
+  grid-column: span var(--field-span, 12);
 }
 
 /* Success Message */
@@ -372,7 +379,8 @@
 /* Mobile: collapse grid to single column */
 @media (width < 600px) {
   .form-container-form > *,
-  .form-container .form-step > * {
+  .form-container .form-step > *,
+  .form-container .form-fragment-anchor > * {
     grid-column: 1 / -1;
   }
 }

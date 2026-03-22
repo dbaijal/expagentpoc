@@ -797,6 +797,17 @@ export default async function decorate(block) {
 
       const fragmentRows = await loadFormFragment(fragmentPath);
 
+      // Wrapper groups fragment fields and carries UE instrumentation
+      // so overlay positions correctly over the fragment area
+      const fragWrapper = document.createElement('div');
+      fragWrapper.className = 'form-fragment-anchor';
+      moveInstrumentation(row, fragWrapper);
+
+      // Step inheritance: fragment row's step applies to the whole wrapper
+      if (fragmentMeta.step) {
+        fragWrapper.dataset.step = fragmentMeta.step;
+      }
+
       fragmentRows.forEach((fragRow) => {
         const fragCells = [...fragRow.children];
         const fragFieldType = getChild(fragCells[0], 0).toLowerCase();
@@ -807,28 +818,16 @@ export default async function decorate(block) {
           if (fieldEl) {
             const fragMeta = getFieldMeta(fragCells);
 
-            // Step inheritance: fragment row's step overrides individual field steps
-            if (fragmentMeta.step) {
-              fieldEl.dataset.step = fragmentMeta.step;
-            } else if (fragMeta.step) {
-              fieldEl.dataset.step = fragMeta.step;
-            }
-
             if (fragMeta.span && fragMeta.span !== '12') {
               fieldEl.style.setProperty('--field-span', fragMeta.span);
             }
 
-            form.append(fieldEl);
+            fragWrapper.append(fieldEl);
           }
         }
       });
 
-      // Hidden anchor preserves UE instrumentation for the fragment row
-      const fragAnchor = document.createElement('div');
-      fragAnchor.className = 'form-fragment-anchor';
-      fragAnchor.hidden = true;
-      moveInstrumentation(row, fragAnchor);
-      form.append(fragAnchor);
+      form.append(fragWrapper);
     } else {
       const creator = FIELD_CREATORS[fieldType];
       if (creator) {
