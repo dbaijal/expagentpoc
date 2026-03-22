@@ -177,8 +177,9 @@
   cursor: not-allowed;
 }
 
-/* Label / Rich Text */
+/* Label / Rich Text — block layout for inline content flow (links, text) */
 .form-container .label-wrapper {
+  display: block;
   font-size: var(--body-font-size-s);
   color: var(--dark-color);
 }
