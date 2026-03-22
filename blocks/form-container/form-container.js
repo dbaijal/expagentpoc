@@ -333,50 +333,26 @@ const FIELD_CREATORS = {
 const VALID_SPANS = new Set(['3', '4', '6', '8', '12']);
 
 /**
- * Reads wizard step and layout span from the trailing cells of a row.
+ * Reads wizard step and layout span from the last cell of a row.
  *
- * Supports two formats:
- *   New (both cells):  [..., wizard_step, layout_span]
- *   Old (step only):   [..., wizard_step]
+ * The meta cell (meta_* prefix) holds both values in a single cell:
+ *   child 0 = wizard step ("-" for none, "1"-"5" for step number)
+ *   child 1 = column span ("3","4","6","8","12")
  *
- * Disambiguation for overlapping values ("3", "4"):
- *   - If the cell before the last holds a wizard value ("-" or "1"-"5"),
- *     the last cell is layout_span and the previous is wizard_step.
- *   - Otherwise the last cell is a wizard_step (old format).
+ * Backward-compatible with old wizard-only format where the last cell
+ * has only a step value and no span child.
  */
 function getFieldMeta(cells) {
   const meta = { step: '', span: '' };
   if (cells.length < 3) return meta;
 
-  const lastVal = getChild(cells[cells.length - 1], 0);
-  const isStep = /^[1-5]$/.test(lastVal);
-  const isSpan = VALID_SPANS.has(lastVal);
+  const lastCell = cells[cells.length - 1];
+  const val0 = getChild(lastCell, 0);
 
-  if (isSpan && !isStep) {
-    // Unambiguous span (6, 8, 12) — new format
-    meta.span = lastVal;
-    if (cells.length >= 4) {
-      const sv = getChild(cells[cells.length - 2], 0);
-      if (/^[1-5]$/.test(sv)) meta.step = sv;
-    }
-  } else if (isStep && !isSpan) {
-    // Unambiguous step (1, 2, 5) — old or new format
-    meta.step = lastVal;
-  } else if (isStep && isSpan) {
-    // Ambiguous (3, 4): check cell before to decide
-    if (cells.length >= 4) {
-      const prevVal = getChild(cells[cells.length - 2], 0);
-      if (/^[1-5]$/.test(prevVal) || prevVal === '-') {
-        // Previous cell is a wizard value → last is span
-        meta.span = lastVal;
-        if (/^[1-5]$/.test(prevVal)) meta.step = prevVal;
-      } else {
-        // Previous cell is not a wizard value → old format step
-        meta.step = lastVal;
-      }
-    } else {
-      meta.step = lastVal;
-    }
+  if (val0 === '-' || /^[1-5]$/.test(val0)) {
+    if (val0 !== '-') meta.step = val0;
+    const val1 = getChild(lastCell, 1);
+    if (VALID_SPANS.has(val1)) meta.span = val1;
   }
 
   return meta;
@@ -703,33 +679,32 @@ async function handleSubmit(form, formConfig) {
 /**
  * Form Container block — renders a form from authored child components.
  *
- * With underscore field grouping, each row has up to 5 cells:
+ * With underscore field grouping, each row has up to 4 cells:
  *   Cell 0 (field_*):      type, name, label
  *   Cell 1 (config_*):     type-specific settings
  *   Cell 2 (validation_*): required flag
- *   Cell 3 (wizard_*):     step number (default "-")
- *   Cell 4 (layout_*):     column span (default "12")
+ *   Cell 3 (meta_*):       step (default "-"), span (default "12")
  *
- * Both wizard_step and layout_span use non-empty defaults so
- * their cells are always rendered, giving reliable positions.
+ * meta_step and meta_span share the same prefix so they render
+ * in a single cell, keeping the block within the 4-cell limit.
  *
  * Field types and their cell contents:
  *   config:   field[type,action]
  *             | config[formid,redirect,thankyou,steptitles]
  *   input:    field[type,name,label] | config[type,placeholder]
- *             | validation[required] | wizard[step] | layout[span]
+ *             | validation[required] | meta[step,span]
  *   options:  field[type,name,label]
  *             | config[display,options,placeholder]
- *             | validation[required] | wizard[step] | layout[span]
+ *             | validation[required] | meta[step,span]
  *   textarea: field[type,name,label] | config[placeholder]
- *             | validation[required] | wizard[step] | layout[span]
+ *             | validation[required] | meta[step,span]
  *   hidden:   field[type,name] | config[value,source]
- *             | wizard[step] | layout[span]
+ *             | meta[step,span]
  *   upload:   field[type,name,label] | config[label]
- *             | validation[required] | wizard[step] | layout[span]
+ *             | validation[required] | meta[step,span]
  *   button:   field[type,label] | config[role]
  *   label:    field[type] | content[text]
- *             | wizard[step] | layout[span]
+ *             | meta[step,span]
  */
 export default function decorate(block) {
   const { config: formConfig, remaining, configRow } = extractFormConfig(

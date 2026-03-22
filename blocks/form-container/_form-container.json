@@ -52,8 +52,8 @@
               "config_type": "text",
               "config_placeholder": "",
               "validation_required": "false",
-              "wizard_step": "-",
-              "layout_span": "12"
+              "meta_step": "-",
+              "meta_span": "12"
             }
           }
         }
@@ -76,8 +76,8 @@
               "config_options": "",
               "config_placeholder": "",
               "validation_required": "false",
-              "wizard_step": "-",
-              "layout_span": "12"
+              "meta_step": "-",
+              "meta_span": "12"
             }
           }
         }
@@ -98,8 +98,8 @@
               "field_label": "",
               "config_placeholder": "",
               "validation_required": "false",
-              "wizard_step": "-",
-              "layout_span": "12"
+              "meta_step": "-",
+              "meta_span": "12"
             }
           }
         }
@@ -119,8 +119,8 @@
               "field_name": "",
               "config_value": "",
               "config_source": "static",
-              "wizard_step": "-",
-              "layout_span": "12"
+              "meta_step": "-",
+              "meta_span": "12"
             }
           }
         }
@@ -141,8 +141,8 @@
               "field_label": "",
               "config_label": "Choose File",
               "validation_required": "false",
-              "wizard_step": "-",
-              "layout_span": "12"
+              "meta_step": "-",
+              "meta_span": "12"
             }
           }
         }
@@ -178,8 +178,8 @@
               "model": "form-label",
               "field_type": "label",
               "content_text": "",
-              "wizard_step": "-",
-              "layout_span": "12"
+              "meta_step": "-",
+              "meta_span": "12"
             }
           }
         }
@@ -298,7 +298,7 @@
         },
         {
           "component": "select",
-          "name": "wizard_step",
+          "name": "meta_step",
           "label": "Wizard Step",
           "description": "Assign this field to a wizard step (leave empty for non-wizard forms)",
           "valueType": "string",
@@ -314,7 +314,7 @@
         },
         {
           "component": "select",
-          "name": "layout_span",
+          "name": "meta_span",
           "label": "Column Span",
           "description": "Width of this field in a 12-column grid. Use 6 for half-width (2 columns), 12 for full-width.",
           "valueType": "string",
@@ -388,7 +388,7 @@
         },
         {
           "component": "select",
-          "name": "wizard_step",
+          "name": "meta_step",
           "label": "Wizard Step",
           "description": "Assign this field to a wizard step",
           "valueType": "string",
@@ -404,7 +404,7 @@
         },
         {
           "component": "select",
-          "name": "layout_span",
+          "name": "meta_span",
           "label": "Column Span",
           "description": "Width of this field in a 12-column grid. Use 6 for half-width (2 columns), 12 for full-width.",
           "valueType": "string",
@@ -459,7 +459,7 @@
         },
         {
           "component": "select",
-          "name": "wizard_step",
+          "name": "meta_step",
           "label": "Wizard Step",
           "description": "Assign this field to a wizard step",
           "valueType": "string",
@@ -475,7 +475,7 @@
         },
         {
           "component": "select",
-          "name": "layout_span",
+          "name": "meta_span",
           "label": "Column Span",
           "description": "Width of this field in a 12-column grid.",
           "valueType": "string",
@@ -527,7 +527,7 @@
         },
         {
           "component": "select",
-          "name": "wizard_step",
+          "name": "meta_step",
           "label": "Wizard Step",
           "description": "Assign this field to a wizard step",
           "valueType": "string",
@@ -543,7 +543,7 @@
         },
         {
           "component": "select",
-          "name": "layout_span",
+          "name": "meta_span",
           "label": "Column Span",
           "description": "Width of this field in a 12-column grid.",
           "valueType": "string",
@@ -600,7 +600,7 @@
         },
         {
           "component": "select",
-          "name": "wizard_step",
+          "name": "meta_step",
           "label": "Wizard Step",
           "description": "Assign this field to a wizard step",
           "valueType": "string",
@@ -616,7 +616,7 @@
         },
         {
           "component": "select",
-          "name": "layout_span",
+          "name": "meta_span",
           "label": "Column Span",
           "description": "Width of this field in a 12-column grid.",
           "valueType": "string",
@@ -678,7 +678,7 @@
         },
         {
           "component": "select",
-          "name": "wizard_step",
+          "name": "meta_step",
           "label": "Wizard Step",
           "description": "Assign this label to a wizard step",
           "valueType": "string",
@@ -694,7 +694,7 @@
         },
         {
           "component": "select",
-          "name": "layout_span",
+          "name": "meta_span",
           "label": "Column Span",
           "description": "Width of this field in a 12-column grid.",
           "valueType": "string",
