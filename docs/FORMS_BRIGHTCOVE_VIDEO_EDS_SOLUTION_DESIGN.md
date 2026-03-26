@@ -164,19 +164,51 @@ Embeds a single Brightcove video. Always uses the **default player** for the sel
 
 ### Authoring Experience
 
+The dialog dynamically shows/hides fields based on the Call to Action selection using UE's `condition` property (JsonLogic).
+
+**When CTA = "None" (default):**
 ```
 +---------------------------------------+
 | Video Block Properties                |
 +---------------------------------------+
-| Account:     [CBD              v]     |
-| Video ID:    [6293625135001     ]     |
-| Title:       [Product Overview  ]     |
-| Description: [Learn about...   ]     |
-| Poster Image: [Browse...]            |
+| Account:         [CBD          v]     |
+| Video ID:        [6293625135001]      |
+| Call to Action:  [None         v]     |
+| Poster Image:    [Browse...]         |
 +---------------------------------------+
 ```
 
-Author selects account by friendly name and enters the Video ID from Brightcove Studio. No player selection needed — default player is used automatically.
+**When CTA = "Button":**
+```
++---------------------------------------+
+| Video Block Properties                |
++---------------------------------------+
+| Account:         [CBD          v]     |
+| Video ID:        [6293625135001]      |
+| Call to Action:  [Button       v]     |
+| CTA Text:        [Watch Now    ]      |  <-- appears
+| CTA Link:        [/contact-us  ]      |  <-- appears
+| Poster Image:    [Browse...]         |
++---------------------------------------+
+```
+
+**When CTA = "Teaser":**
+```
++---------------------------------------+
+| Video Block Properties                |
++---------------------------------------+
+| Account:         [CBD          v]     |
+| Video ID:        [6293625135001]      |
+| Call to Action:  [Teaser       v]     |
+| Teaser Title:    [Are you ready]      |  <-- appears
+| Teaser Desc:     [The Connect..]      |  <-- appears
+| Teaser Image:    [Browse...]         |  <-- appears
+| Teaser Link:     [/products/...]      |  <-- appears
+| Poster Image:    [Browse...]         |
++---------------------------------------+
+```
+
+Author selects account by friendly name and enters the Video ID from Brightcove Studio. No player selection needed — default player is used automatically. Call to Action fields appear conditionally based on the CTA type selection.
 
 ### Component Definition
 
@@ -184,7 +216,7 @@ Author selects account by friendly name and enters the Video ID from Brightcove 
 {
   "id": "video",
   "title": "Video",
-  "description": "Embed a single Brightcove video",
+  "description": "Embed a single Brightcove video with optional call to action",
   "group": "Media"
 }
 ```
@@ -216,16 +248,57 @@ Author selects account by friendly name and enters the Video ID from Brightcove 
       "description": "Brightcove Video ID from Brightcove Studio"
     },
     {
-      "component": "text",
-      "name": "title",
-      "label": "Title",
-      "valueType": "string"
+      "component": "select",
+      "name": "cta",
+      "label": "Call to Action",
+      "valueType": "string",
+      "options": [
+        { "name": "None", "value": "" },
+        { "name": "Button", "value": "button" },
+        { "name": "Teaser", "value": "teaser" }
+      ]
     },
     {
       "component": "text",
-      "name": "description",
-      "label": "Description",
-      "valueType": "string"
+      "name": "ctaText",
+      "label": "Call to Action Text",
+      "valueType": "string",
+      "condition": { "===": [{ "var": "cta" }, "button"] }
+    },
+    {
+      "component": "text",
+      "name": "ctaLink",
+      "label": "Call to Action Link",
+      "valueType": "string",
+      "condition": { "===": [{ "var": "cta" }, "button"] }
+    },
+    {
+      "component": "text",
+      "name": "teaserTitle",
+      "label": "Teaser Title",
+      "valueType": "string",
+      "condition": { "===": [{ "var": "cta" }, "teaser"] }
+    },
+    {
+      "component": "text",
+      "name": "teaserDescription",
+      "label": "Teaser Description",
+      "valueType": "string",
+      "condition": { "===": [{ "var": "cta" }, "teaser"] }
+    },
+    {
+      "component": "reference",
+      "name": "teaserImage",
+      "label": "Teaser Image",
+      "valueType": "string",
+      "condition": { "===": [{ "var": "cta" }, "teaser"] }
+    },
+    {
+      "component": "text",
+      "name": "teaserLink",
+      "label": "Teaser Link",
+      "valueType": "string",
+      "condition": { "===": [{ "var": "cta" }, "teaser"] }
     },
     {
       "component": "reference",
@@ -237,6 +310,18 @@ Author selects account by friendly name and enters the Video ID from Brightcove 
   ]
 }
 ```
+
+### Conditional Field Behavior
+
+The `condition` property uses **JsonLogic** syntax to dynamically show/hide fields in the Universal Editor properties panel:
+
+| CTA Selection | Condition | Fields Visible |
+|--------------|-----------|----------------|
+| None (`""`) | No conditions met | Account, Video ID, CTA dropdown, Poster Image |
+| Button | `{ "===": [{ "var": "cta" }, "button"] }` | + CTA Text, CTA Link |
+| Teaser | `{ "===": [{ "var": "cta" }, "teaser"] }` | + Teaser Title, Teaser Description, Teaser Image, Teaser Link |
+
+This provides the **exact same conditional dialog behavior** as the AEM 6.4 video component, where selecting a Call to Action type reveals the relevant fields.
 
 ### Runtime Flow
 
@@ -262,9 +347,8 @@ export default async function decorate(block) {
   const rows = [...block.children];
   const account = rows[0]?.children[1]?.textContent?.trim();
   const videoId = rows[1]?.children[1]?.textContent?.trim();
-  const title = rows[2]?.children[1]?.textContent?.trim() || '';
-  const description = rows[3]?.children[1]?.textContent?.trim() || '';
-  const posterImg = rows[4]?.querySelector('img');
+  const ctaType = rows[2]?.children[1]?.textContent?.trim() || '';
+  const posterImg = block.querySelector('img');
 
   if (!account || !videoId) {
     block.textContent = '';
@@ -276,6 +360,24 @@ export default async function decorate(block) {
   if (!config) {
     block.textContent = 'Video configuration error. Check Brightcove config.';
     return;
+  }
+
+  // Extract CTA-specific fields based on type
+  let ctaData = {};
+  if (ctaType === 'button') {
+    ctaData = {
+      text: rows[3]?.children[1]?.textContent?.trim() || '',
+      link: rows[4]?.children[1]?.querySelector('a')?.href
+        || rows[4]?.children[1]?.textContent?.trim() || '',
+    };
+  } else if (ctaType === 'teaser') {
+    ctaData = {
+      title: rows[3]?.children[1]?.textContent?.trim() || '',
+      description: rows[4]?.children[1]?.textContent?.trim() || '',
+      image: rows[5]?.querySelector('img'),
+      link: rows[6]?.children[1]?.querySelector('a')?.href
+        || rows[6]?.children[1]?.textContent?.trim() || '',
+    };
   }
 
   // Build player markup
@@ -298,21 +400,50 @@ export default async function decorate(block) {
 
   wrapper.append(videoEl);
 
-  // Add title and description if provided
-  if (title || description) {
-    const info = document.createElement('div');
-    info.className = 'video-info';
-    if (title) {
+  // Render Call to Action based on type
+  if (ctaType === 'button' && ctaData.text) {
+    const ctaWrapper = document.createElement('div');
+    ctaWrapper.className = 'video-cta video-cta-button';
+    const link = document.createElement('a');
+    link.href = ctaData.link;
+    link.className = 'button primary';
+    link.textContent = ctaData.text;
+    ctaWrapper.append(link);
+    wrapper.append(ctaWrapper);
+  } else if (ctaType === 'teaser') {
+    const teaserWrapper = document.createElement('div');
+    teaserWrapper.className = 'video-cta video-cta-teaser';
+
+    if (ctaData.image) {
+      const imgWrapper = document.createElement('div');
+      imgWrapper.className = 'teaser-image';
+      imgWrapper.append(ctaData.image);
+      teaserWrapper.append(imgWrapper);
+    }
+
+    const teaserContent = document.createElement('div');
+    teaserContent.className = 'teaser-content';
+
+    if (ctaData.title) {
       const h3 = document.createElement('h3');
-      h3.textContent = title;
-      info.append(h3);
+      h3.textContent = ctaData.title;
+      teaserContent.append(h3);
     }
-    if (description) {
+    if (ctaData.description) {
       const p = document.createElement('p');
-      p.textContent = description;
-      info.append(p);
+      p.textContent = ctaData.description;
+      teaserContent.append(p);
     }
-    wrapper.append(info);
+    if (ctaData.link) {
+      const link = document.createElement('a');
+      link.href = ctaData.link;
+      link.className = 'teaser-link';
+      link.textContent = ctaData.title || 'Learn More';
+      teaserContent.append(link);
+    }
+
+    teaserWrapper.append(teaserContent);
+    wrapper.append(teaserWrapper);
   }
 
   block.append(wrapper);
@@ -676,6 +807,7 @@ const accounts = [...new Set(data.map((r) => r['Account Name']))];
 | **Brightcove JS loading** | Server renders `<script>` tag in HTML | Block JS dynamically creates `<script>` tag | No visual difference |
 | **Video component** | Account + Video ID (player auto = default) | Account + Video ID (player auto = default) | Identical experience |
 | **Playlist component** | Account + Playlist ID + Player dropdown | Account + Playlist ID + Player Type dropdown | Identical experience |
+| **Call to Action** | Conditional fields in dialog (Button → CTA text; Teaser → title, desc, image) | `condition` property with JsonLogic in component model | Same conditional behavior, same author experience |
 | **Adding new accounts** | Add JCR nodes | Add spreadsheet rows + component model option | Slightly more steps |
 
 ---
@@ -701,19 +833,62 @@ const accounts = [...new Set(data.map((r) => r['Account Name']))];
   aspect-ratio: 16 / 9;
 }
 
-.video .video-info {
+/* Call to Action — Button */
+.video .video-cta-button {
   padding: 16px 0;
+  text-align: center;
 }
 
-.video .video-info h3 {
+.video .video-cta-button .button {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: var(--link-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.video .video-cta-button .button:hover {
+  background-color: var(--link-hover-color);
+}
+
+/* Call to Action — Teaser */
+.video .video-cta-teaser {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--light-color);
+  margin-top: 16px;
+}
+
+.video .video-cta-teaser .teaser-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.video .video-cta-teaser .teaser-content h3 {
   margin: 0 0 8px;
   font-size: var(--heading-font-size-s);
 }
 
-.video .video-info p {
-  margin: 0;
+.video .video-cta-teaser .teaser-content p {
+  margin: 0 0 12px;
   color: var(--dark-color);
   font-size: var(--body-font-size-s);
+}
+
+.video .video-cta-teaser .teaser-link {
+  font-weight: 600;
+  color: var(--link-color);
+}
+
+@media (width < 600px) {
+  .video .video-cta-teaser {
+    grid-template-columns: 1fr;
+  }
 }
 ```
 
