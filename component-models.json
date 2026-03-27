@@ -20,6 +20,13 @@
         "name": "keywords",
         "multi": true,
         "label": "Keywords"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "json-ld",
+        "label": "JSON-LD",
+        "description": "Schema.org structured data in JSON format. Rendered as <script type=application/ld+json> in page head."
       }
     ]
   },
