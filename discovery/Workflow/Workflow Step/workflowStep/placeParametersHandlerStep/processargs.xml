@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Panel"
+    title="Arguments">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <arguments
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            title="Process Arguments"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <multi
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Parameter to be set on Model MetaData Map in the Format: 'Key=Value'. Prepend Value with '{Data Type}' except for Strings."
+                        fieldLabel="Parameter Pairs"
+                        name="./metaData/wfx.parameter.pairs"
+                        xtype="multifield"/>
+                <processargs
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="OUTDATED: Coma separated list of 'key'='value' pairs."
+                    fieldLabel="Parameters"
+                    name="./metaData/PROCESS_ARGS"
+                    xtype="textfield"/>
+            </items>
+        </arguments>
+    </items>
+</jcr:root>

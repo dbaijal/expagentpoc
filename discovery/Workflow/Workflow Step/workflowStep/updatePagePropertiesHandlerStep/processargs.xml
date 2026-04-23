@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Panel"
+    title="Arguments">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <arguments
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            title="Process Arguments"
+            width="550px"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <inTranslationProperty
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="In Translation Property name to set it as page property."
+                        fieldLabel="inTranslation Property"
+                        name="./metaData/inTranslation"
+                        xtype="textfield"/>
+                <inTranslationValue
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="In Translation Property value to set it as page property value"
+                        fieldLabel="inTranslation Prop Value"
+                        name="./metaData/inTranslationValue"
+                        xtype="textfield"/>
+                <isSDLCancelledProperty
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Is SDL Cancelled Property name to set it as page property."
+                        fieldLabel="isSDLCancelled Property"
+                        name="./metaData/isSDLCancelled"
+                        xtype="textfield"/>
+                <isSDLCancelledValue
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Is SDL Cancelled Property value to set it as page property value."
+                        fieldLabel="isSDLCancelled Prop Value"
+                        name="./metaData/isSDLCancelledValue"
+                        xtype="textfield"/>
+                <requiresTranslation
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Requires Translation Property name to set it as page property."
+                        fieldLabel="Requires Translation Property"
+                        name="./metaData/requiresTranslation"
+                        xtype="textfield"/>
+                <requiresTranslationValue
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Requires Translation Property value to set it as page property value."
+                        fieldLabel="Requires Translation Property Value"
+                        name="./metaData/requiresTranslationValue"
+                        xtype="textfield"/>
+            </items>
+        </arguments>
+    </items>
+</jcr:root>

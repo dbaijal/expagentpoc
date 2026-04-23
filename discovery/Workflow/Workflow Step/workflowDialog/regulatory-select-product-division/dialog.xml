@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:Dialog"
+    title="Product Division Selection"
+    touchUiDialogPath="/apps/lifetech/components/workflowDialog/regulatory-select-product-division/cq:dialog"
+    xtype="dialog">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <productDivision
+            jcr:primaryType="cq:Widget"
+            fieldLabel="Product Division"
+            name="./jcr:content/productDivision"
+            options="/etc/lifetech/lists/product-divisions/jcr:content.list.json"
+            optionsValueField="value"
+            type="select"
+            value=""
+            xtype="selection">
+            <listeners
+                jcr:primaryType="nt:unstructured"
+                render="function(x) {&#x9;&#xa;&#x9;var routeNo = this.previousSibling().getValue();&#xa;&#x9;var payload =routeNo.substring(0, routeNo.indexOf('/workItems'))+'/data/payload.json';&#xa;&#x9;var response = CQ.utils.HTTP.get(payload); &#xa;&#x9;if (CQ.HTTP.isOk(response)){&#xa;&#x9;&#x9;var myObject = CQ.Util.eval(response);&#xa;&#x9;&#x9;if(myObject.path  &amp;&amp; myObject.path != 'undefined'){&#xa;&#x9;&#x9;&#x9;var pagePath = myObject.path + '/jcr:content.json'&#xa;&#x9;&#x9;&#x9;var pageresponse = CQ.utils.HTTP.get(pagePath);&#xa;&#x9;&#x9;&#x9;if (CQ.HTTP.isOk(pageresponse)){ &#xa;&#x9;&#x9;&#x9;&#x9;var pageObject = CQ.Util.eval(pageresponse);&#xa;&#x9;&#x9;&#x9;&#x9;if(pageObject &amp;&amp; pageObject.productDivision){&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;this.setValue(pageObject.productDivision);&#xa;&#x9;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;}&#xa;&#x9;}&#xa;}"/>
+        </productDivision>
+        <web-ops
+            jcr:primaryType="cq:Widget"
+            fieldDescription="Please choose a Regulatory Approver Group to assign this workflow."
+            fieldLabel="Workflow Assignee Group"
+            name="selected-web-ops"
+            options="/bin/lifetech/workflows/groups/regulatory"
+            type="select"
+            xtype="selection"/>
+    </items>
+</jcr:root>

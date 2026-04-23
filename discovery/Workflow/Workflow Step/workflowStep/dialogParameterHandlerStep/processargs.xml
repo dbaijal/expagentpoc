@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Panel"
+    title="Arguments">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <arguments
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            title="Process Arguments"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <propertyPath
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Path to the Payload's Property (if dialog's name start with a './') and must contain a slash or the name of the property otherwise"
+                        fieldLabel="Property Path"
+                        name="./metaData/propertyPath"
+                        xtype="textfield"/>
+                <historyOffset
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="If this is a workflow property you can specify how many steps back is the dialog in the history. Default is 1."
+                        fieldLabel="History Offset"
+                        name="./metaData/historyOffset"
+                        defaultValue="1"
+                        xtype="textfield"/>
+                <propertyType
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Type of the Property which can be String, Date, Long (String is Default)"
+                    fieldLabel="Property Type"
+                    name="./metaData/propertyType"
+                    type="select"
+                    xtype="selection">
+                    <options jcr:primaryType="cq:WidgetCollection">
+                        <string
+                                jcr:primaryType="nt:unstructured"
+                                text="String"
+                                value="STRING"
+                                qtip="String data type"/>
+                        <date
+                                jcr:primaryType="nt:unstructured"
+                                text="Date"
+                                value="DATE"
+                                qtip="Date data type"/>
+                        <long
+                                jcr:primaryType="nt:unstructured"
+                                text="Long"
+                                value="LONG"
+                                qtip="Long data type"/>
+                        <boolean
+                                jcr:primaryType="nt:unstructured"
+                                text="Boolean"
+                                value="BOOLEAN"
+                                qtip="Boolean data type"/>
+                    </options>
+                </propertyType>
+                <propertyDefault
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Default Value to be used if not found"
+                    fieldLabel="Property Default"
+                    name="./metaData/propertyDefault"
+                    xtype="textfield"/>
+                <metaDataProperty
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="The Name of the Property that is set inside the Meta Data Property. Can be left blank if property is deleted."
+                    fieldLabel="Meta Data Property Name"
+                    name="./metaData/metaDataProperty"
+                    xtype="textfield"/>
+            </items>
+        </arguments>
+    </items>
+</jcr:root>

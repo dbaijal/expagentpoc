@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Panel"
+    title="Arguments">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <arguments
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            title="Process Arguments"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <targetNodeIfOk
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Node Id or Title of the Node this Workflow should jump to if condition is met."
+                    fieldLabel="Met Target Node"
+                    name="./metaData/targetnode"
+                    xtype="textfield"/>
+                <targetNodeIfNotOk
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Node Id or Title of the Node this Workflow should jump to if condition is not met. If not set then it will be the next step in the model."
+                    fieldLabel="Not Met Target Node"
+                    name="./metaData/targetnodenotok"
+                    xtype="textfield"/>
+                <propertyName
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Name of the Property to Check."
+                    fieldLabel="Property Name"
+                    name="./metaData/jumpPropertyName"
+                    xtype="textfield"/>
+                <ifSet
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Check it if the Property must be set (not null)."
+                    fieldLabel="Jump If Set"
+                    name="./metaData/jumpIfSet"
+                    xtype="checkbox"/>
+            </items>
+        </arguments>
+    </items>
+</jcr:root>

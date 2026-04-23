@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    cq:dialogMode="floating"
+    cq:inherit="{Boolean}true"
+    jcr:primaryType="cq:EditConfig">
+    <cq:formParameters
+        jcr:description="Jumps to the given Node. The node can either be its ID or the Title of the Node."
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Jump to a Node"
+        PROCESS="com.lifetechnologies.services.workflow.JumpToNodeHandler"
+        PROCESS_AUTO_ADVANCE="false"/>
+</jcr:root>

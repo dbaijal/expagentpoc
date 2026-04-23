@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="cq:EditConfig">
+    <cq:formParameters
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Double click to enter a title"/>
+    <cq:listeners
+        jcr:primaryType="cq:EditListenersConfig"
+        afterdelete="CQ.flow.Step.afterDelete"
+        afteredit="CQ.flow.Step.afterEdit"
+        afterinsert="CQ.workflow.flow.Step.afterInsert"
+        afterMove="CQ.flow.Step.afterMove"/>
+</jcr:root>

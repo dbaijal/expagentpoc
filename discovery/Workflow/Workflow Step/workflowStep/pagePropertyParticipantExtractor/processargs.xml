@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Panel"
+    title="Arguments">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <arguments
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            title="Process Arguments"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <pagePropertyParticipant
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Name of the Property that contains the Participant Id"
+                    fieldLabel="Page Property Name for Participant"
+                    name="./metaData/participantPropertyName"
+                    xtype="textfield"/>
+                <searchRecursively
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Select if you want to search up the resource tree"
+                    fieldLabel="Search Recursively"
+                    name="./metaData/searchRecursively"
+                    xtype="checkbox"/>
+                <defaultParticipant
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Name of the Authorizable Id that is used as Default"
+                    fieldLabel="Default Participant"
+                    name="./metaData/defaultParticipant"
+                    xtype="textfield"/>
+            </items>
+        </arguments>
+    </items>
+</jcr:root>

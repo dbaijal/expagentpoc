@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Panel"
+    title="Arguments">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <arguments
+            jcr:primaryType="cq:Widget"
+            collapsed="{Boolean}false"
+            collapsible="{Boolean}false"
+            title="Process Arguments"
+            xtype="dialogfieldset">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <authorizables
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Coma separated list of recipients other than the Initiator"
+                    fieldLabel="Recipients"
+                    name="./metaData/alertAuthorizables"
+                    xtype="textfield"/>
+                <chooser
+                    jcr:primaryType="cq:Widget"
+                    fieldDescription="Select a Participant Chooser implementation."
+                    fieldLabel="Participant Chooser"
+                    name="./metaData/participantChooser"
+                    options="/libs/cq/workflow/content/console/participant_chooser.list.json"
+                    type="select"
+                    xtype="selection"/>
+                <alertPropName
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Name of the Workflow Parameter to check for the Error Message. If available the message is sent."
+                        fieldLabel="Property Name"
+                        name="./metaData/alertTriggerPropertyName"
+                        xtype="textfield"/>
+                <alertTemplatePath
+                        jcr:primaryType="cq:Widget"
+                        fieldDescription="Path to the Parent of the Message Template. It must contain an en.txt or any other 'language'.txt file for the user's language"
+                        fieldLabel="Template Parent Path"
+                        name="./metaData/alertMessageTemplatePath"
+                        xtype="textfield"/>
+            </items>
+        </arguments>
+    </items>
+</jcr:root>

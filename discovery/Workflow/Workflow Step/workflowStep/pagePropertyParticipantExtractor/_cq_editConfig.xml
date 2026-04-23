@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    cq:dialogMode="floating"
+    cq:inherit="{Boolean}true"
+    jcr:primaryType="cq:EditConfig">
+    <cq:formParameters
+        jcr:description="Based on a given Workflow Property Property a Participant is extracted and stored in the Workflow Meta Data"
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Page Property Based Participant Extractor"
+        PROCESS="com.lifetechnologies.services.workflow.PagePropertiesParticipantExtractor"
+        PROCESS_AUTO_ADVANCE="true"/>
+</jcr:root>

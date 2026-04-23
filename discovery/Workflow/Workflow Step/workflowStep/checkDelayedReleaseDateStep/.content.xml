@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:description="Checks if the Delayed Release Date is set otherwise it will set to a specific time in the future."
+    jcr:primaryType="cq:Component"
+    jcr:title="Check Delayed Release Date"
+    sling:resourceSuperType="cq/workflow/components/model/process"
+    allowedParents="[*/parsys]"
+    componentGroup="Workflow"/>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="cq:Dialog"
+    title="Step Properties"
+    touchUiDialogPath="/apps/lifetech/components/workflowDialog/dynamic-participant-dialog/cq:dialog"
+    xtype="dialog">
+    <items jcr:primaryType="cq:WidgetCollection">
+        <tabs jcr:primaryType="cq:TabPanel">
+            <items jcr:primaryType="cq:WidgetCollection">
+                <common
+                    jcr:primaryType="cq:Widget"
+                    path="/libs/cq/workflow/components/model/step/tab_common.infinity.json"
+                    xtype="cqinclude"/>
+                <process
+                    jcr:primaryType="cq:Widget"
+                    path="/apps/lifetech/components/workflowDialog/dynamic-participant-dialog/tab_participant_chooser.infinity.json"
+                    xtype="cqinclude"/>
+                <advanced
+                    jcr:primaryType="cq:Widget"
+                    path="/apps/lifetech/components/workflowDialog/dynamic-participant-dialog/tab_advanced.infinity.json"
+                    xtype="cqinclude"/>
+            </items>
+        </tabs>
+    </items>
+</jcr:root>

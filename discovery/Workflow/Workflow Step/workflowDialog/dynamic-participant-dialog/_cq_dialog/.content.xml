@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:granite="http://www.adobe.com/jcr/granite/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured"
+    jcr:title="Step Properties"
+    sling:resourceType="cq/gui/components/authoring/dialog">
+    <content
+        jcr:primaryType="nt:unstructured"
+        sling:resourceType="granite/ui/components/coral/foundation/tabs">
+        <items jcr:primaryType="nt:unstructured">
+            <common
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Common"
+                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <columns
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <basic
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <title
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                                        fieldLabel="Title"
+                                        name="./jcr:title"/>
+                                    <description
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                                        fieldLabel="Description"
+                                        name="./jcr:description"/>
+                                    <stage
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                        emptyOption="true"
+                                        fieldLabel="Workflow Stage"
+                                        name="./metaData/workflowStage">
+                                        <datasource
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="cq/workflow/components/datasource/stageDataSource"
+                                            addNone="{Boolean}true"/>
+                                    </stage>
+                                </items>
+                            </basic>
+                            <timeout
+                                granite:title="Timeout Settings"
+                                jcr:primaryType="nt:unstructured"
+                                jcr:title="Timeout Settings"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/fieldset">
+                                <items jcr:primaryType="nt:unstructured">
+                                    <timeout
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/autocomplete"
+                                        emptyOption="true"
+                                        fieldDescription="The external process timeout (in milliseconds)."
+                                        fieldLabel="Timeout"
+                                        name="./metaData/timeoutMillis">
+                                        <options
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="granite/ui/components/coral/foundation/form/autocomplete/list"/>
+                                        <items jcr:primaryType="nt:unstructured">
+                                            <off
+                                                jcr:primaryType="nt:unstructured"
+                                                text="Off"
+                                                value=" "/>
+                                            <immediate
+                                                jcr:primaryType="nt:unstructured"
+                                                text="Immediate"
+                                                value="{Long}1"/>
+                                            <_x0031_h
+                                                jcr:primaryType="nt:unstructured"
+                                                text="1h"
+                                                value="{Long}3600000"/>
+                                            <_x0036_h
+                                                jcr:primaryType="nt:unstructured"
+                                                text="6h"
+                                                value="{Long}21600000"/>
+                                            <_x0031_2h
+                                                jcr:primaryType="nt:unstructured"
+                                                text="12h"
+                                                value="{Long}43200000"/>
+                                            <_x0032_4h
+                                                jcr:primaryType="nt:unstructured"
+                                                text="24h"
+                                                value="{Long}86400000"/>
+                                        </items>
+                                    </timeout>
+                                    <timeoutHandler
+                                        jcr:primaryType="nt:unstructured"
+                                        sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                        emptyOption="true"
+                                        fieldLabel="Timeout Handler"
+                                        name="./metaData/timeoutHandler"
+                                        ordered="true">
+                                        <datasource
+                                            jcr:primaryType="nt:unstructured"
+                                            sling:resourceType="cq/workflow/components/datasource/jsonProcessContent"
+                                            addNone="{Boolean}true"
+                                            src="/libs/cq/workflow/content/console/process.list.json"/>
+                                    </timeoutHandler>
+                                </items>
+                            </timeout>
+                        </items>
+                    </columns>
+                </items>
+            </common>
+            <process
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Participant Chooser"
+                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <columns
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <chooser
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/select"
+                                emptyOption="true"
+                                fieldDescription="Select a particpant chooser implementation."
+                                fieldLabel="Participant Chooser"
+                                name="./metaData/DYNAMIC_PARTICIPANT">
+                                <datasource
+                                    jcr:primaryType="nt:unstructured"
+                                    sling:resourceType="cq/workflow/components/datasource/jsonContent"
+                                    addNone="{Boolean}true"
+                                    src="/libs/cq/workflow/content/console/participant_chooser.list.json"/>
+                            </chooser>
+                            <arguments
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+                                fieldLabel="Arguments"
+                                name="./metaData/PROCESS_ARGS"/>
+                            <email
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
+                                fieldDescription="Notify user via email."
+                                name="./metaData/DO_NOTIFY"
+                                text="Email"
+                                value="true"/>
+                            <email-delete
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/hidden"
+                                name="./metaData/DO_NOTIFY@Delete"
+                                value="{Boolean}true"/>
+                        </items>
+                    </columns>
+                </items>
+            </process>
+            <advanced
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Dialog"
+                sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+                <items jcr:primaryType="nt:unstructured">
+                    <columns
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/container">
+                        <items jcr:primaryType="nt:unstructured">
+                            <dialogPath
+                                jcr:primaryType="nt:unstructured"
+                                sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
+                                fieldDescription="Select dialog to display on completion."
+                                fieldLabel="Dialog Path"
+                                name="./metaData/DIALOG_PATH"
+                                rootPath="/"/>
+                        </items>
+                    </columns>
+                </items>
+            </advanced>
+        </items>
+    </content>
+</jcr:root>

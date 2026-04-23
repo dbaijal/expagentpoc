@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:description="Based on a given Parameter if set then it will send an Email to the Initiator and the given list of recipients"
+    jcr:primaryType="cq:Component"
+    jcr:title="Send Notifications by Email"
+    sling:resourceSuperType="cq/workflow/components/model/process"
+    allowedParents="[*/parsys]"
+    componentGroup="Workflow"/>
