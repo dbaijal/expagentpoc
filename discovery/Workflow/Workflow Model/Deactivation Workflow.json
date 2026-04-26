@@ -1,0 +1,556 @@
+{
+  "jcr:primaryType": "cq:Page",
+  "jcr:createdBy": "admin",
+  "jcr:created": "Sat Apr 18 2020 01:59:03 GMT-0400",
+  "jcr:content": {
+    "jcr:primaryType": "cq:PageContent",
+    "jcr:createdBy": "admin",
+    "jcr:title": "Lifetech - Deactivation Publication",
+    "cq:template": "/libs/cq/workflow/templates/model",
+    "jcr:created": "Sat Apr 18 2020 01:59:03 GMT-0400",
+    "cq:lastModified": "Sat Feb 15 2020 08:39:44 GMT+0000",
+    "jcr:description": "Life Tech – Deactivation for Production Workflow",
+    "sling:resourceType": "cq/workflow/components/pages/model",
+    "cq:designPath": "/etc/designs/default",
+    "cq:lastModifiedBy": "admin",
+    "flow": {
+      "jcr:primaryType": "nt:unstructured",
+      "sling:resourceType": "foundation/components/parsys",
+      "logworkflowhandlerst": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Log Start Workflow",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 14:14:47 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+        "jcr:description": "Logs the given message to the log files. You can enter a place holder like payload, meta, comment, wf-data-meta (in curly brackets) etc into you message.",
+        "jcr:lastModified": "Mon Mar 11 2013 16:17:44 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+          "message": "Workflow for {payload} Deactivation started.",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "dialog_0": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Select the Web Operations Team for Deactivation",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Mon Feb 25 2013 15:12:17 GMT-0800",
+        "jcr:description": "For the Final Production Review the Content Author needs to select the Web Operations Team here.",
+        "jcr:lastModified": "Sat Feb 15 2020 08:39:44 GMT+0000",
+        "sling:resourceType": "cq/workflow/components/model/dialog",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "DIALOG_PATH": "/apps/lifetech/components/workflowDialog/web-operations-team-selection/web-operations-team-selection-dialog",
+          "PARTICIPANT": "lt-wf-author"
+        }
+      },
+      "dialogparameterhandl_0": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Places the Web Ops Team on the Workflow",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Fri Mar 15 2013 17:58:21 GMT-0700",
+        "PROCESS": "com.lifetechnologies.services.workflow.DialogParameterHandler",
+        "jcr:description": "Takes the selected Web Operations Team from the previous Step and sets it onto the Workflow for further processing.",
+        "jcr:lastModified": "Fri Mar 15 2013 17:59:10 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/dialogParameterHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "historyOffset": "1",
+          "propertyPath": "selected-web-ops",
+          "propertyType": "STRING",
+          "PROCESS": "com.lifetechnologies.services.workflow.DialogParameterHandler",
+          "metaDataProperty": "participantStepAuthorizableId",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "logworkflowhandlerst_3": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Start the Final Production Deactivation Review",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:45:55 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+        "jcr:description": "Content Owner Reviewer has accepted the changes and now we are on the forth, Final Production Review.",
+        "jcr:lastModified": "Mon Mar 11 2013 16:18:26 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+          "message": "Start the Final Production Deactivation on {payload}, {wf-data-meta}",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "replicatetoagenthand_5": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Replicate Deactivation to Preview",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:46:11 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.ReplicateToAgentHandler",
+        "jcr:description": "Replicates the Payload to Preview Site",
+        "jcr:lastModified": "Mon Mar 11 2013 16:18:54 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/replicateToAgentHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "activationType": "DEACTIVATE",
+          "agentId": "push-to-preview?",
+          "PROCESS": "com.lifetechnologies.services.workflow.ReplicateToAgentHandler",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "replicatetoagenthand_6": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Cache Flush Deactivation Preview",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:46:19 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.ReplicateToAgentHandler",
+        "jcr:description": "Flushes the Preview Dispatcher Cache.",
+        "jcr:lastModified": "Mon Mar 11 2013 16:19:04 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/replicateToAgentHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "activationType": "DEACTIVATE",
+          "agentId": "flush-preview?",
+          "PROCESS": "com.lifetechnologies.services.workflow.ReplicateToAgentHandler",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "sendemailnotificatio_2": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Notify about the Final Production Review",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Fri Apr 05 2013 14:21:41 GMT-0700",
+        "PROCESS": "com.lifetechnologies.services.workflow.EmailNotificationsHandler",
+        "jcr:description": "Based on a given Parameter if set then it will send an Email to the Initiator and the given list of recipients",
+        "jcr:lastModified": "Fri Apr 05 2013 14:23:04 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/sendEmailNotifications",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "participantChooser": "com.lifetechnologies.services.workflow.PropertiesParticipantChooser",
+          "PROCESS": "com.lifetechnologies.services.workflow.EmailNotificationsHandler",
+          "alertMessageTemplatePath": "/etc/workflow/notification/email/lifetech/deactivation/review/webops/en.txt",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "dynamic_participant_": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Perform Final Production Deactivation Review and Set Release Date",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Wed Feb 27 2013 20:28:32 GMT-0800",
+        "jcr:description": "Final Production Reviewer reviews the payload and decides if the changes are acceptable or has to be adjusted.",
+        "jcr:lastModified": "Fri Apr 05 2013 14:23:10 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowDialog/dynamic-participant-dialog",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "DIALOG_PATH": "/apps/lifetech/components/workflowDialog/absolute-timer-delay/absolute-timer-delay-dialog",
+          "DYNAMIC_PARTICIPANT": "com.lifetechnologies.services.workflow.PropertiesParticipantChooser"
+        }
+      },
+      "or_2": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "orSplit": "true",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:46:38 GMT-0800",
+        "branches": "2",
+        "jcr:lastModified": "Mon Mar 11 2013 11:33:38 GMT-0700",
+        "sling:resourceType": "cq/workflow/components/model/or",
+        "1": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resourceType": "cq/flow/components/parsys",
+          "logworkflowhandlerst_0": {
+            "jcr:primaryType": "nt:unstructured",
+            "jcr:createdBy": "admin",
+            "jcr:title": "Approve the Deactivation",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:created": "Sat Jan 26 2013 16:22:01 GMT-0800",
+            "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+            "jcr:description": "The changes of the payload are approved by the Final Production Reviewer and finally we will publish the Payload to Production.",
+            "jcr:lastModified": "Mon Mar 11 2013 16:19:46 GMT-0700",
+            "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+            "PROCESS_AUTO_ADVANCE": "true",
+            "metaData": {
+              "jcr:primaryType": "nt:unstructured",
+              "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+              "message": "Final Production Reviewer Accepted Deactivation on {payload}",
+              "PROCESS_AUTO_ADVANCE": "true"
+            }
+          },
+          "dialogparameterhandl": {
+            "jcr:primaryType": "nt:unstructured",
+            "jcr:createdBy": "admin",
+            "jcr:title": "Dialog Parameter Handler",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:created": "Mon Mar 11 2013 16:37:42 GMT-0700",
+            "PROCESS": "com.lifetechnologies.services.workflow.DialogParameterHandler",
+            "jcr:description": "Sets the given Node Property as Meta Data Entry or Clears the Property from the Node.",
+            "jcr:lastModified": "Wed Feb 12 2020 12:24:25 GMT+0000",
+            "sling:resourceType": "lifetech/components/workflowStep/dialogParameterHandlerStep",
+            "PROCESS_AUTO_ADVANCE": "true",
+            "metaData": {
+              "jcr:primaryType": "nt:unstructured",
+              "historyOffset": "1",
+              "propertyPath": "delayed-release-date",
+              "propertyType": "DATE",
+              "PROCESS": "com.lifetechnologies.services.workflow.DialogParameterHandler",
+              "propertyDefault": "1",
+              "metaDataProperty": "absoluteTime",
+              "PROCESS_AUTO_ADVANCE": "true"
+            }
+          }
+        },
+        "2": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resourceType": "cq/flow/components/parsys",
+          "logworkflowhandlerst": {
+            "jcr:primaryType": "nt:unstructured",
+            "jcr:createdBy": "admin",
+            "jcr:title": "Cancel the Deactivation Workflow",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:created": "Sat Jan 26 2013 16:23:43 GMT-0800",
+            "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+            "jcr:description": "The workflow cannot proceed any further and therefore is terminated here.",
+            "jcr:lastModified": "Mon Mar 11 2013 16:20:06 GMT-0700",
+            "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+            "PROCESS_AUTO_ADVANCE": "true",
+            "metaData": {
+              "jcr:primaryType": "nt:unstructured",
+              "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+              "message": "The Final Production Reviewer Terminated the Deactivation Workflow on {payload}",
+              "PROCESS_AUTO_ADVANCE": "true"
+            }
+          },
+          "jumptonodehandlerste": {
+            "jcr:primaryType": "nt:unstructured",
+            "jcr:createdBy": "admin",
+            "jcr:title": "Jump to the Cancel Workflow Processing",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:created": "Sat Jan 26 2013 16:25:35 GMT-0800",
+            "PROCESS": "com.lifetechnologies.services.workflow.JumpToNodeHandler",
+            "jcr:description": "In order to avoid having to deal with nested OR Conditions we just exit here to the end so that the only remaining option is the Accept the Changes seleciton.",
+            "jcr:lastModified": "Fri Apr 05 2013 16:08:20 GMT-0700",
+            "sling:resourceType": "lifetech/components/workflowStep/jumpToNodeHandlerStep",
+            "PROCESS_AUTO_ADVANCE": "false",
+            "metaData": {
+              "jcr:primaryType": "nt:unstructured",
+              "PROCESS": "com.lifetechnologies.services.workflow.JumpToNodeHandler",
+              "targetnode": "Cancel Workflow Processing"
+            }
+          }
+        },
+        "3": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resourceType": "cq/flow/components/parsys"
+        }
+      },
+      "logworkflowhandlerst_4": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Start the Production Deactivation Run",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:57:08 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+        "jcr:description": "Final Production Reviewer has accepted the changes and now we are on the Production Run.",
+        "jcr:lastModified": "Mon Mar 11 2013 16:20:23 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+          "message": "Start the Production Deactivation Run for {payload}",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "checkdelayedreleased": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Check Delayed Release Date",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Fri Mar 22 2013 17:31:43 GMT-0700",
+        "PROCESS": "com.lifetechnologies.services.workflow.CheckDelayedReleaseDateHandler",
+        "jcr:description": "Checks if the Delayed Release Date is set otherwise it will set to a specific time in the future.",
+        "jcr:lastModified": "Fri Mar 22 2013 17:31:50 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/checkDelayedReleaseDateStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "delayOffset": "1d",
+          "PROCESS": "com.lifetechnologies.services.workflow.CheckDelayedReleaseDateHandler",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "reportdelayedrelease": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Reports Delayed Deactivation Date",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:54:40 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.SetDelayedReleaseAsCommentHandler",
+        "jcr:description": "In order for the workflow manager to see when it is going to be released we set this onto the Comment of the Workflow.",
+        "jcr:lastModified": "Mon Mar 11 2013 16:20:39 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/reportDelayedReleaseHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "PROCESS": "com.lifetechnologies.services.workflow.SetDelayedReleaseAsCommentHandler",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "sendemailnotificatio_1": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Send Email about the Pending Deactivation",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Wed Feb 27 2013 20:38:25 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.EmailNotificationsHandler",
+        "jcr:description": "This sends an Email about the Pending Production Publication.",
+        "jcr:lastModified": "Fri Apr 05 2013 14:23:33 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/sendEmailNotifications",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "alertAuthorizables": "lt-wf-deactivation-notification",
+          "PROCESS": "com.lifetechnologies.services.workflow.EmailNotificationsHandler",
+          "alertMessageTemplatePath": "/etc/workflow/notification/email/lifetech/deactivation/pending-publication/en.txt",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "dynamic_participant": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Wait to Deactivate",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Thu Feb 28 2013 12:10:56 GMT-0800",
+        "jcr:description": "This steps waits until the Delayed Release Date is reached if it was set.",
+        "jcr:lastModified": "Mon Mar 18 2013 15:31:27 GMT-0700",
+        "sling:resourceType": "cq/workflow/components/model/dynamic_participant",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "DYNAMIC_PARTICIPANT": "com.lifetechnologies.services.workflow.PropertiesParticipantChooser",
+          "timeoutMillis": "0",
+          "timeoutHandler": "com.day.cq.workflow.timeout.autoadvance.AbsoluteTimeAutoAdvancer"
+        }
+      },
+      "or": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "orSplit": "true",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Mon Mar 11 2013 11:55:47 GMT-0700",
+        "branches": "2",
+        "default1": "true",
+        "jcr:lastModified": "Mon Mar 11 2013 12:07:23 GMT-0700",
+        "sling:resourceType": "cq/workflow/components/model/or",
+        "1": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resourceType": "cq/flow/components/parsys",
+          "logworkflowhandlerst": {
+            "jcr:primaryType": "nt:unstructured",
+            "jcr:createdBy": "admin",
+            "jcr:title": "Force the Deactivation",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:created": "Mon Mar 11 2013 11:56:03 GMT-0700",
+            "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+            "jcr:description": "If you accept this step the payload will be deployed to production even before the timeout has passed.",
+            "jcr:lastModified": "Mon Mar 11 2013 16:21:22 GMT-0700",
+            "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+            "PROCESS_AUTO_ADVANCE": "true",
+            "metaData": {
+              "jcr:primaryType": "nt:unstructured",
+              "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+              "message": "Deploy to Deactivation Production: {payload}",
+              "PROCESS_AUTO_ADVANCE": "true"
+            }
+          }
+        },
+        "2": {
+          "jcr:primaryType": "nt:unstructured",
+          "sling:resourceType": "cq/flow/components/parsys",
+          "logworkflowhandlerst": {
+            "jcr:primaryType": "nt:unstructured",
+            "jcr:createdBy": "admin",
+            "jcr:title": "Cancel the Deactivation Workflow",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:created": "Mon Mar 11 2013 12:05:44 GMT-0700",
+            "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+            "jcr:description": "Logs the given message to the log files. You can enter a place holder like payload, meta, comment, wf-data-meta (in curly brackets) etc into you message.",
+            "jcr:lastModified": "Mon Mar 11 2013 16:21:31 GMT-0700",
+            "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+            "PROCESS_AUTO_ADVANCE": "true",
+            "metaData": {
+              "jcr:primaryType": "nt:unstructured",
+              "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+              "message": "Final Deployment was cancelled for {payload}",
+              "PROCESS_AUTO_ADVANCE": "true"
+            }
+          },
+          "jumptonodehandlerste": {
+            "jcr:primaryType": "nt:unstructured",
+            "jcr:createdBy": "admin",
+            "jcr:title": "Jump to the Cancel Workflow Processing",
+            "jcr:lastModifiedBy": "admin",
+            "jcr:created": "Mon Mar 11 2013 12:08:15 GMT-0700",
+            "PROCESS": "com.lifetechnologies.services.workflow.JumpToNodeHandler",
+            "jcr:description": "To finished the Workflow Cancellation we jump to that node.",
+            "jcr:lastModified": "Mon Mar 11 2013 12:08:53 GMT-0700",
+            "sling:resourceType": "lifetech/components/workflowStep/jumpToNodeHandlerStep",
+            "PROCESS_AUTO_ADVANCE": "false",
+            "metaData": {
+              "jcr:primaryType": "nt:unstructured",
+              "PROCESS": "com.lifetechnologies.services.workflow.JumpToNodeHandler",
+              "targetnode": "Cancel Workflow Processing"
+            }
+          }
+        }
+      },
+      "replicatetoagenthand_8": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Replicate Deactivation to Production",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:59:18 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.ReplicateToAgentHandler",
+        "jcr:description": "Replicates the Payload to Production Site",
+        "jcr:lastModified": "Mon Mar 11 2013 16:21:44 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/replicateToAgentHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "activationType": "DEACTIVATE",
+          "agentId": "push-to-production?",
+          "PROCESS": "com.lifetechnologies.services.workflow.ReplicateToAgentHandler",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "replicatetoagenthand_10": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Cache Flush Deactivation Production",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:59:30 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.ReplicateToAgentHandler",
+        "jcr:description": "Flushes the Production Dispatcher Cache.",
+        "jcr:lastModified": "Mon Mar 11 2013 16:21:54 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/replicateToAgentHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "activationType": "DEACTIVATE",
+          "agentId": "flush-production?",
+          "PROCESS": "com.lifetechnologies.services.workflow.ReplicateToAgentHandler",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "sendemailnotificatio_0": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Send Email about Finished Publication",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Mon Jan 28 2013 16:09:43 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.EmailNotificationsHandler",
+        "jcr:description": "This sends out an Email Notification about the finished Publication.",
+        "jcr:lastModified": "Fri Apr 05 2013 14:23:43 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/sendEmailNotifications",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "alertAuthorizables": "lt-wf-deactivation-notification",
+          "PROCESS": "com.lifetechnologies.services.workflow.EmailNotificationsHandler",
+          "alertMessageTemplatePath": "/etc/workflow/notification/email/lifetech/deactivation/finished-publication/en.txt",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "jumptonodehandlerste": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Ignore Cancel Workflow Processing",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Mon Feb 25 2013 12:28:19 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.JumpToNodeHandler",
+        "jcr:description": "Jumps right to the End of the Workflow because we did not cancel the workflow.",
+        "jcr:lastModified": "Mon Feb 25 2013 12:29:12 GMT-0800",
+        "sling:resourceType": "lifetech/components/workflowStep/jumpToNodeHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "false",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "PROCESS": "com.lifetechnologies.services.workflow.JumpToNodeHandler",
+          "targetnode": "Log End of Workflow"
+        }
+      },
+      "logworkflowhandlerst_5": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Cancel Workflow Processing",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Mon Feb 25 2013 12:27:15 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+        "jcr:description": "Logs the start of the Cancel Workflow Processing.",
+        "jcr:lastModified": "Mon Feb 25 2013 12:28:08 GMT-0800",
+        "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+          "message": "Cancel Workflow for {payload}",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "sendemailnotificatio": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Inform Content Author about Cancellation",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Mon Feb 25 2013 12:29:39 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.EmailNotificationsHandler",
+        "jcr:description": "Send an Email to the Content Author that this workflow was cancelled.",
+        "jcr:lastModified": "Fri Apr 05 2013 16:11:13 GMT-0700",
+        "sling:resourceType": "lifetech/components/workflowStep/sendEmailNotifications",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "PROCESS": "com.lifetechnologies.services.workflow.EmailNotificationsHandler",
+          "alertMessageTemplatePath": "/etc/workflow/notification/email/lifetech/deactivation/cancelled/en.txt",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      },
+      "logworkflowhandlerst_0": {
+        "jcr:primaryType": "nt:unstructured",
+        "jcr:createdBy": "admin",
+        "jcr:title": "Log End of Workflow",
+        "jcr:lastModifiedBy": "admin",
+        "jcr:created": "Sat Jan 26 2013 16:13:04 GMT-0800",
+        "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+        "jcr:description": "Logs the End of the Workflow",
+        "jcr:lastModified": "Sat Jan 26 2013 16:13:29 GMT-0800",
+        "sling:resourceType": "lifetech/components/workflowStep/logWorkflowHandlerStep",
+        "PROCESS_AUTO_ADVANCE": "true",
+        "metaData": {
+          "jcr:primaryType": "nt:unstructured",
+          "PROCESS": "com.lifetechnologies.services.workflow.LogWorkflowHandler",
+          "message": "Workflow has Ended for {payload}",
+          "PROCESS_AUTO_ADVANCE": "true"
+        }
+      }
+    },
+    "image": {
+      "jcr:primaryType": "nt:unstructured",
+      "jcr:lastModifiedBy": "admin",
+      "jcr:lastModified": "Mon Mar 11 2013 10:17:21 GMT-0700",
+      "imageRotate": "0"
+    }
+  }
+}
