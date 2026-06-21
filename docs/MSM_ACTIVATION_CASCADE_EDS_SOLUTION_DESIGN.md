@@ -14,10 +14,9 @@ This document addresses the **MSM Activation Cascade** use case for the Thermo F
 In the current AEM environment, activating (publishing) a page from the global node cascades publication down through the regional and country live copies, so that a single global activation propagates to all dependent markets. This behavior is delivered today through custom code.
 
 This document covers:
-- The **content-governance risk** associated with cascading activation, and Adobe's recommendation.
-- The **out-of-the-box (OOTB)** AEM rollout configuration **"Activate on Blueprint activation,"** including precisely what it does and does not do.
-- The **rollout vs. activation** distinction, which is fundamental to designing this correctly.
-- The **publication model** in AEM as a Cloud Service with Edge Delivery — clarifying how a published page reaches EDS, given that the legacy replication-agent and Dispatcher model no longer applies.
+- The **risk** associated with cascading activation to live copies, and Adobe's recommendation.
+- How the activation cascade can be achieved **out-of-the-box** using the **"Activate on Blueprint activation"** rollout configuration, and what it does and does not do (including the rollout-vs-activation distinction).
+- How **publication works** from AEM authoring to Edge Delivery, given that the legacy replication-agent and Dispatcher model no longer applies.
 
 > **Note:** Analysis of the current custom codebase (how activation cascade is implemented today and why it requires re-evaluation on AEM as a Cloud Service) is documented separately and is out of scope for this document.
 
@@ -25,126 +24,76 @@ This document covers:
 
 ## 2. Adobe Recommendation — Cascading Activation Carries Content-Governance Risk
 
-Cascading **activation** (publication) from the global/blueprint node down to regional and country live copies must be approached with caution. Activation publishes **whatever content currently exists on each live copy's author node** — it does not validate whether that content is in sync, reviewed, or approved.
+Cascading **activation** (publication) to live copies — for example, automatically publishing regional and country live copies when the source/blueprint is activated — should be approached with caution. Activation publishes **whatever content currently exists on each live copy's author node**; it does not validate whether that content is in sync, reviewed, or intended for publication.
 
 ### 2.1 Key Risks
 
 | Risk | Description |
 |---|---|
-| **Unapproved local overrides published** | Regional and country authors frequently break inheritance at the page or component level to apply local content. A live copy may hold an in-progress or unreviewed local override on its author node. A blanket cascade activation triggered from the global node would publish that local content to production **without any local review or approval gate.** |
-| **Stale content published** | If a live copy has not been rolled out (content-synced) prior to activation, the cascade publishes its **outdated** content, creating a false impression that all markets are current. |
-| **Local governance bypassed** | Many markets maintain their own review, approval, and translation-completion gates. A global-triggered cascade activation ignores these, allowing a single global publish action to force-publish content across many markets. |
-| **Wide blast radius** | A single incorrect global activation propagates simultaneously across all markets, making errors harder to detect and harder to roll back on a per-market basis. |
+| **Incorrect or unintended content published** | A live copy may hold local overrides or in-progress changes on its author node. A cascaded activation would publish that content to production as-is, increasing the likelihood of incorrect content being released. |
+| **Stale content published** | If a live copy has not been rolled out (content-synced) prior to activation, the cascade publishes its outdated content, creating a false impression that all markets are current. |
+| **Wide blast radius** | A single global activation propagates across all dependent markets simultaneously, making errors harder to detect and to roll back on a per-market basis. |
 
 ### 2.2 Recommendation
 
-Do **not** rely on an unconditional, automatic activation cascade. Instead:
-
-- Treat **content rollout** (synchronization) and **activation** (publication) as **distinct, separately-governed steps.**
-- Any cascade must **honor inheritance breaks and live-copy sync-cancellation flags**, and should **skip pages with pending or unapproved local changes.**
-- Prefer a model in which a global change **cascades content synchronization and/or notifies the affected markets**, while **final publication remains under local or gated control** — particularly given Thermo Fisher's extensive use of local overrides and per-market translation/approval workflows.
-
-This is fundamentally a **content-governance decision**, not solely a technical one, and should be confirmed with the business before implementation.
+Given the above, **automatically cascading activation across live copies is not recommended**, as it increases the risk of incorrect or unintended content being published across markets. The appropriate publication behavior should be determined in consultation with the business as part of the broader solution design.
 
 ---
 
-## 3. OOTB Capability — "Activate on Blueprint Activation" Rollout Configuration
+## 3. Achieving Activation Cascade Out-of-the-Box
 
-AEM provides an out-of-the-box rollout configuration named **"Activate on Blueprint activation."**
+AEM provides a standard (out-of-the-box) rollout configuration named **"Activate on Blueprint activation"** that delivers the activation cascade without custom code.
 
-### 3.1 Behavior
+**What it does, in simple terms:** when the source (blueprint) page is activated, all of its live copies are also activated (published) automatically — **provided each live copy has this rollout configuration applied.** A single activation on the source therefore publishes the source and its live copies together.
 
-- **Trigger:** Activation (publication) of the **source / blueprint** page.
-- **Action:** The associated **live copies are activated (published)** as part of the same event.
-- **Critical distinction:** It performs **publication only — it does NOT perform a content rollout (synchronization).** It publishes whatever content already exists on each live copy's author node; it does **not** copy fresh content from the blueprint to the live copy.
+**What it does not do:** it does **not** copy content. It only publishes; it does not synchronise content from the source to the live copies. Each live copy is published with whatever content currently exists on it.
 
-### 3.2 Implication
+This is because **rollout** and **activation** are two separate operations in AEM:
 
-The configuration alone does **not** propagate content *changes* to production. To publish updated content, a **rollout (content synchronization)** must occur **before** activation.
-
-> **Validated in POC:** Activating the global node cascaded activation to both direct and indirect live copies, but the updated content only appeared on the delivered (EDS) URL after a separate rollout was performed, followed by publication.
-
-### 3.3 Multiple Rollout Configurations
-
-A live copy can have **multiple rollout configurations attached simultaneously.** They are **additive** — each fires on its own trigger. For example, "Standard rollout config" (content synchronization on modification/rollout) and "Activate on Blueprint activation" (publication on blueprint activation) can coexist on the same live-copy relationship.
-
----
-
-## 4. "Activate on Blueprint Activation" — Detailed Behavior
-
-The following table sets out, for clarity, exactly what this configuration does and does not do.
-
-| Aspect | Behavior |
+| Operation | What it means |
 |---|---|
-| **Triggered by** | Activation (publication) of the blueprint / source page |
-| **What it does** | Activates (publishes) the live copy pages associated with that source |
-| **Performs content sync (rollout)?** | **No** — it does not copy content from the blueprint to the live copy |
-| **What gets published** | Whatever content is **currently on the live copy's author node** |
-| **Cascade reach (OOTB)** | Resolves live-copy relationships; the multi-level reach should be validated for the specific implementation, as native relationship resolution is the limiting factor compared to custom recursive discovery |
+| **Rollout** | Copies (synchronises) content from the source page to the live copy. Happens on AEM Author only — nothing is published. |
+| **Activation** | Publishes the current content of a page to delivery. It does not copy any content between pages. |
 
-### 4.1 Rollout vs. Activation — Two Orthogonal Operations
+The "Activate on Blueprint activation" configuration covers the **activation** part only. So if content has changed on the source, the change must first be **rolled out** to the live copies, and then **activation** publishes it. (Confirmed in our proof-of-concept: activating the source cascaded activation to its live copies, but updated content appeared on the delivered URL only after a rollout was performed first, followed by activation.)
 
-Understanding this distinction is essential to designing the activation cascade correctly:
+A page can have **more than one rollout configuration** applied at the same time; they work together. For example, a configuration that synchronises content and the "Activate on Blueprint activation" configuration can both be applied to the same live copy.
 
-| Operation | Definition | Where it operates | Copies content between nodes? | Result |
-|---|---|---|---|---|
-| **Rollout** | Content **synchronization** — copies content from the blueprint JCR node to the live copy JCR node | **AEM Author only** | **Yes** | Nothing is published; pages remain on author |
-| **Activation** | **Publication** — pushes whatever currently exists on AEM Author to the delivery tier | Author → Delivery | **No** | Content is published to delivery |
-
-**Neither operation implies the other.** "Activate on Blueprint activation" is purely the **publication** half. This is precisely why a content change requires a **rollout first, then activation**, in order to reach production.
+> **To confirm:** the configuration must be present on each live copy in the chain for the cascade to reach it. The exact multi-level reach (direct and indirect live copies) should be validated against the final content structure.
 
 ---
 
-## 5. Publication Model — How Content Reaches Edge Delivery from AEM Authoring (Crosswalk)
+## 4. How Publication Works — From AEM Authoring to Edge Delivery
 
-A key clarification for stakeholders: in AEM as a Cloud Service with Edge Delivery (Crosswalk), the **legacy replication-agent and Dispatcher model does not apply.** Publishing is an event-driven flow that **ingests** content into Edge Delivery, rather than replicating content to a separate publish instance.
+This section clarifies, at a high level, how a page published in AEM reaches Edge Delivery in the Crosswalk model. Importantly, **the traditional AEM publish-instance, replication-agent and Dispatcher model does not apply here** — publishing is an event-driven flow that ingests content into Edge Delivery.
 
-### 5.1 Documented Publish Flow
+**Publish flow** (per Adobe documentation, *Publishing from AEM Authoring*, aem.live):
 
-Per Adobe documentation (*Publishing from AEM Authoring*, aem.live), when an author publishes, the following sequence occurs:
+1. The content author publishes AEM content in the Universal Editor.
+2. A publish event is pushed to the Adobe pipeline queue.
+3. The Edge Delivery Services publish service forwards the relevant events to the Edge Delivery Services Admin API.
+4. Edge Delivery pulls and ingests semantic HTML from AEM Author.
+5. AEM is updated with the publish status.
 
-1. **The content author publishes AEM content in the Universal Editor.**
-2. **A publish event is pushed to the Adobe pipeline queue.**
-3. **The Edge Delivery Services publish service forwards the relevant events to the Edge Delivery Services Admin API.**
-4. **Edge Delivery pulls and ingests semantic HTML from AEM Author.**
-5. **AEM is updated with the publish status.**
+In short: AEM Author acts as the **content source**, and on publish, the event travels through the Adobe pipeline to the Edge Delivery Services Admin API, which causes Edge Delivery to **pull and ingest** the page's HTML from AEM Author and serve it. There is no replication to a separate publish instance and no Dispatcher in this path.
 
-### 5.2 Key Components
-
-| Component | Role |
-|---|---|
-| **Universal Editor** | The authoring interface where the publish action originates |
-| **Adobe pipeline queue** | Receives the publish event |
-| **Edge Delivery Services publish service** | Forwards the relevant events to the Admin API |
-| **Edge Delivery Services Admin API** | The integration point that drives ingestion |
-| **AEM Author** | The source from which Edge Delivery pulls and ingests semantic HTML |
-
-### 5.3 Security Note
-
-Per the documentation, by default the **Edge Delivery Services Admin API is not protected** and can be used to publish or unpublish documents without authentication. Access control around the Admin API is therefore a configuration consideration for the implementation.
-
-### 5.4 Implications for the Activation Cascade Use Case
-
-- "Activation" (publish) in this model means the publish event flows through the **Adobe pipeline queue → Edge Delivery Services publish service → Edge Delivery Services Admin API**, and **Edge Delivery ingests the page's semantic HTML from AEM Author.** It is **not** a replication-agent push to a separate publish instance.
-- **There is no Dispatcher** in this delivery path; ingestion and delivery are handled by Edge Delivery.
-- AEM serves as the **content source** that Edge Delivery ingests from; the publish event signals Edge Delivery to ingest the current author content.
+> **Security note:** per Adobe documentation, the Edge Delivery Services Admin API is by default not protected and can be used to publish or unpublish without authentication. Access control around it is a configuration consideration.
 
 ---
 
-## 6. Summary
+## 5. Summary
 
 | Topic | Conclusion |
 |---|---|
-| **Cascading activation risk** | Automatic, unconditional cascade can publish unapproved local overrides and stale content; rollout and activation should be governed separately, with sync-cancellation and inheritance breaks honored. |
-| **OOTB "Activate on Blueprint activation"** | Cascades **publication** to live copies on blueprint activation, but performs **no content synchronization**; updated content requires a prior rollout. |
-| **Rollout vs. Activation** | Orthogonal operations — rollout syncs content on author; activation publishes existing author content to delivery. |
-| **Publication to EDS** | Event-driven ingestion via the Adobe pipeline and Edge Delivery Services Admin API; no replication agents and no Dispatcher in the delivery path. |
+| **Activation cascade — OOTB** | The standard "Activate on Blueprint activation" rollout configuration cascades **publication** to live copies when the source is activated (if each live copy has the configuration). It publishes only — it does not synchronise content. |
+| **Rollout vs. Activation** | Rollout copies content to live copies (author only); activation publishes a page's current content to delivery. To publish a content change, roll out first, then activate. |
+| **Publication to Edge Delivery** | Event-driven: the publish event flows through the Adobe pipeline to the Edge Delivery Services Admin API, which ingests the page's HTML from AEM Author. No replication agents and no Dispatcher. |
+| **Recommendation** | Automatically cascading activation across live copies is **not recommended**, as it increases the risk of incorrect, unintended, or stale content (including local overrides) being published. Appropriate publication behavior to be agreed with the business. |
 
 ---
 
-## 7. Open Items for Confirmation
+## 6. Open Items for Confirmation
 
-1. Confirm the multi-level **cascade reach** of OOTB "Activate on Blueprint activation" for the target live-copy structure (direct vs. indirect live copies).
-2. Confirm the **content-governance model** with the business: whether final publication per market should remain under local/gated control rather than an automatic global cascade.
+1. Confirm the multi-level **cascade reach** of "Activate on Blueprint activation" for the target live-copy structure (direct and indirect live copies), and that the configuration is applied at each level.
+2. Confirm the desired **publication behavior** with the business, given that automatic activation cascade is not recommended.
 3. Confirm **access control** requirements for the Edge Delivery Services Admin API.
-4. Preview (`.page`) versus published (`.live`) delivery behavior is not detailed in this document and should be sourced/confirmed separately if required in the final SDD.
