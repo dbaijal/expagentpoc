@@ -65,17 +65,36 @@ A page can have **more than one rollout configuration** applied at the same time
 
 ## 4. How Publication Works — From AEM Authoring to Edge Delivery
 
-This section clarifies, at a high level, how a page published in AEM reaches Edge Delivery in the Crosswalk model. Importantly, **the traditional AEM publish-instance, replication-agent and Dispatcher model does not apply here** — publishing is an event-driven flow that ingests content into Edge Delivery.
+This section clarifies, at a high level, how a page published in AEM reaches Edge Delivery in the Crosswalk model. Importantly, **the traditional AEM publish-instance, replication-agent and Dispatcher model does not apply here** — publishing is an event-driven flow in which Edge Delivery fetches content from AEM.
 
-**Publish flow** (per Adobe documentation, *Publishing from AEM Authoring*, aem.live):
+**Publish and delivery flow** (per Adobe documentation, [*Publishing from AEM Authoring*](https://www.aem.live/docs/publishing-from-authoring), aem.live):
 
-1. The content author publishes AEM content in the Universal Editor.
-2. A publish event is pushed to the Adobe pipeline queue.
-3. The Edge Delivery Services publish service forwards the relevant events to the Edge Delivery Services Admin API.
-4. Edge Delivery pulls and ingests semantic HTML from AEM Author.
-5. AEM is updated with the publish status.
+1. **AEM Authoring (Universal Editor):** the content author publishes the page.
+2. **AEM Page Publish Events → AEM Publish Queue:** the publish action raises page publish events onto the publish queue.
+3. **Edge Delivery Subscriber Service:** subscribes to the page publish events from the queue (the "Page Publish Event Subscriber"), and on receiving an event, requests a content fetch.
+4. **Edge Delivery Services Rendering and Delivery:** on the content-fetch request, requests the page and assets from AEM.
+5. **AEM / HTL Page Rendering and Asset Delivery:** renders and delivers the HTML page with assets back to Edge Delivery, which then renders and serves it.
 
-In short: AEM Author acts as the **content source**, and on publish, the event travels through the Adobe pipeline to the Edge Delivery Services Admin API, which causes Edge Delivery to **pull and ingest** the page's HTML from AEM Author and serve it. There is no replication to a separate publish instance and no Dispatcher in this path.
+**In short:** AEM acts as the **content source**. When a page is published, a publish event flows through the **AEM Publish Queue** to the **Edge Delivery Subscriber Service**, which triggers **Edge Delivery** to **fetch the rendered HTML page and assets from AEM** and serve them. There is no replication to a separate publish instance and no Dispatcher in this path.
+
+```
+                    Edge Delivery Services
+                    Rendering and Delivery
+                       ▲                 │
+       request content │                 │ request page
+       fetch           │                 ▼ and assets
+       Edge Delivery              AEM / HTL Page Rendering,
+       Subscriber Service            Asset Delivery
+                       ▲                 │
+   page publish event  │                 │ deliver HTML
+   subscriber          │                 │ page with assets
+                AEM Publish Queue         │
+                       ▲                 │
+   AEM page            │                 │
+   publish events      │                 │
+                AEM Authoring  ◄──────────┘
+                (Universal Editor)
+```
 
 > **Security note:** per Adobe documentation, the Edge Delivery Services Admin API is by default not protected and can be used to publish or unpublish without authentication. Access control around it is a configuration consideration.
 
@@ -87,7 +106,7 @@ In short: AEM Author acts as the **content source**, and on publish, the event t
 |---|---|
 | **Activation cascade — OOTB** | The standard "Activate on Blueprint activation" rollout configuration cascades **publication** to live copies when the source is activated (if each live copy has the configuration). It publishes only — it does not synchronise content. |
 | **Rollout vs. Activation** | Rollout copies content to live copies (author only); activation publishes a page's current content to delivery. To publish a content change, roll out first, then activate. |
-| **Publication to Edge Delivery** | Event-driven: the publish event flows through the Adobe pipeline to the Edge Delivery Services Admin API, which ingests the page's HTML from AEM Author. No replication agents and no Dispatcher. |
+| **Publication to Edge Delivery** | Event-driven: a publish event flows through the AEM Publish Queue to the Edge Delivery Subscriber Service, which triggers Edge Delivery to fetch the rendered HTML page and assets from AEM. No replication agents and no Dispatcher. |
 | **Recommendation** | Automatically cascading activation across live copies is **not recommended**, as it increases the risk of incorrect, unintended, or stale content (including local overrides) being published. Appropriate publication behavior to be agreed with the business. |
 
 ---
