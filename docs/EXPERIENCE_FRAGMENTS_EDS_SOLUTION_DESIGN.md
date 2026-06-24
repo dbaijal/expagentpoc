@@ -64,7 +64,7 @@ All fragments are migrated to a **centralized fragment library** rather than dis
 - **Single resolution boundary:** with all fragments and pages in one site / one content bus, best-match resolution and master fallback occur within one scope — fetches are same-origin, avoiding the cross-site/content-bus resolution problems that arise when content is split.
 - **Lookup feasibility:** centralization makes a single fragment **index** possible (used by Option 1, Section 6), enabling existence checks without trial-and-error fetching.
 - **Faithful to source:** XFs are already organized today as centralized fragment libraries, separate from the site content tree. Centralizing preserves that model.
-- **Avoids inheritance overhead:** representing variations through an MSM live-copy hierarchy would require building and maintaining inheritance relationships that mirror the resolution order, which is error-prone and pushes structural complexity onto authors. Keeping fallback logic in code, and variations as flat content, is simpler to author and maintain.
+- **Avoids inheritance overhead:** representing variations through an MSM live-copy hierarchy would require building and maintaining inheritance relationships that mirror the resolution order, which is error-prone and pushes structural complexity onto authors. It would also **shift best-match from render time to authoring time** — instead of the logic resolving the correct variation automatically at render, authors would have to select the correct fragment path themselves. Keeping fallback logic in code, with variations as flat content, preserves automatic render-time resolution and is simpler to author and maintain.
 
 ### 4.2 Library Location and Structure
 
@@ -95,7 +95,7 @@ For a page at `/{country}/{lang}/...`, the candidate list is built most-specific
 
 1. `{lang}-{country}` — e.g. `de-de`, `en-us` (language + country)
 2. if `lang ≠ en`: `en-{country}` — the English version for that country (e.g. `en-cn` for a `zh/cn` page)
-3. `{lang|en}-{region}` — region fallback via the locale→region map (e.g. `en-europe`)
+3. `{lang|en}-{region}` — region fallback based on the page's region (e.g. `en-europe`)
 4. `master` — final fallback (always present)
 
 The block resolves the **first existing** candidate.
@@ -112,11 +112,7 @@ Candidates: ko-kr → en-kr → en-ipac → master
 Result: ko-kr matches → render Korean variation
 ```
 
-### 5.2 Locale → Region Map
-
-The region candidate requires a **locale → region mapping** (e.g. `us → north-america`, `de → europe`, `kr → ipac`). This is a configuration the block reads to build the region candidate, derived from the existing locale-to-region relationships.
-
-### 5.3 Division Dimension (Form Fragments)
+### 5.2 Division Dimension (Form Fragments)
 
 Form fragments carry an additional **division** dimension (e.g. CMD, GCMS, Eloqua), which maps to different backend form endpoints. The division is **encoded in the base path** the author enters, rather than a separate field:
 
@@ -125,7 +121,7 @@ Form fragments carry an additional **division** dimension (e.g. CMD, GCMS, Eloqu
 
 Best-match resolution then operates on variations under the chosen base path. The author selects the correct base path (standard vs the relevant division).
 
-### 5.4 Readiness — Translation Status → Variation Existence
+### 5.3 Readiness — Translation Status → Variation Existence
 
 In AEM, a variation was used only if its translation status was APPROVED or COMPLETE; otherwise it was skipped. In EDS, **publishing a variation is the equivalent of marking it ready**:
 
@@ -134,11 +130,11 @@ In AEM, a variation was used only if its translation status was APPROVED or COMP
 
 Same business outcome: unready content is never shown; the fallback variation is used instead.
 
-### 5.5 No Match / All-Miss Behavior
+### 5.4 No Match / All-Miss Behavior
 
 `master` is always the final candidate and is expected to always exist, so resolution normally cannot fully fail. If no candidate (including master) resolves, the block renders nothing / a placeholder rather than erroring.
 
-### 5.6 Authoring Experience
+### 5.5 Authoring Experience
 
 - The author enters the fragment **base path** in the block (no dropdown).
 - Author guidance can be provided via a **path browser in Universal Editor scoped to the fragments root**, so authors select valid base paths easily.
@@ -196,21 +192,48 @@ Both options preserve best-match. Based on TFS's existing structure — where va
 
 ## 7. Fragment Index Lookup (for Option 1)
 
-To resolve variations without trial-and-error fetching, the centralized fragment library publishes an **index** listing every fragment and the variations that exist for it.
+To resolve variations without trial-and-error fetching, the centralized fragment library is **indexed** so the block can quickly determine which variations exist for a fragment.
 
-- The block fetches the index **once** (cached for the page), resolves the best-match candidate against it in memory, and then fetches the single matched variation.
-- This avoids fetching variations that do not exist.
-- The index is regenerated when fragments are published; new variations become resolvable once the index reflects them.
+This uses Edge Delivery's built-in **indexing (`helix-query.yaml` / `query-index.json`)**. An index is configured for the fragments path, producing a published `query-index.json` that lists the fragments and their variations. The block fetches this index **once** (cached for the page), resolves the best-match candidate against it in memory, and then fetches the single matched variation — avoiding fetching variations that do not exist. The index is regenerated as fragments are published, so new variations become resolvable once indexed.
 
-> **Open items:** index scope/path, and confirming the index refresh occurs on fragment publish (Section 10).
+Reference: [AEM Edge Delivery — Indexing](https://www.aem.live/developer/indexing).
 
 ---
 
-## 8. Site / Marketing Fragments — Specifics
+## 8. Site / Marketing Fragments — Findings and Recommendations
 
-Best-match resolution (Section 5) applies to Site / Marketing fragments as it does to Form fragments. This section captures considerations specific to Site / Marketing fragments.
+Best-match resolution (Section 5) applies to Site / Marketing fragments as it does to Form fragments. The proposed approach (centralized library, base-path authoring, best-match resolution) is the same for both fragment types.
 
-*(To be completed — this section will document the Site / Marketing fragment structure, current organization, naming, and migration/cleanup considerations.)*
+However, a review of the existing fragments in the **QA environment** shows that, unlike Form fragments, the Site / Marketing (TF Site) fragments are **not consistently structured**. This section documents those findings and the recommended cleanup before migration.
+
+> **Note on scope:** This analysis was performed on the QA instance and may not fully reflect production content. The TF Site fragments should be reviewed against production prior to migration. The key point is that, in Edge Delivery, there is no separation between pages and Experience Fragments as there is in AEM — all content lives under `/content`. Any inconsistency or sub-optimal organization should therefore be addressed **before** migration, so the migrated fragments follow a clean, consistent pattern.
+
+### 8.1 Findings
+
+1. **Form vs Site fragment consistency.** Form fragments are well aligned and follow a consistent structure. TF Site fragments do **not** follow a consistent structure.
+
+2. **Global-dominant, few variations.** Most Site fragments reside in the **Global** folder (under divisions) and consist mostly of a `master` variation. Relatively few instances of actual locale variations were observed.
+
+3. **Empty region folders.** Most region folders are **empty** — North America, Latin America, Greater China, and India & Pacific contain no content.
+
+4. **Region content appears region-specific, not overrides.** The content present in the **Europe** and **Japan** region folders appears **unique and specific to those regions** — it is not an override of a global/master version and does not participate in best-match fallback. In AEM, such content had to exist within the XF structure; once migrated to fragments, content that is neither shared nor part of best-match resolution — i.e. genuinely region-specific — is best placed within that region's own hierarchy rather than in the centralized fragment library.
+
+5. **Misplaced shared content — `us/en`.** There is a `us/en` folder containing default **Offers** content that is used by most sites. As widely-shared content, its logical location is not under `us/en`; from a content-organization standpoint, `us/en` does not appear to be the correct location for globally-shared content.
+
+6. **Inconsistent structure — Custom Service Assistance.** Under `us/en`, the **Custom Service Assistance** fragment contains Europe, North America, and Global folders, with node names that also do not follow a consistent pattern.
+
+7. **Inconsistent structure — Contact Us.** The same inconsistency applies to **Contact Us** (which includes *Online Order Support* and *General Website Support*).
+
+### 8.2 Recommendation
+
+Before migrating the TF Site fragments, perform a **cleanup, restructuring, and reorganization** pass so that:
+
+- A **single consistent structure and naming pattern** is followed across all Site fragments (aligned with the Form-fragment consistency).
+- **Genuinely region-specific content** (e.g. the unique Europe/Japan content) is placed in that **region's own hierarchy**, rather than carried into the centralized fragment library — since it is neither shared nor subject to best-match fallback.
+- **Widely-shared content** (e.g. the default Offers content currently under `us/en`) is moved to a **logical, correct location** appropriate to shared content.
+- Fragments that **do** follow the variation/best-match model are organized under their fragment with consistent variation naming, so best-match resolution works predictably.
+
+This cleanup ensures that, once migrated into the unified `/content` structure (where pages and fragments are no longer separated as in AEM), the fragments are consistent, correctly located, and aligned with the best-match model where applicable.
 
 ---
 
@@ -241,14 +264,6 @@ Best-match resolution (Section 5) applies to Site / Marketing fragments as it do
 
 ---
 
-## 10. Assumptions and Open Items
+## 10. Assumptions
 
-**Assumptions:**
 1. A **single EDS site** serves all locales via path mappings, so all locales and the fragment library share **one content bus** (fragments resolve same-origin; no CORS / edge worker needed for resolution).
-
-**Open Items:**
-1. **Variation migration option** — confirm Option 1 (fragment per variation + index) vs Option 2 (sections) with authors.
-2. **Locale → region map** — derived from existing locale-to-region relationships; read by the block to build the region candidate.
-3. **Fragment index** (if Option 1) — define scope/path and confirm refresh on publish.
-4. **Division list** — confirm the authoritative set of divisions and their base-path encoding.
-5. **Site / Marketing fragments** — complete Section 8 (structure, naming, cleanup).
