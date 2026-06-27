@@ -98,6 +98,25 @@ In other words:
 
 The recommended workflow is therefore: translate the primary site into the required languages, then use MSM to reuse each translated language across the countries/regions that share that language. The defining best-practice constraint is that a **Live Copy relationship should stay within one language**, while moving **between languages** should be a translation/language-copy relationship.
 
+### 4.1 The Language Master Pattern
+
+Adobe's *Translation Best Practices* describes the **language master** as the central building block of this model:
+
+> A language master is "a layer of un-activated pages, where translated content can be reviewed and modified then pushed or pulled to a country site sharing that language."
+
+> "Use MSM to create country sites from the translated language masters and to roll out content to sites sharing the same language. For example, the **French language master** can be rolled out to **France, Belgium, and Switzerland** sites."
+
+So the best-practice structure is:
+
+```text
+Primary language site (e.g. English)
+→ Language Masters (one per language — French master, German master, …)
+→ Country / locale sites = MSM Live Copies of the matching language master
+   (e.g. French master → France, Belgium, Switzerland)
+```
+
+Adobe notes two ways to build this: the **language-copy approach** (used by AEM's out-of-the-box translation integration — "the easiest way to get started"), and the **MSM/live-copy approach** (an alternative "for advanced use cases, where sites are larger and more complex," requiring "strong governance and workflow automation"). In both, **a language master exists per language**, and **same-language country sites are derived from it**.
+
 **References:**
 - [Translation Best Practices](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/sites/administering/reusing-content/translation/best-practices)
 - [Multi Site Manager and Translation](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/sites/administering/reusing-content/msm-and-translation)
@@ -149,6 +168,31 @@ Accordingly, the locale layer:
 **References:**
 - [Multi Site Manager and Translation](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/sites/administering/reusing-content/msm-and-translation)
 - [Translation Best Practices](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/sites/administering/reusing-content/translation/best-practices)
+
+### 6.3 What Best-Practice Alignment Would Require (and What It Changes)
+
+It is important to be explicit about what moving to the best-practice model would mean for TFS, because it is a **structural redesign**, not a configuration change.
+
+Today, TFS sources each locale from **country English** and lets untranslated content fall back to English via live-copy inheritance. There are **no per-language masters** — language content lives under each country, inheriting from that country's English.
+
+To align with Adobe best practice (Section 4.1), TFS would need to:
+
+- **Introduce a language master for each language** (e.g. a French master, German master, Spanish master) as the place where each language's translated content is owned and reviewed;
+- **Derive same-language country/locale sites from the relevant language master** rather than from country English — for example, a single **French master** feeding France, Belgium, and Switzerland, instead of French content sitting independently under each country;
+- **Re-point the relationships** so cross-language is handled by translation/language copy, and same-language reuse is handled by MSM from the language master.
+
+**What this brings:**
+
+- **Translation reuse across countries** — one translated language master serves all countries sharing that language (translate once, reuse many), instead of managing each language separately under each country.
+- **Cleaner separation of concerns** — same-language reuse (MSM) and cross-language localization (translation) each do what they are designed for, matching Adobe's "MSM within one language" principle.
+- **Centralized translation governance** — each language's content is owned in one place.
+
+**What it changes / costs:**
+
+- It is a **redesign of the current locale model**. The English-fallback-by-inheritance behavior TFS relies on does not map directly onto language masters, so the selective-translation and fallback behavior would need to be re-modeled.
+- It introduces a **new content layer (language masters)** with associated migration, authoring, and governance effort.
+
+For this reason, the best-practice model is presented as a **future-phase recommendation** (Section 13), not a prerequisite for the migration. The migration proceeds with the client's current model (Sections 7–9); the language-master redesign is the path to closer best-practice alignment if and when TFS chooses to pursue it.
 
 ---
 
@@ -451,7 +495,7 @@ For this migration, the recommended implementation is to:
 - **document the locale layer as a customer-specific exception** (Sections 6–7);
 - **preserve** the client's selective-translation and English-fallback behavior.
 
-As a forward-looking recommendation, if TFS wishes to move closer to Adobe best practice in the future, the **locale (language) branches should be reconsidered for redesign** — managed through **Translation / Language Copy** relationships rather than a fallback-oriented live-copy model tied to English. This is offered as a recommendation for a future phase, not a blocker for the migration.
+As a forward-looking recommendation, if TFS wishes to move closer to Adobe best practice in the future, the **locale (language) branches should be reconsidered for redesign** — introducing **per-language masters** and managing same-language reuse via MSM from those masters, with **Translation / Language Copy** relationships handling cross-language localization, rather than the current fallback-oriented live-copy model tied to English. **Section 6.3** describes what this redesign would require and what it changes. This is offered as a recommendation for a future phase, not a blocker for the migration.
 
 ---
 
