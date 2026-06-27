@@ -152,10 +152,10 @@ The following are aligned with Adobe's MSM guidance, because they are **same-lan
 
 ### 6.2 Customer-Specific Deviation — the Locale Layer
 
-Adobe's guidance is to keep a **Live Copy relationship within a single language**, and to use **Translation / Language Copies** when moving **between languages**. The TFS locale layer deviates from this in a specific way:
+Adobe's guidance is to keep a **Live Copy relationship within a single language**, and to use **Translation / Language Copies** when moving **between languages**. The TFS locale layer deviates from this:
 
 - **Best practice:** a Live Copy is used for **same-language** reuse (e.g. German master → German sites). Moving from English to German would be a **translation / language copy**.
-- **TFS model:** the locale (language) branches are retained as **live copies that cross languages** — e.g. `de/de` (German) is a live copy of `de/en` (English). This is precisely the point of deviation: a live copy is being used **across** languages rather than **within** one language.
+- **TFS model:** For this client-specific model, locale branches are retained in the existing live-copy-based inheritance structure sourced from country English, in order to preserve selective translation and English fallback behavior. This is a deliberate deviation from Adobe's standard cross-language recommendation (e.g. `de/de` German content sourced from `de/en` English via live copy).
 
 This is done so that **untranslated locale content continues to inherit from country English** and locales are never left with missing content.
 
@@ -309,6 +309,8 @@ The proposed structure follows the AEM country/language hierarchy convention —
     └── other
         └── en
 ```
+
+The structure below is a normalized representation of the client's current architecture using a clearer country → language hierarchy. It is intended to preserve the client's operating model while improving structural clarity.
 
 ### 8.2 Interpretation and Naming Convention
 
