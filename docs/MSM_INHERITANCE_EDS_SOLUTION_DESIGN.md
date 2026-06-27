@@ -202,16 +202,19 @@ with the **country as the container** and **language nested beneath it**.
 - **Global English** (`/content/lifetech/global/en`) is the **master / blueprint**.
 - **Regional English** (`<region>/en`) nodes are **live copies** of global English.
 - **Country English** (`<region>/<country>/en`) nodes are **live copies** of their regional English.
-- Authors can create region- or country-specific content at any level and break inheritance for local overrides (see Section 8).
+- **Country-language** nodes (e.g. `de/de`, `ca/fr`, `cn/zh`) are **live copies** of their country-English source.
+- Authors can create region-, country-, or language-specific content at any level and break inheritance for local overrides (see Section 8).
 
-### 6.4 Recommendation — Same-Language Inheritance via MSM, Translation via Language Copies
+### 6.4 Language Nodes as Live Copies
 
-As an **Adobe best practice**, we recommend:
+At Thermo Fisher, **translation is selective** — the entire English site is not fully translated for every locale; only specific content is translated, and the remaining content continues to be served in English.
 
-- **MSM live copies** are used for **same-language inheritance** — i.e. the English chain: global English → regional English → country English. This is where rollout/inheritance of shared English content belongs.
-- **Translation to other languages** (e.g. `de/en` → `de/de`, `ca/en` → `ca/fr`, `cn/en` → `cn/zh`) is handled via **language copies** (translation relationships), **not** plain live copies.
+To support this, the **country-language nodes are maintained as live copies** of their country-English source (rather than as pure translation/language copies). This way:
 
-This separation keeps same-language structural inheritance distinct from translation, aligns with Adobe's recommended MSM + translation model, and keeps each mechanism doing what it is designed for.
+- Translated content can be authored/overridden on the language node where translation exists.
+- **Untranslated content continues to inherit from the country-English source**, so locales are never left with missing content where translation has not been performed.
+
+The same MSM inheritance and override model (Section 8) therefore applies at the language level as well: content flows down by inheritance, and is broken/overridden where local (translated) content is required.
 
 ---
 
@@ -339,8 +342,8 @@ Because this approach serves the same content under more than one country URL, t
 | **Tiers** | AEM = authoring tier (MSM, inheritance, rollouts, workflows, translation); EDS = delivery tier |
 | **EDS setup** | Repoless; configured via the EDS Admin API |
 | **Site structure** | `/content/lifetech/<region>/<country>/<language>`, country container first, language nested |
-| **MSM relationships** | Global English (master) → regional English (live copy) → country English (live copy) |
-| **Same-language vs translation** | MSM live copies for same-language inheritance; **language copies** for translation (Adobe best practice) |
+| **MSM relationships** | Global English (master) → regional English (live copy) → country English (live copy) → country-language (live copy) |
+| **Language nodes** | Maintained as **live copies** of country-English; supports selective translation — untranslated content inherits English, translated content is overridden locally |
 | **Delivery** | Single EDS site, path mappings per locale, single content bus |
 | **Inheritance/override** | Implicit cancel on edit in Universal Editor; component-level control via MSM Extension; page-level reset via consoles; Page Editor behaviour differs |
 | **Site delegation** | Secondary countries serve a mapped primary country's content via CDN edge logic; secondary URL preserved, links rewritten to secondary URL, canonical set to primary country for SEO |
