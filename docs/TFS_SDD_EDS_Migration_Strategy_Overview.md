@@ -1,4 +1,4 @@
-# EDS Migration Strategy — Overview
+# Content Migration Strategy — Overview
 
 **Project:** Thermo Fisher Scientific (TFS) — AEM 6.4 On-Prem → AEM as a Cloud Service + Edge Delivery Services
 **Authoring Model:** AEM as authoring source with Edge Delivery Services
@@ -12,7 +12,9 @@
 
 ## 1. Overview
 
-This page provides an overview of the migration strategy for moving TFS from AEM 6.4 On-Prem to AEM as a Cloud Service with Edge Delivery Services (EDS), where **AEM remains the authoring source** and EDS is the delivery layer. Detailed strategies for each content type are captured in their respective sub-pages (Section 6).
+This page provides an overview of the **content migration** strategy for moving TFS from AEM 6.4 On-Prem to AEM as a Cloud Service with Edge Delivery Services (EDS), where **AEM remains the authoring source** and EDS is the delivery layer. Detailed strategies for each content type are captured in their respective sub-pages (Section 6).
+
+**Scope.** This document covers the migration of **content** — content pages and the associated content types listed in Section 6 (Experience Fragments, Forms, Reference Components, Content Syndication Pods, Metadata, Redirects, Assets). It does **not** cover other EDS migration workstreams such as EDS project/site setup, block and component development, design and theming, or infrastructure/CDN configuration, which are addressed separately.
 
 Migration is primarily **scrape-based**: the migration tooling analyses each page on the live reference site, identifies the UI elements in the rendered output, and translates them into EDS blocks with their content. **The existing CMS is not modified during migration and remains fully operational throughout** — the new environment is built in parallel.
 
