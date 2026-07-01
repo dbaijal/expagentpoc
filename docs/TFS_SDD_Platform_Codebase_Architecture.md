@@ -26,33 +26,50 @@ In the target model:
 
 ### 2.1 Target Architecture — High Level
 
+The request/delivery path flows top-down; publishing flows from AEM Author into Edge Delivery. Edge Worker runs at the **CDN/edge layer** (in front of Edge Delivery), and App Builder is a **separate service that is invoked** — it is not part of the delivery path.
+
 ```
-        AUTHORING TIER                          DELIVERY TIER
- ┌───────────────────────────┐         ┌───────────────────────────────┐
- │   AEM Author (AEMaaCS)     │         │      Edge Delivery Services     │
- │                           │ publish  │                                │
- │  • Page authoring (UE)     │────────▶│  Content Bus / Media Bus        │
- │  • MSM / inheritance       │         │            │                   │
- │  • Translation             │         │            ▼                   │
- │  • Workflows / rollouts     │         │   ┌─────────────────┐          │
- │  • Custom authoring code    │         │   │  Edge Worker     │  (edge, │
- │                            │         │   │  (where used)    │  request │
- └───────────────────────────┘         │   └─────────────────┘   time)   │
-              │                          │            │                   │
-              │ calls                    │            ▼                   │
-              │ (integrations)           │           CDN ──────▶ End Users│
-              ▼                          └───────────────────────────────┘
-   ┌───────────────────────┐                          │
-   │  App Builder           │ ◀────────────────────────┘
-   │  (Adobe I/O Runtime)   │   invoked as a service (e.g. by edge/blocks)
-   │  (where used)          │   for backend/data fetches & integrations
-   └───────────────────────┘
+                          ┌───────────────┐
+                          │   End User     │
+                          └───────┬───────┘
+                                  │  request
+                                  ▼
+   ┌──────────────────────────────────────────────────────────┐
+   │                      CDN  (Edge Layer)                     │
+   │   ┌────────────────────────────────────────────────────┐  │
+   │   │  Edge Worker  (where used)                          │  │
+   │   │  runs at request time — e.g. header/footer          │  │
+   │   │  stitching, Product List, Video, schema injection   │  │
+   │   └────────────────────────────────────────────────────┘  │
+   └───────────────────────────┬──────────────────────────────┘
+                               │  fetch published content
+                               ▼
+   ┌──────────────────────────────────────────────────────────┐
+   │                 Edge Delivery Services                     │
+   │   Content Bus / Media Bus  →  renders & serves             │
+   │   (EDS blocks decorate the delivered semantic HTML)        │
+   └───────────────────────────▲──────────────────────────────┘
+                               │  publish
+   ┌──────────────────────────────────────────────────────────┐
+   │                   AEM Author (AEMaaCS)                     │
+   │   Authoring (Universal Editor) · MSM / inheritance ·       │
+   │   Translation · Workflows · Rollouts · Custom authoring    │
+   └───────────────────────────┬──────────────────────────────┘
+                               │  calls (integrations)
+                               ▼
+   ┌──────────────────────────────────────────────────────────┐
+   │              App Builder  (Adobe I/O Runtime)              │
+   │   Standalone service — invoked for backend/data fetches    │
+   │   & integrations (also callable from the edge / blocks)    │
+   └──────────────────────────────────────────────────────────┘
 ```
 
-**Reading the diagram:**
-- **AEM Author** is the authoring tier; on **publish**, content flows to the **Edge Delivery** content/media bus and is served via the **CDN**. There is no separate Publish instance or Dispatcher.
-- **Edge Worker** (where used) runs **at the edge**, on the delivery path, at request time.
-- **App Builder** (where used) is **not** part of the delivery pipeline — it is a **separate service on Adobe I/O Runtime that is invoked** (by AEM author-side integrations, or by edge/blocks) for backend/data fetches and integrations. It sits alongside, called on demand, not inline in delivery.
+**Reading the diagram (how the four connect):**
+- **AEM Author (AEMaaCS)** is the authoring tier. On **publish**, content flows down into **Edge Delivery Services** (content/media bus). There is no separate Publish instance and no Dispatcher.
+- **Edge Delivery Services** renders and serves the published content; EDS blocks decorate the delivered semantic HTML.
+- **CDN (Edge Layer)** sits **in front of** Edge Delivery on the request path. The **Edge Worker** (where used) runs **here, at the edge** — at request time — and can modify the request/response or call services.
+- **End users** reach content via **CDN → Edge Delivery**.
+- **App Builder (Adobe I/O Runtime)** is a **separate service**, **not** on the delivery path. It is **invoked on demand** — by AEM author-side integrations, and/or from the edge (Edge Worker / blocks) — for backend/data fetches and integrations.
 
 **Key consequence:** because delivery/rendering no longer happens on a server-side AEM Publish tier, the **code that produced server-side rendering in AEM 6.4 is not carried forward** (Section 6). This is a **replatforming**, not a lift-and-shift of the existing codebase.
 
