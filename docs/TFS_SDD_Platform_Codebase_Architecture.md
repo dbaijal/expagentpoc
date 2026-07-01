@@ -27,27 +27,32 @@ In the target model:
 ### 2.1 Target Architecture — High Level
 
 ```
-        AUTHORING TIER                         DELIVERY TIER
- ┌───────────────────────────┐        ┌──────────────────────────────┐
- │   AEM Author (AEMaaCS)     │        │     Edge Delivery Services    │
- │                           │ publish │                              │
- │  • Page authoring (UE)     │───────▶│  Content Bus / Media Bus      │
- │  • MSM / inheritance       │        │        │                     │
- │  • Translation             │        │        ▼                     │
- │  • Workflows / rollouts    │        │  EDS Pipeline (blocks decorate│
- │  • Custom authoring code   │        │  semantic HTML client-side)   │
- └───────────────────────────┘        │        │                     │
-                                       │        ▼                     │
-                                       │      CDN  ──────▶  End Users │
-                                       └──────────────────────────────┘
-                                              ▲              ▲
-                                              │              │
-                                   ┌──────────┘        ┌─────┘
-                            ┌──────────────┐     ┌───────────────┐
-                            │ Edge Worker  │     │  App Builder   │
-                            │ (where used) │     │  (where used)  │
-                            └──────────────┘     └───────────────┘
+        AUTHORING TIER                          DELIVERY TIER
+ ┌───────────────────────────┐         ┌───────────────────────────────┐
+ │   AEM Author (AEMaaCS)     │         │      Edge Delivery Services     │
+ │                           │ publish  │                                │
+ │  • Page authoring (UE)     │────────▶│  Content Bus / Media Bus        │
+ │  • MSM / inheritance       │         │            │                   │
+ │  • Translation             │         │            ▼                   │
+ │  • Workflows / rollouts     │         │   ┌─────────────────┐          │
+ │  • Custom authoring code    │         │   │  Edge Worker     │  (edge, │
+ │                            │         │   │  (where used)    │  request │
+ └───────────────────────────┘         │   └─────────────────┘   time)   │
+              │                          │            │                   │
+              │ calls                    │            ▼                   │
+              │ (integrations)           │           CDN ──────▶ End Users│
+              ▼                          └───────────────────────────────┘
+   ┌───────────────────────┐                          │
+   │  App Builder           │ ◀────────────────────────┘
+   │  (Adobe I/O Runtime)   │   invoked as a service (e.g. by edge/blocks)
+   │  (where used)          │   for backend/data fetches & integrations
+   └───────────────────────┘
 ```
+
+**Reading the diagram:**
+- **AEM Author** is the authoring tier; on **publish**, content flows to the **Edge Delivery** content/media bus and is served via the **CDN**. There is no separate Publish instance or Dispatcher.
+- **Edge Worker** (where used) runs **at the edge**, on the delivery path, at request time.
+- **App Builder** (where used) is **not** part of the delivery pipeline — it is a **separate service on Adobe I/O Runtime that is invoked** (by AEM author-side integrations, or by edge/blocks) for backend/data fetches and integrations. It sits alongside, called on demand, not inline in delivery.
 
 **Key consequence:** because delivery/rendering no longer happens on a server-side AEM Publish tier, the **code that produced server-side rendering in AEM 6.4 is not carried forward** (Section 6). This is a **replatforming**, not a lift-and-shift of the existing codebase.
 
@@ -154,7 +159,7 @@ Because Edge Delivery does **not** render pages server-side, the AEM 6.4 code th
 
 **In short:** the **delivery/rendering layer is rebuilt as EDS blocks**, not migrated as code. Only **authoring-platform code** (Section 5.1) is carried into the AEM Cloud codebase. This is why the target AEM codebase is comparatively small and focused.
 
-> This directly reframes a traditional "Sling Model migration inventory": there is **no wholesale migration of rendering Sling Models/servlets**, because that layer is replaced. Authoring-side Java (workflow steps, rollout logic, listeners) is reviewed for AEM as a Cloud Service compatibility and carried into the AEM Cloud codebase.
+> This directly reframes several traditional AEM-Cloud-migration concerns. There is **no wholesale migration of rendering Sling Models/servlets** — that layer is replaced by EDS blocks. Consequently, **package decomposition, immutable (`/apps`) vs mutable (`/conf`, `/content`) boundaries, OSGi configuration, and Sling Model migration apply only to the small residual authoring codebase**, not to a full rendering application. Authoring-side Java (workflow steps, rollout logic, listeners) is reviewed for AEM as a Cloud Service compatibility and carried into the AEM Cloud codebase.
 
 ---
 
@@ -180,22 +185,7 @@ Access control and service identities are provisioned via **repo-init** in the A
 
 ---
 
-## 9. How This Addresses Traditional AEM-Cloud Concerns
-
-In a **traditional AEM as a Cloud Service migration** (server-rendered site), concerns such as package decomposition, immutable (`/apps`) vs mutable (`/conf`, `/content`) boundaries, OSGi/rendering configuration, and a Sling Model migration inventory are **central**, because the entire rendering application is migrated.
-
-In **EDS with AEM as the authoring source**, these concerns still exist but are **much reduced in scope**, because the rendering application is **not** migrated (Section 6):
-
-- **Package decomposition / immutable vs mutable** — applies only to the **residual authoring code** in the AEM Cloud codebase. `/apps` holds authoring customizations/overlays (immutable, code-deployed); `/conf` + `/content` hold authored/bootstrap content (mutable). There is no large rendering-component footprint under `/apps`.
-- **OSGi strategy** — applies to authoring-side services only (Section 7).
-- **Sling Model migration** — there is **no rendering Sling Model migration**; authoring-side Java is reviewed for Cloud compatibility (Section 6).
-- **Cloud Manager readiness** — the AEM Cloud codebase is deployed via the Cloud Manager pipeline; because the codebase is small and authoring-focused, readiness is scoped accordingly.
-
-This section is provided so these questions are explicitly answered — the short version is: **they apply only to the residual authoring codebase, not to a full rendering application.**
-
----
-
-## 10. Summary
+## 9. Summary
 
 | Codebase | Contains | Deployment | Renders/Runs |
 |---|---|---|---|
@@ -208,7 +198,7 @@ This section is provided so these questions are explicitly answered — the shor
 
 ---
 
-## 11. Assumptions and Open Items
+## 10. Assumptions and Open Items
 
 | Item | Status |
 |---|---|
