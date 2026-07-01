@@ -5,214 +5,184 @@
 
 ---
 
-## 1. Overview
+## 1. Introduction
 
-This document defines the SEO solution design for the TFS migration to AEM as a Cloud Service with Edge Delivery Services (EDS), where **AEM is the authoring source** and EDS is the delivery layer.
+This document defines the SEO solution design for the TFS content websites built on Adobe Edge Delivery Services (EDS), with **AEM as the authoring source** and EDS as the delivery layer. It serves as the reference architecture for the development, content authoring, and SEO teams to align on how SEO requirements are met across the platform.
 
-The intent is to **preserve the SEO foundations of the existing site** and apply EDS SEO best practices. Critical SEO signals — page titles, meta descriptions, canonical URLs, robots directives, Open Graph tags, hreflang coverage, sitemaps, robots.txt, redirects, crawlable semantic HTML, and applicable schema.org structured data — are carried forward.
+**Purpose:** to document the **technical approach, configuration patterns, authoring guidelines, and implementation mechanism** for each SEO capability — i.e. *how* each SEO requirement is delivered on EDS, not only that it is supported.
 
-> **Note on scope and commitments.** This document describes the **approach and platform capabilities** based on EDS best practices. Detailed field-level mapping, template-specific implementation, the structured-data inventory, and the localization model are **finalised during implementation** once the final block design, template inventory, and content model are confirmed. Targets and parity are stated as design intent, not as guarantees of specific search outcomes (which depend on factors outside the platform, such as content and external ranking signals).
+**Scope:**
 
----
+- Page metadata — Title, Description, Open Graph
+- Canonical tags
+- XML sitemaps
+- Image optimisation
+- Structured data (JSON-LD)
+- Favicon
+- noindex meta tag capability
+- robots.txt support
 
-## 2. Crawlability and Indexation
-
-### 2.1 Rendering — Crawlable Content
-
-EDS delivers **semantic HTML in the initial server response** — page text, links, headings, and image markup are present in the delivered HTML and **do not require JavaScript execution to be crawled**. JavaScript is used for **progressive enhancement** (block decoration and interactivity), not for rendering the core content. This makes the primary content and navigation crawlable by search engines without a JS-rendering dependency.
-
-> This is described as "critical content present in the initial HTML, crawlable without JS; JavaScript provides progressive enhancement" — not as "zero JavaScript on the page."
-
-### 2.2 URL Structure
-
-The existing public URL structure (`/{country}/{language}/...`) is **preserved** in the migration. URLs remain clean, descriptive, and free of query parameters for content addressing. Preserving the URL structure reduces SEO risk at cutover (existing indexed URLs and inbound links remain valid).
-
-### 2.3 Canonical Tags
-
-- Pages are **self-referencing canonical by default** — EDS can derive the canonical from the page's own URL.
-- An **override** is available where a page should point its canonical elsewhere (e.g. filtered/variant URLs pointing to a base page).
-- Canonical values reflect the page's **own target URL**; source/host values are not carried over verbatim from the old site.
-
-### 2.4 robots.txt
-
-- Served at the edge and **environment-aware**: non-production/preview environments disallow crawling; production allows it.
-- References the sitemap index (Section 2.5).
-
-### 2.5 XML Sitemaps
-
-Following EDS sitemap best practice, a **tiered sitemap architecture** is used, suited to the multi-locale (≈45 locales) site:
-
-- **Per-section / per-locale sitemaps** generated from the published content.
-- A **sitemap index** referencing the individual sitemaps, referenced in robots.txt and submitted to search engines.
-- **noindex pages are automatically excluded from sitemaps** — by indexing the `robots` property in the query configuration, any page marked `robots: noindex` is omitted from sitemap generation. This keeps noindex and sitemap exclusion consistent through a single mechanism.
-- Sitemap coverage and exclusions are validated before launch and update as content is published.
-
-### 2.6 Redirects
-
-Redirects are handled per the **Redirects migration strategy**: simple 1:1 redirects via the EDS redirects mechanism (301), and pattern/wildcard redirects at the CDN (Akamai). The existing URL structure is preserved, so redirect migration is a like-for-like carry-over. (See the Redirects strategy for detail.)
+> Detailed field-level mapping, the structured-data inventory, and the locale/hreflang model are finalised during implementation once the final block design, template inventory, and content model are confirmed. This document describes the mechanism and configuration approach; it does not guarantee specific search rankings or outcomes, which depend on content and external factors outside the platform.
 
 ---
 
-## 3. On-Page SEO Controls (Metadata, Authoring, Guardrails)
+## 2. Page Metadata — Title, Description & Open Graph
 
-### 3.1 Where Metadata Is Managed
+### 2.1 Native EDS Metadata Mappings
 
-In the AEM-as-authoring-source model, metadata is managed at two levels:
+EDS natively maps metadata properties to `<head>` tags, with built-in fallbacks when a value is not provided:
 
-- **Per-page metadata** — authored as **page properties** (the page-metadata model, set in the Page Properties of the Universal Editor). EDS emits these as the corresponding `<head>` tags.
-- **Bulk / site-wide metadata** — managed in a **bulk metadata sheet** at the site root, applied by URL pattern; used for defaults that apply across sections.
-- **Precedence:** page-level metadata **always overrides** bulk metadata.
-
-### 3.2 Metadata Mapping and Fallbacks (EDS Native Behaviour)
-
-EDS provides native mapping of metadata properties to head tags, with built-in fallbacks:
-
-| Metadata Property | Rendered HTML Tags | Fallback Behaviour |
+| Metadata Property | Rendered HTML Tags | Fallback |
 |---|---|---|
-| `title` | `<title>`, `og:title`, `twitter:title` | First `<h1>` on the page if not set |
-| `description` | `<meta name="description">`, `og:description`, `twitter:description` | First substantial paragraph if not set |
-| `image` | `og:image`, `twitter:image` | First page image / a default image if not set |
-| `canonical` | `<link rel="canonical">`, `og:url` | Auto-generated from the page's own URL if not set |
-| `robots` | `<meta name="robots">` | Defaults to `index, follow` |
+| `title` | `<title>`, `og:title`, `twitter:title` | First `<h1>` on the page |
+| `title:suffix` | Appended to `<title>` with a space | — |
+| `description` | `<meta name="description">`, `og:description`, `twitter:description` | First paragraph ≥ 10 words |
+| `image` | `og:image`, `og:image:secure_url`, `twitter:image` | First page image → `/default-meta-image.png` |
+| `canonical` | `<link rel="canonical">`, `og:url`, `twitter:url` | Auto-generated from the production host |
 
-This native behaviour reduces the amount of custom logic required and provides sensible defaults where a field is left empty.
+These mappings are provided by the EDS pipeline; no custom code is required for the standard tags. The fallbacks mean a page always emits sensible metadata even where an author leaves a field empty.
 
-### 3.3 Title Suffix (Brand Consistency)
+### 2.2 How Metadata Is Authored
 
-A global **title suffix** (e.g. `| Thermo Fisher Scientific`) can be applied via the bulk metadata sheet and appended automatically to page titles. Authors set the page-specific title; the brand suffix is applied consistently without per-page effort. This is native EDS behaviour.
+Metadata is set at two levels:
 
-### 3.4 Governed Defaults by Page Type
+- **Per-page metadata** — authored as **page metadata** in AEM (the page-metadata model, set in Page Properties in the Universal Editor). EDS renders these values as the corresponding `<head>` tags for that page.
+- **Bulk metadata** — managed in a **`metadata` sheet (`metadata.xlsx`)** at the site root. Each row's **URL column** targets pages by pattern (the wildcard `*` may be used as prefix/suffix, e.g. `/us/en/**`); each subsequent column is a metadata property (e.g. `robots`, `title:suffix`, `og:type`). The sheet is evaluated **top-to-bottom**, so site-wide entries (`**`) are placed before more specific ones. Property names are lower-cased in the HTML.
+- **Precedence:** **page-level metadata takes precedence over bulk metadata.** (The full hierarchy is: page-level → folder-mapped → bulk metadata sheet, in configured order.)
+- The metadata sheet must be **previewed and published** for changes to take effect.
 
-Default title/description patterns can be defined **per page type** in the bulk metadata sheet (e.g. a consistent description template for a given template), with **page-level values overriding** the default where authors provide specific content. This gives consistent baseline metadata while allowing per-page control.
+This gives site-wide/section defaults via the bulk sheet, with per-page override where authors provide specific values.
 
-### 3.5 Authoring Guardrails
+### 2.3 Title Suffix (Brand Consistency)
 
-- **Length guidance** — recommended limits surfaced to authors (e.g. title ≈60 characters, description ≈160 characters).
-- **Required fields** — alt text and core metadata encouraged/required via authoring guidance.
-- **Defaults** — `index, follow` default; self-referencing canonical default.
-- **Derived vs authored** — URL-/locale-driven values (canonical, og:url, hreflang) are derived rather than hand-authored, avoiding stale or inconsistent values.
+A global **`title:suffix`** (for example `| Thermo Fisher Scientific`) is applied via the bulk metadata sheet and auto-appended to the page `<title>`. Authors set only the page-specific title; the brand suffix is applied consistently without per-page effort.
+
+Example output: `Environmental Analysis Solutions | Thermo Fisher Scientific`
+
+### 2.4 Migration of Metadata
+
+At migration, the mandatory SEO fields — `title`, `description`, `og:*`, `canonical`, `robots` (incl. `noindex`) — are carried over as the page's metadata so migrated pages emit equivalent `<head>` tags. (See the Metadata migration strategy for extraction detail.)
+
+> Reference: [Bulk Metadata — aem.live](https://www.aem.live/docs/bulk-metadata)
 
 ---
 
-## 4. Structured Data (schema.org / JSON-LD)
+## 3. Canonical Tags
 
-### 4.1 Approach
+- EDS **auto-generates the canonical** from the production host (`cdn.prod.host`) as a **self-referencing** canonical — no author action required for the standard case.
+- Authors **override** only for non-standard cases (e.g. a variant/filtered URL pointing to a base page) by setting the `canonical` value in the page Metadata.
+- The canonical also feeds `og:url` / `twitter:url` (Section 2.1). Canonical values reflect the page's own target URL rather than a value copied from the old site.
 
-Structured data is implemented as **JSON-LD**. Two implementation routes are used, chosen per schema type:
+---
 
-- **Site-wide structured data** (e.g. `Organization`, `WebSite` + `SearchAction`) — emitted from the global head, present in the initial HTML.
-- **Page/block-level structured data** (e.g. `BreadcrumbList`, `FAQPage`, `VideoObject`, `ItemList`) — generated from block content.
+## 4. XML Sitemaps
 
-> **Best-practice note — placement of JSON-LD.** Where the data is available up front, structured data is preferably emitted in the **initial HTML / head**, which is the most robust for all crawlers. Where the data only exists after block decoration, it is generated by block JavaScript; this is supported by major search engines that execute JavaScript, but is inherently less robust than in-HTML structured data. The placement choice per schema type is confirmed during implementation.
+Sitemaps are configured via **`helix-sitemap.yaml`** at the project root. For a multi-locale site (~45 locales), the `languages` configuration is used to produce **per-locale sitemaps** with hreflang, referenced by a **sitemap index**.
 
-### 4.2 Candidate Schema by Block Pattern
+Example configuration pattern:
 
-| Block Pattern | Schema Type | Generation |
+```yaml
+sitemaps:
+  tfs:
+    languages:
+      en-us:
+        source: /us/en/query-index.json
+        destination: /us/en/sitemap.xml
+        hreflang: en-us
+      de-de:
+        source: /de/de/query-index.json
+        destination: /de/de/sitemap.xml
+        hreflang: de-de
+        alternate: /de/de/{path}
+      # ... one entry per locale
+```
+
+- A **`sitemap-index.xml`** file in the project references all per-locale sitemaps; it is referenced in `robots.txt` and submitted to Google Search Console and Bing Webmaster Tools.
+- **noindex exclusion:** when using a manually configured index and sitemap, the **`helix-query.yaml` index definition must include the `robots` property** so that pages with `robots: noindex` are **automatically excluded from all sitemaps**. This ties noindex and sitemap exclusion together through the indexing stage — a page marked noindex is omitted from generation, not just from crawler indexing.
+- Sitemaps update as content is published; coverage and exclusions are validated before launch.
+
+> Reference: [Sitemap — aem.live](https://www.aem.live/developer/sitemap)
+
+---
+
+## 5. Image Optimisation
+
+Images are selected from AEM and delivered via the EDS media pipeline. EDS serves **optimised images via CDN transformation** — the pipeline renders responsive `<picture>`/`srcset` markup and transforms images at the edge (format, width, and compression), for example:
+
+```
+./media_{hash}.jpg?width=750&format=webp&optimize=medium
+```
+
+- **Modern formats and compression** (e.g. WebP) and **responsive sizing** are applied automatically at the edge, supporting Core Web Vitals.
+- **Alt text** is an authoring field with guidance so images carry descriptive alternative text.
+- **Descriptive file names** are recommended via authoring guidance.
+
+---
+
+## 6. Structured Data (JSON-LD)
+
+Structured data is implemented as **JSON-LD**, generated by different mechanisms depending on where the source data lives:
+
+- **Authored content components (text/content in HTML)** — a **block decorator reads the rendered DOM and generates the JSON-LD** from the block's content (for example, Breadcrumb → `BreadcrumbList`, FAQ/Accordion → `FAQPage`). The JSON-LD `<script type="application/ld+json">` is injected by the block during decoration.
+- **Data-driven components (e.g. Product List, Video)** — where the schema depends on data not fully present in the authored HTML, the structured data is **injected into the HTML via an Edge Worker** at the delivery layer, so it is present for crawlers without relying on client-side generation.
+- **Global structured data** (e.g. `Organization`, `WebSite` + `SearchAction`) — emitted from the global head so it is present in the initial HTML site-wide.
+
+Where a component needs additional information to produce complete structured data, a **metadata property can be authored** on the page and read by the generator.
+
+**Candidate schema by component (initial inventory — confirmed during implementation):**
+
+| Component | Schema Type | Generation |
 |---|---|---|
-| Breadcrumb | `BreadcrumbList` | From navigation hierarchy |
-| Video / Video playlist | `VideoObject` | From video embed metadata |
-| FAQ / Accordion (FAQ variant) | `FAQPage` | From question/answer content |
-| Cards / Carousel / Collection | `ItemList` | From item content |
+| Breadcrumb | `BreadcrumbList` | Block decorator reads DOM |
+| FAQ / Accordion (FAQ variant) | `FAQPage` | Block decorator reads DOM |
+| Video / Video playlist | `VideoObject` | Edge Worker injects into HTML |
+| Product List | `Product` / `ItemList` | Edge Worker injects into HTML |
 | Organization (global) | `Organization` | Global head — site-wide |
-| Search | `WebSite` + `SearchAction` | Global head — enables sitelinks search box |
+| Search | `WebSite` + `SearchAction` | Global head — sitelinks search box |
 
-This is an **initial candidate inventory**; the confirmed set, per-page-type mapping, and placement (head vs block) are finalised during implementation. (A dedicated structured-data / JSON-LD design covers the detail.)
-
-### 4.3 Validation
-
-Structured data is validated using standard tooling (e.g. Google Rich Results Test / Schema Markup Validator) as part of implementation and pre-launch checks.
+Structured data is validated using standard tooling (Google Rich Results Test / Schema Markup Validator) during implementation and pre-launch.
 
 ---
 
-## 5. Content Strategy and Internal Linking
+## 7. Favicon
 
-The platform provides the capabilities that support good on-page SEO and internal linking; content strategy itself remains a **TFS editorial responsibility**, supported by these platform guardrails:
-
-- **Semantic heading hierarchy** (H1 → H2 → H3) supported by block design.
-- **Internal linking** — contextual in-content links, breadcrumbs, and related-content blocks.
-- **No orphan pages** — pages reachable via navigation/internal links.
-- **Reasonable click depth** — important pages reachable within a few clicks of the homepage.
-- **Crawlable links** — navigation and links present in the server-delivered HTML.
+The favicon is configured in the **global head (`head.html`)** so it is applied site-wide for browser tab and bookmark identification.
 
 ---
 
-## 6. Media Optimization
+## 8. noindex Meta Tag
 
-- **Alt text** — an authoring field with guidance; encouraged/required so images carry descriptive alternative text.
-- **Edge image optimization** — EDS optimizes images at the edge (modern formats, compression, and responsive sizing via `srcset`), supporting performance and Core Web Vitals.
-- **Descriptive file names** — authoring guidance to use descriptive, keyword-relevant image file names.
-- **Image sitemaps** — image entries can be included in sitemap generation where required; the need and scope are confirmed with TFS.
+- Authors add **`robots: noindex`** to the page Metadata; EDS renders it as `<meta name="robots" content="noindex">`.
+- Because the sitemap configuration indexes the `robots` property (Section 4), pages marked `noindex` are **automatically excluded from the sitemaps** as well — a single, consistent control.
 
 ---
 
-## 7. Rendering Approach and Crawl Assurance
+## 9. robots.txt
 
-- Core content and links are delivered as **semantic HTML in the initial response** and are crawlable **without JavaScript**.
-- JavaScript provides **progressive enhancement** (block decoration, interactivity), not core content rendering.
-- **HTTPS** is enforced at the edge (HTTP → HTTPS).
-- The architecture is **performance-oriented** and designed to support good Core Web Vitals; actual scores depend on final content, images, and third-party scripts and are validated during implementation.
-
-> Performance and Core Web Vitals are stated as **design goals supported by the architecture**, not as guaranteed scores.
+- `robots.txt` is served at the delivery layer and configured through the **site configuration**.
+- It is **environment-aware**: non-production/preview environments disallow crawling, while production allows it.
+- It references the **sitemap index** (`sitemap-index.xml`) so crawlers can discover the per-locale sitemaps.
 
 ---
 
-## 8. SEO Measurement and Tooling
-
-- **Search Console / Webmaster tools** — production property verified (verification handled at the edge / head); sitemaps submitted; coverage, indexation, and enhancements monitored.
-- **Performance monitoring** — EDS provides Real User Monitoring (RUM) for Core Web Vitals field data.
-- **KPIs (to be agreed with TFS)** — examples: organic traffic, indexed-page count, Core Web Vitals, crawl errors, and rankings for priority terms. Migration-specific monitoring: pre/post indexation parity, redirect health (no redirect-to-404), and 404 monitoring after cutover.
-
----
-
-## 9. Migration / Launch Strategy (SEO)
-
-### 9.1 Pre-Launch Validation
-
-- **Metadata / `<head>` parity** — migrated pages emit the confirmed metadata (title, description, robots, canonical, OG) correctly.
-- **Canonical and hreflang** correctness — resolve to correct target URLs / locale alternates.
-- **Sitemap and robots.txt** — coverage, exclusions, and environment-awareness verified.
-- **Structured data** — validated with Rich Results tooling.
-- **Redirects** — verified to resolve (no redirect-to-404).
-
-### 9.2 Launch and Rollback
-
-Content is verified on its EDS URLs ahead of go-live; go-live and rollback are handled at the **CDN routing layer** (route to EDS; revert if required). Sequencing is confirmed during joint go-live planning. (See the Content Migration Strategy overview.)
-
-### 9.3 Post-Launch
-
-- Crawl and Search Console monitoring for indexation and coverage.
-- Redirect and 404 monitoring.
-- Ranking/traffic monitoring against the pre-launch baseline.
-
----
-
-## 10. Supporting Elements
-
-- **404 page** — a custom 404 page is provided via the EDS 404 mechanism.
-- **Favicon** — configured in the global head.
-- **noindex** — pages can be marked `robots: noindex` per page; such pages are excluded from sitemaps automatically (Section 2.5).
-
----
-
-## 11. Ownership and Governance
+## 10. Ownership and Guardrails
 
 | Area | Owner |
 |---|---|
-| Derived-metadata logic, sitemap/robots configuration, structured-data generation, blocks | Adobe (development) |
-| Per-page metadata, alt text, titles/descriptions within guardrails | TFS Authors |
-| SEO strategy, KPI monitoring, Search Console, content strategy | TFS SEO / Content team |
-| URL structure, canonical/redirect policy decisions | TFS + Adobe |
+| `helix-sitemap.yaml`, `helix-query.yaml`, `head.html`, robots.txt config, block decorators / Edge Workers for structured data, image pipeline | Adobe (development) |
+| Per-page metadata (title, description, og, canonical override, robots/noindex), alt text | TFS Authors |
+| Bulk metadata sheet (`title:suffix`, site/section defaults) | TFS + Adobe |
+| SEO strategy, KPI monitoring, Search Console / Webmaster tools | TFS SEO / Content team |
 
-Authoring guardrails (defaults, required fields, length guidance, derived values) are provided to reduce author error and maintain consistent SEO signals.
+Authoring guardrails (native fallbacks, `index, follow` default, self-referencing canonical default, required alt text, length guidance for title/description) reduce author error and keep SEO signals consistent.
 
 ---
 
-## 12. Open Items
+## 11. Open Items
 
 | Item | Owner | Status |
 |---|---|---|
-| Confirm in-scope metadata properties and per-page-type defaults | TFS + Adobe | Open |
-| Confirm structured-data inventory, per-page-type mapping, and head-vs-block placement | TFS + Adobe | Open |
-| Confirm hreflang / locale mapping (with MSM/translation design) | TFS + Adobe | Open |
-| Confirm image-sitemap requirement | TFS | Open |
-| Confirm SEO KPIs and measurement tooling | TFS | Open |
+| Confirm in-scope metadata properties and bulk-sheet defaults per section | TFS + Adobe | Open |
+| Confirm structured-data inventory and per-component generation (block vs Edge Worker) | TFS + Adobe | Open |
+| Confirm hreflang / locale mapping for `helix-sitemap.yaml` (with MSM/translation design) | TFS + Adobe | Open |
+| Confirm robots.txt rules per environment | TFS + Adobe | Open |
