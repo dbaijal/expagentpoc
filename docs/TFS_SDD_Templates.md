@@ -86,7 +86,16 @@ This keeps page creation fast and consistent (a known starting point) while givi
 
 ## 7. Component Governance Mechanisms
 
-While there is no editable-template **policy** model in the target, component governance is achieved through the following mechanisms, defined in code:
+> **Important — there is no 1:1 equivalent of AEM Template Policies in the target model.** The AEM editable-template policy model (author-configurable, per-template allowed-component governance managed through the Template Editor UI) does **not** exist out-of-the-box in EDS with AEM as the authoring source.
+>
+> A **similar level of governance can be achieved**, but it is **not OOTB** — it requires **custom development**. It is implemented in **code**, using a combination of:
+> - **Universal Editor filters** (`component-filters.json`) — allowed components within a section/container;
+> - **Template metadata** (e.g. `template` / `theme` values rendered as body classes) — to identify the page type;
+> - **Custom logic in `editor-support.js`** — to dynamically change allowed components and editing behaviour per "template" (page type).
+>
+> In other words, governance is **not configured by an author in a UI** as it was in AEM; it is **built and maintained by developers in code.**
+
+The mechanisms that together deliver this governance are described below.
 
 ### 7.1 Component Configuration Files
 
