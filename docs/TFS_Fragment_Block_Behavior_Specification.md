@@ -83,7 +83,7 @@ The block JavaScript reads the base path, determines the visitor's locale from t
 
 ## 3. TFS Fragment Block — Execution Flow (Index Lookup)
 
-The block resolves the correct variation using a **published fragment index** (`query-index.json`, produced via `helix-query.yaml`), rather than trial-and-error fetching. It fetches the index **once per page** (cached), resolves the best-match candidate **in memory**, then fetches the **single** matched variation.
+The block resolves the correct variation using a **dedicated published fragment index** (`fragment-index.json`, produced via `helix-query.yaml`), rather than trial-and-error fetching. This index is **scoped to the fragment library only** — it indexes fragments and their variations, not all site pages — so it stays small and fast to fetch. The block fetches the index **once per page** (cached), resolves the best-match candidate **in memory**, then fetches the **single** matched variation.
 
 ```
 PAGE LOADS — TFS Fragment block is on the page
@@ -110,7 +110,7 @@ candidates = ["en-us", "en-north-america", "master"]
 │
 ▼
 FETCH the fragment index ONCE (cached for the page)
-index = query-index.json for the fragment library
+index = fragment-index.json  (scoped to the fragment library only)
 │
 ▼
 RESOLVE in memory — walk candidates in order, pick the FIRST that EXISTS in the index
@@ -124,7 +124,7 @@ FETCH the single resolved variation → basePath/{resolved}.plain.html
 RENDER matched variation HTML into block
 ```
 
-**Why index lookup (not sequential 404 probing):** because the fragment library is centralized (single site / content bus), a single `query-index.json` lists every fragment and the variations that exist for it. The block checks existence **in the index (in memory)** and issues **one** content fetch for the resolved variation — avoiding trial-and-error requests and 404 noise.
+**Why index lookup (not sequential 404 probing):** because the fragment library is centralized (single site / content bus), a dedicated `fragment-index.json` — scoped to the fragment library only — lists every fragment and the variations that exist for it. Keeping the index scoped to fragments (rather than indexing all site pages) keeps it small and fast. The block checks existence **in the index (in memory)** and issues **one** content fetch for the resolved variation — avoiding trial-and-error requests and 404 noise.
 
 ### Example — German Page
 ```
