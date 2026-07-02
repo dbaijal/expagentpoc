@@ -117,12 +117,12 @@
 
         <!-- Content Author -->
         <mxCell id="author" value="Content Author" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
-          <mxGeometry x="300" y="790" width="30" height="60" as="geometry" />
+          <mxGeometry x="360" y="790" width="30" height="60" as="geometry" />
         </mxCell>
 
         <!-- Identity & Access -->
         <mxCell id="identity" value="Identity &amp; Access" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#e6f0ff;strokeColor=#2f6fbf;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="420" y="780" width="460" height="110" as="geometry" />
+          <mxGeometry x="480" y="780" width="460" height="110" as="geometry" />
         </mxCell>
         <mxCell id="tfsid" value="Thermo Fisher ID&#10;(Corporate SSO)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2f6fbf;" vertex="1" parent="identity">
           <mxGeometry x="40" y="40" width="180" height="50" as="geometry" />
@@ -133,15 +133,15 @@
 
         <!-- ===== EDGES ===== -->
         <!-- Visitor to Browser -->
-        <mxCell id="e_visitor_browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="visitor" target="browser">
+        <mxCell id="e_visitor_browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="visitor" target="browser">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <!-- Browser <-> Akamai -->
-        <mxCell id="e_browser_akamai" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;" edge="1" parent="1" source="browser" target="akamai">
+        <mxCell id="e_browser_akamai" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="browser" target="akamai">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <!-- Akamai -> EDS -->
-        <mxCell id="e_akamai_eds" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="akamai" target="eds">
+        <mxCell id="e_akamai_eds" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="akamai" target="eds">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <!-- MS Header/Footer -> Edge Worker -->
@@ -152,49 +152,75 @@
         <mxCell id="e_prod_ew" value="HTTP Calls" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="msProduct" target="edgeworker">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- AEMaaCS -> EDS (Preview/Publish) -->
-        <mxCell id="e_aem_eds" value="Preview / Publish" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;fontColor=#d68910;fontSize=10;" edge="1" parent="1" source="pages" target="eds">
+
+        <!-- ===== AEMaaCS -> EDS (Preview/Publish) : clean vertical ===== -->
+        <mxCell id="e_aem_eds" value="Preview / Publish" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;fontColor=#d68910;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.45;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="pages" target="eds">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- DAM -> EDS (Assets) -->
-        <mxCell id="e_dam_eds" value="Assets" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;fontColor=#d68910;fontSize=10;" edge="1" parent="1" source="dam" target="mediabus">
+        <!-- DAM -> Media Bus (Assets) : clean vertical -->
+        <mxCell id="e_dam_eds" value="Assets" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;fontColor=#d68910;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="dam" target="mediabus">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- GitHub -> EDS (Code Sync) -->
-        <mxCell id="e_github_eds" value="Code Sync" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontStyle=1;fontSize=10;" edge="1" parent="1" source="github" target="eds">
-          <mxGeometry relative="1" as="geometry" />
+
+        <!-- ===== 2. Code Sync: GitHub -> EDS (lands cleanly on EDS left side) ===== -->
+        <mxCell id="e_github_eds" value="Code Sync" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontStyle=1;fontSize=10;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.85;entryDx=0;entryDy=0;" edge="1" parent="1" source="github" target="eds">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="230" y="587" />
+              <mxPoint x="230" y="487" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <!-- Developer -> GitHub (Code Push) -->
-        <mxCell id="e_dev_github" value="Code Push" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontSize=10;" edge="1" parent="1" source="developer" target="github">
+        <mxCell id="e_dev_github" value="Code Push" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="developer" target="github">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Content Author -> AEMaaCS -->
-        <mxCell id="e_author_aem" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;" edge="1" parent="1" source="author" target="aemcs">
+
+        <!-- ===== 3. Content Author -> AEMaaCS : clean vertical ===== -->
+        <mxCell id="e_author_aem" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.1;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="author" target="aemcs">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Identity -> AEMaaCS (Authorization) -->
-        <mxCell id="e_id_aem" value="Authorization" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;" edge="1" parent="1" source="identity" target="aemcs">
+
+        <!-- ===== 4. Identity & Access -> AEMaaCS (Authorization) : clean vertical ===== -->
+        <mxCell id="e_id_aem" value="Authorization" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="identity" target="aemcs">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Browser <-> Brightcove (JS Player) -->
-        <mxCell id="e_browser_bc" value="JS Player" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;fontSize=10;" edge="1" parent="1" source="brightcove" target="browser">
+
+        <!-- ===== 1. Browser <-> right-side integrations : clean nested comb ===== -->
+        <!-- Brightcove (JS Player, bidirectional) : near-straight -->
+        <mxCell id="e_browser_bc" value="JS Player" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;fontSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="brightcove" target="browser">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Browser -> Target (JS SDK) -->
-        <mxCell id="e_browser_target" value="JS SDK" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;" edge="1" parent="1" source="target" target="browser">
+        <!-- Adobe Target -> Browser (JS SDK) -->
+        <mxCell id="e_target_browser" value="JS SDK" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="target" target="browser">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1275" y="175" />
+              <mxPoint x="1275" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- AEP -> Target (Audiences) : short vertical between stacked boxes -->
+        <mxCell id="e_aep_target" value="Audiences" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="aep" target="target">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Target <- AEP (Audiences) -->
-        <mxCell id="e_aep_target" value="Audiences" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;" edge="1" parent="1" source="aep" target="target">
-          <mxGeometry relative="1" as="geometry" />
+        <!-- Browser -> Web SDK (Analytics events) -->
+        <mxCell id="e_browser_websdk" value="Analytics" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="browser" target="websdk">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1255" y="112" />
+              <mxPoint x="1255" y="320" />
+            </Array>
+          </mxGeometry>
         </mxCell>
-        <!-- Browser -> Web SDK -->
-        <mxCell id="e_browser_websdk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;" edge="1" parent="1" source="websdk" target="browser">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <!-- EDS -> Forms Middleware -->
-        <mxCell id="e_eds_forms" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="eds" target="forms">
-          <mxGeometry relative="1" as="geometry" />
+        <!-- Browser -> Forms Middleware -->
+        <mxCell id="e_browser_forms" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="browser" target="forms">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1235" y="121" />
+              <mxPoint x="1235" y="390" />
+            </Array>
+          </mxGeometry>
         </mxCell>
 
         <!-- Legend -->
