@@ -129,29 +129,29 @@
         <mxCell id="ed_visitor_browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="visitor" target="browser">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ed_browser_akamai" value="a  request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontStyle=1;exitX=1;exitY=0.35;entryX=0;entryY=0.4;" edge="1" parent="1" source="browser" target="akamai">
+        <mxCell id="ed_browser_akamai" value="1  request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontStyle=1;exitX=1;exitY=0.35;entryX=0;entryY=0.4;" edge="1" parent="1" source="browser" target="akamai">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ed_akamai_browser" value="f  HTML response" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0;exitY=0.75;entryX=1;entryY=0.75;" edge="1" parent="1" source="akamai" target="browser">
+        <mxCell id="ed_akamai_browser" value="6  HTML response" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0;exitY=0.75;entryX=1;entryY=0.75;" edge="1" parent="1" source="akamai" target="browser">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ed_akamai_eds" value="b  cache miss →&#10;forward to EDS origin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontStyle=1;fontSize=10;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="akamai" target="eds">
+        <mxCell id="ed_akamai_eds" value="2  cache miss →&#10;forward to EDS origin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontStyle=1;fontSize=10;exitX=1;exitY=0.4;entryX=0;entryY=0.4;" edge="1" parent="1" source="akamai" target="eds">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ed_resolve_assemble" value="c" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="edsResolve" target="edsAssemble">
+        <mxCell id="ed_resolve_assemble" value="3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="edsResolve" target="edsAssemble">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ed_bus_assemble" value="d  content" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="busDel" target="edsAssemble">
+        <mxCell id="ed_bus_assemble" value="4  content" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="busDel" target="edsAssemble">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ed_code_assemble" value="d  code" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontSize=10;exitX=0.5;exitY=0;entryX=0.7;entryY=1;" edge="1" parent="1" source="edsCode" target="edsAssemble">
+        <mxCell id="ed_code_assemble" value="4  code" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontSize=10;exitX=0.5;exitY=0;entryX=0.7;entryY=1;" edge="1" parent="1" source="edsCode" target="edsAssemble">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Edge worker augments the returning response -->
-        <mxCell id="ed_ew_augment" value="e  edge worker augments&#10;returning response" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#d68910;fontColor=#d68910;fontSize=10;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" edge="1" parent="1" source="edgeworker" target="edsAssemble">
+        <!-- Edge worker augments the response as it returns from EDS toward the browser -->
+        <mxCell id="ed_ew_augment" value="5  assembled response returns;&#10;edge worker augments at edge" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#d68910;fontColor=#d68910;fontSize=10;exitX=0;exitY=0.6;entryX=1;entryY=0.5;" edge="1" parent="1" source="edsAssemble" target="edgeworker">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="920" y="440" />
+              <mxPoint x="920" y="455" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -194,7 +194,7 @@
         <mxCell id="lg4" value="Code / Dev" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f5d5;strokeColor=#3a923a;fontSize=10;" vertex="1" parent="legendBox">
           <mxGeometry x="530" y="30" width="110" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="lg5" value="Publish path (green #)  •  Delivery path (blue letter)  •  dashed = status / augmentation" style="text;html=1;fontSize=10;align=left;fontColor=#666666;" vertex="1" parent="legendBox">
+        <mxCell id="lg5" value="Publish path: green 1–5  •  Delivery path: blue 1–6  •  dashed = status / edge augmentation" style="text;html=1;fontSize=10;align=left;fontColor=#666666;" vertex="1" parent="legendBox">
           <mxGeometry x="650" y="30" width="240" height="30" as="geometry" />
         </mxCell>
 
