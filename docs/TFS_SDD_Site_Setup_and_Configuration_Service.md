@@ -131,9 +131,9 @@ curl --request POST \
 ### Step 5 — Update the AEM configuration
 
 1. In AEM → **Tools → Cloud Services → Edge Delivery Services Configuration** → select the configuration → **Properties**.
-2. Set the **project type** to **"aem.live with repoless config setup"** → **Save & Close**.
+2. On the **Site** tab, set **Path Mapping** to **Config Service** → **Save & Close**.
 
-   > `[SCREENSHOT: Edge Delivery Services Configuration → project type = "aem.live with repoless config setup"]`
+   > `[SCREENSHOT: Edge Delivery Service Configuration → Site tab → Path Mapping = "Config Service"]`
 
 ### Step 6 — Validate
 
@@ -145,11 +145,46 @@ curl --request POST \
 
 ## 4. Path Mapping for Locales
 
-TFS serves **all locales from this single EDS site** on a shared domain, using **path mapping**.
+**Path mapping** defines how internal content paths in AEM are mapped to the public URL structure of the website, and it also controls which content paths are published to Edge Delivery Services. For TFS, path mappings are managed through the **Configuration Service** as part of the site configuration.
 
-- **Where it is defined:** the site configuration's **`public.paths.mappings`** (and `includes`) arrays, managed through the Admin API (Step 3). Path mapping defines how internal AEM content paths are exposed as public website URLs, and controls which content paths are published to Edge Delivery Services.
-- **How locales are mapped:** each locale (country-language) maps its AEM content path to its public URL — for example `/content/tfs-eds/<country>/<language>/:/<country>/<language>/`.
-- **Single site for all locales:** rather than a separate site per locale, TFS uses one site configuration with per-locale path mappings. Locale content is authored and governed in AEM; the site configuration maps and serves it.
+TFS serves **all locales from this single EDS site** on a shared domain: rather than a separate site per locale, one site configuration holds per-locale path mappings. Locale content is authored and governed in AEM; the site configuration maps and serves it.
+
+### 4.1 Configuration structure
+
+Path mapping is configured under `public.paths` in the site configuration (Step 3), using three arrays:
+
+| Key | Purpose |
+|---|---|
+| **`mappings`** | Transforms an internal AEM path to a public URL path. Format: `<internal path>:<external path>`. Uses prefix matching (no glob patterns). |
+| **`includes`** | Determines **which** AEM content trees are published to Edge Delivery Services. Without a matching include, content is not published regardless of mappings. Supports glob patterns (`*`, `**`). |
+| **`excludes`** *(optional)* | Removes specific paths from publishing, applied after `includes`. A path is published only when it matches an `include` **and** matches no `exclude`. |
+
+> When multiple mappings match a path, the **most specific (last) match wins** — order mappings from least to most specific.
+
+### 4.2 How TFS locales are mapped
+
+Each locale (country-language) maps its AEM content path to its public URL. For example:
+
+```json
+{
+  "public": {
+    "paths": {
+      "mappings": [
+        "/content/tfs-eds/us/en/:/",
+        "/content/tfs-eds/gb/en/:/gb/en/",
+        "/content/tfs-eds/de/de/:/de/de/"
+      ],
+      "includes": [
+        "/content/tfs-eds/"
+      ]
+    }
+  }
+}
+```
+
+In this example the US-English root maps to the domain root (`/`), while other locales map to their own URL prefixes (`/gb/en/`, `/de/de/`, …). The single `includes` entry publishes the whole `tfs-eds` content tree; each locale is then exposed at its mapped public path.
+
+> Reference: [Path mapping for AEM authoring (aem.live)](https://www.aem.live/developer/authoring-path-mapping)
 
 ---
 
