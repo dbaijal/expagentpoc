@@ -39,7 +39,7 @@ The result is that the published, semantic HTML for the page is available in Edg
 This describes how published content is delivered to end users, with Akamai as the customer-facing CDN fronting Edge Delivery Services.
 
 ### 2.1 End-User Request Initiation
-An end user navigates to a TFS website URL. The browser sends the request to the public site domain, which is fronted by **Akamai CDN**. Akamai acts as the first caching and delivery layer for TFS public web traffic.
+An end user navigates to a TFS website URL. The browser sends the request to the public site domain, which is fronted by **Akamai CDN** (the customer / BYO CDN, in front of Edge Delivery Services). Akamai acts as the first caching and delivery layer for TFS public web traffic. Where configured, an **edge worker** also runs at this edge layer and participates in the response (see Section 2.5). *(The term "edge worker" is used generically for edge-compute logic at this layer; the specific platform — e.g. a CDN edge worker or Adobe edge compute/functions — is a downstream decision and does not change the flow described here.)*
 
 ### 2.2 Akamai Cache Evaluation
 Akamai evaluates whether the requested HTML response is already available in its edge cache:
@@ -63,13 +63,21 @@ Edge Delivery Services assembles the HTML response using:
 
 The runtime returns semantic, edge-optimized HTML for the requested page, along with the appropriate references to stylesheets, scripts, images, and other assets required by the experience.
 
-### 2.5 Published Content Retrieval and Refresh
+### 2.5 Edge Worker Augmentation (Where Configured)
+Because the edge worker runs on the **edge layer, in front of Edge Delivery Services**, it can **augment the response at the edge** as the Edge Delivery response passes back through to the browser. Where configured for a given use case, the edge worker may:
+- Inject shared elements such as the **header/footer** (from the TFS header/footer microservice)
+- Assemble **dynamic content** (e.g. product list) by calling backend services
+- Inject **structured data** (JSON-LD) into the HTML
+
+The edge worker **augments** the response; it does not replace Edge Delivery response assembly (Section 2.4) — Edge Delivery produces the base semantic HTML, and the edge worker adds edge-time augmentation. Its use is **scoped to confirmed use cases**; requests for content that needs no edge augmentation pass through unchanged.
+
+### 2.6 Published Content Retrieval and Refresh
 Published content is delivered by Edge Delivery Services from its delivery layer and associated caches. When newly published content becomes available, or when cached content has been invalidated, Edge Delivery Services serves the latest published content from the **Edge Delivery content/media bus** (populated on publish from AEM). This process is transparent to the end user and ensures that published authoring changes are reflected in delivery **without exposing the authoring systems directly to public traffic**.
 
-### 2.6 Downstream Caching
+### 2.7 Downstream Caching
 Once the response is generated, it is cached through the Adobe-managed delivery layers according to Edge Delivery Services caching behaviour and response headers. The response is then returned to Akamai, which applies its own cache policies for the public domain. This layered caching strategy improves performance, scalability, and resilience while allowing content changes to propagate quickly through targeted invalidation.
 
-### 2.7 Final Delivery to the Browser
+### 2.8 Final Delivery to the Browser
 Akamai returns the HTML response to the end user's browser. The browser then requests referenced assets — JavaScript, CSS, images, and fonts — which are also served through the configured CDN and Edge Delivery delivery path. Subsequent requests for the same page are typically served from the Akamai cache until the entry expires or is invalidated following a content update.
 
 ---
@@ -79,6 +87,6 @@ Akamai returns the HTML response to the end user's browser. The browser then req
 | Flow | Direction | Path |
 |---|---|---|
 | **Publish** | Write | Author (Universal Editor) → publish event → EDS publish service → EDS Admin API → EDS ingests semantic HTML from AEM Author → publish status back to AEM |
-| **Rendering** | Read | End user → Akamai (cache) → Edge Delivery Services (resolve + assemble from published content + EDS codebase) → response cached at Adobe layers and Akamai → delivered to browser |
+| **Rendering** | Read | End user → Akamai (cache; Edge Worker augmentation *where configured*) → Edge Delivery Services (resolve + assemble from published content + EDS codebase) → response cached at Adobe layers and Akamai → delivered to browser |
 
 Authoring happens in AEM; delivery happens through Edge Delivery Services fronted by Akamai. Published content is served from the Edge Delivery content/media bus, and the authoring systems are never exposed to public traffic.
