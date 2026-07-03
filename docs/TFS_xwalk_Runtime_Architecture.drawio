@@ -1,169 +1,127 @@
-<mxfile host="app.diagrams.net" modified="2026-01-01T00:00:00.000Z" agent="TFS-SDD" version="24.0.0">
+<mxfile host="app.diagrams.net" agent="TFS-SDD">
   <diagram id="tfs-xwalk-runtime" name="TFS xwalk Runtime Architecture">
-    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="1548" dy="1062" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-
-        <!-- Title -->
-        <mxCell id="title" value="TFS Runtime / Physical Architecture (EDS with AEM as Authoring Source)" style="text;html=1;fontSize=16;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
-          <mxGeometry x="40" y="20" width="800" height="30" as="geometry" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=16;fontStyle=1;align=left;verticalAlign=middle;" value="TFS Runtime / Physical Architecture (EDS with AEM as Authoring Source)" vertex="1">
+          <mxGeometry height="30" width="800" x="40" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="siHeader" value="System Integrations" style="text;html=1;fontSize=13;fontStyle=1;align=left;fontColor=#888888;" vertex="1" parent="1">
-          <mxGeometry x="1300" y="20" width="260" height="20" as="geometry" />
+        <mxCell id="siHeader" parent="1" style="text;html=1;fontSize=13;fontStyle=1;align=left;fontColor=#888888;" value="System Integrations" vertex="1">
+          <mxGeometry height="20" width="260" x="1300" y="20" as="geometry" />
         </mxCell>
-
-        <!-- Site Visitor -->
-        <mxCell id="visitor" value="Site Visitor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
-          <mxGeometry x="470" y="60" width="30" height="60" as="geometry" />
+        <mxCell id="visitor" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Site Visitor" vertex="1">
+          <mxGeometry height="60" width="30" x="470" y="60" as="geometry" />
         </mxCell>
-
-        <!-- Browser -->
-        <mxCell id="browser" value="Browser&#10;(Client-side JS execution)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="600" y="70" width="260" height="60" as="geometry" />
+        <mxCell id="browser" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;fontStyle=1;" value="Browser&#xa;(Client-side JS execution)" vertex="1">
+          <mxGeometry height="60" width="260" x="600" y="70" as="geometry" />
         </mxCell>
-
-        <!-- Client-side JS in Browser label -->
-        <mxCell id="csjs" value="Client-side JS in Browser" style="text;html=1;fontSize=12;fontStyle=1;align=left;fontColor=#888888;" vertex="1" parent="1">
-          <mxGeometry x="1300" y="55" width="260" height="20" as="geometry" />
+        <mxCell id="csjs" parent="1" style="text;html=1;fontSize=14;fontStyle=1;align=left;fontColor=#1A1A1A;" value="Client-side JS in Browser" vertex="1">
+          <mxGeometry height="15" width="260" x="1300" y="45" as="geometry" />
         </mxCell>
-
-        <!-- Right side integrations -->
-        <mxCell id="brightcove" value="Brightcove&#10;(Video &amp; Playlists)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="1300" y="80" width="240" height="50" as="geometry" />
+        <mxCell id="brightcove" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Brightcove&#xa;(Video &amp; Playlists)" vertex="1">
+          <mxGeometry height="50" width="240" x="1300" y="80" as="geometry" />
         </mxCell>
-        <mxCell id="target" value="Adobe Target&#10;(Personalization &amp; Offers)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f0ff;strokeColor=#2f6fbf;" vertex="1" parent="1">
-          <mxGeometry x="1300" y="150" width="240" height="50" as="geometry" />
+        <mxCell id="target" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f0ff;strokeColor=#2f6fbf;" value="Adobe Target&#xa;(Personalization &amp; Offers)" vertex="1">
+          <mxGeometry height="50" width="240" x="1300" y="150" as="geometry" />
         </mxCell>
-        <mxCell id="aep" value="Adobe Experience Platform (AEP)&#10;(Audiences)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f0ff;strokeColor=#2f6fbf;" vertex="1" parent="1">
-          <mxGeometry x="1300" y="220" width="240" height="55" as="geometry" />
+        <mxCell id="aep" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f0ff;strokeColor=#2f6fbf;" value="Adobe Experience Platform (AEP)&#xa;(Audiences)" vertex="1">
+          <mxGeometry height="55" width="240" x="1300" y="220" as="geometry" />
         </mxCell>
-        <mxCell id="websdk" value="Web SDK&#10;(Analytics &amp; Events)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f0ff;strokeColor=#2f6fbf;" vertex="1" parent="1">
-          <mxGeometry x="1300" y="295" width="240" height="50" as="geometry" />
+        <mxCell id="websdk" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f0ff;strokeColor=#2f6fbf;" value="Web SDK&#xa;(Analytics &amp; Events)" vertex="1">
+          <mxGeometry height="50" width="240" x="1300" y="295" as="geometry" />
         </mxCell>
-        <mxCell id="forms" value="Forms Middleware" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="1300" y="365" width="240" height="50" as="geometry" />
+        <mxCell id="forms" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Forms Middleware" vertex="1">
+          <mxGeometry height="50" width="240" x="1300" y="365" as="geometry" />
         </mxCell>
-
-        <!-- TFS Microservices (left) -->
-        <mxCell id="msLabel" value="TFS Microservices" style="text;html=1;fontSize=12;fontStyle=1;align=left;" vertex="1" parent="1">
-          <mxGeometry x="40" y="210" width="200" height="20" as="geometry" />
+        <mxCell id="msLabel" parent="1" style="text;html=1;fontSize=12;fontStyle=1;align=left;" value="TFS Microservices" vertex="1">
+          <mxGeometry height="20" width="200" x="40" y="210" as="geometry" />
         </mxCell>
-        <mxCell id="msHF" value="MS Header / Footer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="40" y="235" width="180" height="45" as="geometry" />
+        <mxCell id="msHF" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="MS Header / Footer" vertex="1">
+          <mxGeometry height="45" width="180" x="40" y="235" as="geometry" />
         </mxCell>
-        <mxCell id="msProduct" value="MS Product&#10;(Catalog / Pricing)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="1">
-          <mxGeometry x="40" y="300" width="180" height="50" as="geometry" />
+        <mxCell id="msProduct" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="MS Product&#xa;(Catalog / Pricing)" vertex="1">
+          <mxGeometry height="50" width="180" x="40" y="300" as="geometry" />
         </mxCell>
-
-        <!-- Akamai CDN container -->
-        <mxCell id="akamai" value="Akamai&#10;Content Delivery Network" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#f5f5f5;strokeColor=#999999;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="260" y="180" width="700" height="130" as="geometry" />
+        <mxCell id="akamai" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#f5f5f5;strokeColor=#999999;fontStyle=1;" value="Akamai&#xa;Content Delivery Network" vertex="1">
+          <mxGeometry height="130" width="700" x="260" y="180" as="geometry" />
         </mxCell>
-        <mxCell id="edgeworker" value="Edge Worker&#10;(Akamai EdgeWorkers / Adobe Edge Compute)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="akamai">
-          <mxGeometry x="40" y="45" width="260" height="60" as="geometry" />
+        <mxCell id="edgeworker" parent="akamai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;fontStyle=1;" value="Edge Worker&#xa;(Akamai EdgeWorkers / Adobe Edge Compute)" vertex="1">
+          <mxGeometry height="60" width="260" x="40" y="45" as="geometry" />
         </mxCell>
-        <mxCell id="cdncache" value="CDN Cache" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="akamai">
-          <mxGeometry x="360" y="55" width="160" height="40" as="geometry" />
+        <mxCell id="cdncache" parent="akamai" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="CDN Cache" vertex="1">
+          <mxGeometry height="40" width="160" x="360" y="55" as="geometry" />
         </mxCell>
-
-        <!-- Edge Delivery Services container -->
-        <mxCell id="eds" value="Adobe Edge Delivery Services" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#fdf0e0;strokeColor=#d68910;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="260" y="360" width="700" height="150" as="geometry" />
+        <mxCell id="eds" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#fdf0e0;strokeColor=#d68910;fontStyle=1;" value="Adobe Edge Delivery Services" vertex="1">
+          <mxGeometry height="150" width="700" x="260" y="360" as="geometry" />
         </mxCell>
-        <mxCell id="preview" value="Preview&#10;(.page)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;" vertex="1" parent="eds">
-          <mxGeometry x="30" y="40" width="110" height="45" as="geometry" />
+        <mxCell id="preview" parent="eds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;" value="Preview&#xa;(.page)" vertex="1">
+          <mxGeometry height="45" width="110" x="30" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="live" value="Live&#10;(.live)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;" vertex="1" parent="eds">
-          <mxGeometry x="160" y="40" width="110" height="45" as="geometry" />
+        <mxCell id="live" parent="eds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;" value="Live&#xa;(.live)" vertex="1">
+          <mxGeometry height="45" width="110" x="160" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="mediabus" value="Media Bus" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="eds">
-          <mxGeometry x="290" y="40" width="120" height="45" as="geometry" />
+        <mxCell id="mediabus" parent="eds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Media Bus" vertex="1">
+          <mxGeometry height="45" width="120" x="290" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="contentbus" value="Content Bus" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="eds">
-          <mxGeometry x="430" y="40" width="120" height="45" as="geometry" />
+        <mxCell id="contentbus" parent="eds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Content Bus" vertex="1">
+          <mxGeometry height="45" width="120" x="430" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="adminservice" value="Admin Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="eds">
-          <mxGeometry x="570" y="40" width="110" height="45" as="geometry" />
+        <mxCell id="adminservice" parent="eds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Admin Service" vertex="1">
+          <mxGeometry height="45" width="110" x="570" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="configservice" value="Config Service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="eds">
-          <mxGeometry x="30" y="95" width="140" height="40" as="geometry" />
+        <mxCell id="configservice" parent="eds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Config Service" vertex="1">
+          <mxGeometry height="40" width="140" x="30" y="95" as="geometry" />
         </mxCell>
-        <mxCell id="blocks" value="Blocks &amp; Scripts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="eds">
-          <mxGeometry x="190" y="95" width="160" height="40" as="geometry" />
+        <mxCell id="blocks" parent="eds" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Blocks &amp; Scripts" vertex="1">
+          <mxGeometry height="40" width="160" x="190" y="95" as="geometry" />
         </mxCell>
-
-        <!-- AEM as a Cloud Service container (replaces DA.live + AEM Assets) -->
-        <mxCell id="aemcs" value="AEM as a Cloud Service&#10;(Authoring Source)" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#fdf0e0;strokeColor=#d68910;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="300" y="560" width="620" height="170" as="geometry" />
+        <mxCell id="aemcs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#fdf0e0;strokeColor=#d68910;fontStyle=1;" value="AEM as a Cloud Service&#xa;(Authoring Source)" vertex="1">
+          <mxGeometry height="170" width="620" x="310" y="615" as="geometry" />
         </mxCell>
-        <mxCell id="dam" value="DAM&#10;(Digital Asset Management)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="aemcs">
-          <mxGeometry x="40" y="55" width="160" height="80" as="geometry" />
+        <mxCell id="dam" parent="aemcs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;fontStyle=1;" value="DAM&#xa;(Digital Asset Management)" vertex="1">
+          <mxGeometry height="80" width="160" x="40" y="55" as="geometry" />
         </mxCell>
-        <mxCell id="pages" value="Pages&#10;(MSM / Inheritance,&#10;Translation, Workflows)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="aemcs">
-          <mxGeometry x="230" y="55" width="160" height="80" as="geometry" />
+        <mxCell id="pages" parent="aemcs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Pages&#xa;(MSM / Inheritance,&#xa;Translation, Workflows)" vertex="1">
+          <mxGeometry height="80" width="160" x="230" y="55" as="geometry" />
         </mxCell>
-        <mxCell id="ue" value="Universal Editor (UE)&#10;(In-context authoring)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" vertex="1" parent="aemcs">
-          <mxGeometry x="420" y="55" width="160" height="80" as="geometry" />
+        <mxCell id="ue" parent="aemcs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;" value="Universal Editor (UE)&#xa;(In-context authoring)" vertex="1">
+          <mxGeometry height="80" width="160" x="420" y="55" as="geometry" />
         </mxCell>
-
-        <!-- GitHub + Developer -->
-        <mxCell id="github" value="GitHub&#10;(EDS front-end code)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f5d5;strokeColor=#3a923a;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="40" y="560" width="160" height="55" as="geometry" />
+        <mxCell id="github" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f5d5;strokeColor=#3a923a;fontStyle=1;fontSize=15;" value="GitHub&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="55" width="160" x="40" y="560" as="geometry" />
         </mxCell>
-        <mxCell id="developer" value="Developer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
-          <mxGeometry x="105" y="660" width="30" height="60" as="geometry" />
+        <mxCell id="developer" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Developer" vertex="1">
+          <mxGeometry height="60" width="30" x="105" y="660" as="geometry" />
         </mxCell>
-
-        <!-- Content Author -->
-        <mxCell id="author" value="Content Author" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
-          <mxGeometry x="360" y="790" width="30" height="60" as="geometry" />
+        <mxCell id="author" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Content Author" vertex="1">
+          <mxGeometry height="60" width="30" x="380" y="900" as="geometry" />
         </mxCell>
-
-        <!-- Identity & Access -->
-        <mxCell id="identity" value="Identity &amp; Access" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#e6f0ff;strokeColor=#2f6fbf;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="480" y="780" width="460" height="110" as="geometry" />
+        <mxCell id="identity" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#e6f0ff;strokeColor=#2f6fbf;fontStyle=1;" value="Identity &amp; Access" vertex="1">
+          <mxGeometry height="110" width="460" x="510" y="890" as="geometry" />
         </mxCell>
-        <mxCell id="tfsid" value="Thermo Fisher ID&#10;(Corporate SSO)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2f6fbf;" vertex="1" parent="identity">
-          <mxGeometry x="40" y="40" width="180" height="50" as="geometry" />
+        <mxCell id="tfsid" parent="identity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2f6fbf;" value="Thermo Fisher ID&#xa;(Corporate SSO)" vertex="1">
+          <mxGeometry height="50" width="180" x="40" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="ims" value="Adobe IMS&#10;(Admin Console)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2f6fbf;" vertex="1" parent="identity">
-          <mxGeometry x="240" y="40" width="180" height="50" as="geometry" />
+        <mxCell id="ims" parent="identity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2f6fbf;" value="Adobe IMS&#xa;(Admin Console)" vertex="1">
+          <mxGeometry height="50" width="180" x="240" y="40" as="geometry" />
         </mxCell>
-
-        <!-- ===== EDGES ===== -->
-        <!-- Visitor to Browser -->
-        <mxCell id="e_visitor_browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="visitor" target="browser">
+        <mxCell id="e_visitor_browser" edge="1" parent="1" source="visitor" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="browser">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Browser <-> Akamai -->
-        <mxCell id="e_browser_akamai" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="browser" target="akamai">
+        <mxCell id="e_browser_akamai" edge="1" parent="1" source="browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="akamai">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Akamai -> EDS -->
-        <mxCell id="e_akamai_eds" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="akamai" target="eds">
+        <mxCell id="e_akamai_eds" edge="1" parent="1" source="akamai" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="eds">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- MS Header/Footer -> Edge Worker -->
-        <mxCell id="e_hf_ew" value="HTTP Calls" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="msHF" target="edgeworker">
+        <mxCell id="e_hf_ew" edge="1" parent="1" source="msHF" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="edgeworker" value="HTTP Calls">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- MS Product -> Edge Worker -->
-        <mxCell id="e_prod_ew" value="HTTP Calls" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" edge="1" parent="1" source="msProduct" target="edgeworker">
+        <mxCell id="e_prod_ew" edge="1" parent="1" source="msProduct" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;fontSize=10;" target="edgeworker" value="HTTP Calls">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- ===== AEMaaCS -> EDS (Preview/Publish) : clean vertical ===== -->
-        <mxCell id="e_aem_eds" value="Preview / Publish" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;fontColor=#d68910;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.45;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="pages" target="eds">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <!-- DAM -> Media Bus (Assets) : clean vertical -->
-        <mxCell id="e_dam_eds" value="Assets" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;fontColor=#d68910;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="dam" target="mediabus">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <!-- ===== 2. Code Sync: GitHub -> EDS (lands cleanly on EDS left side) ===== -->
-        <mxCell id="e_github_eds" value="Code Sync" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontStyle=1;fontSize=10;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.85;entryDx=0;entryDy=0;" edge="1" parent="1" source="github" target="eds">
+        <mxCell id="e_github_eds" edge="1" parent="1" source="github" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontStyle=1;fontSize=14;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.85;entryDx=0;entryDy=0;" target="eds" value="Code Sync">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="230" y="587" />
@@ -171,28 +129,28 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <!-- Developer -> GitHub (Code Push) -->
-        <mxCell id="e_dev_github" value="Code Push" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="developer" target="github">
+        <mxCell id="e_dev_github" edge="1" parent="1" source="developer" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#3a923a;fontColor=#3a923a;fontSize=14;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="github" value="Code Push">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- ===== 3. Content Author -> AEMaaCS : clean vertical ===== -->
-        <mxCell id="e_author_aem" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.1;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="author" target="aemcs">
+        <mxCell id="e_aem_eds" edge="1" parent="1" source="aemcs" style="rounded=0;html=1;endArrow=block;strokeColor=#d68910;fontColor=#d68910;fontSize=16;entryX=0.45;entryY=1;entryDx=0;entryDy=0;verticalAlign=middle;exitX=0.444;exitY=-0.057;exitDx=0;exitDy=0;exitPerimeter=0;fontStyle=1" value="&lt;font&gt;Preview / Publish&lt;/font&gt;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="580" y="620" />
+            </Array>
+            <mxPoint x="620" y="610" as="sourcePoint" />
+            <mxPoint x="580" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_author_aem" edge="1" parent="1" source="author" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#d68910;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.1;entryY=1;entryDx=0;entryDy=0;" target="aemcs">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- ===== 4. Identity & Access -> AEMaaCS (Authorization) : clean vertical ===== -->
-        <mxCell id="e_id_aem" value="Authorization" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="identity" target="aemcs">
+        <mxCell id="e_id_aem" edge="1" parent="1" source="identity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;dashed=1;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=14;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.6;entryY=1;entryDx=0;entryDy=0;fontStyle=1" target="aemcs" value="Authorization">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-
-        <!-- ===== 1. Browser <-> right-side integrations : clean nested comb ===== -->
-        <!-- Brightcove (JS Player, bidirectional) : near-straight -->
-        <mxCell id="e_browser_bc" value="JS Player" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;fontSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;" edge="1" parent="1" source="brightcove" target="browser">
+        <mxCell id="e_browser_bc" edge="1" parent="1" source="brightcove" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;fontSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.3;entryDx=0;entryDy=0;" target="browser" value="JS Player">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Adobe Target -> Browser (JS SDK) -->
-        <mxCell id="e_target_browser" value="JS SDK" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="target" target="browser">
+        <mxCell id="e_target_browser" edge="1" parent="1" source="target" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="browser" value="JS SDK">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1275" y="175" />
@@ -200,12 +158,10 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <!-- AEP -> Target (Audiences) : short vertical between stacked boxes -->
-        <mxCell id="e_aep_target" value="Audiences" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="aep" target="target">
+        <mxCell id="e_aep_target" edge="1" parent="1" source="aep" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="target" value="Audiences">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <!-- Browser -> Web SDK (Analytics events) -->
-        <mxCell id="e_browser_websdk" value="Analytics" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="browser" target="websdk">
+        <mxCell id="e_browser_websdk" edge="1" parent="1" source="browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;strokeColor=#2f6fbf;fontColor=#2f6fbf;fontSize=10;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="websdk" value="Analytics">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1255" y="112" />
@@ -213,8 +169,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <!-- Browser -> Forms Middleware -->
-        <mxCell id="e_browser_forms" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="browser" target="forms">
+        <mxCell id="e_browser_forms" edge="1" parent="1" source="browser" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="forms">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="1235" y="121" />
@@ -222,30 +177,6 @@
             </Array>
           </mxGeometry>
         </mxCell>
-
-        <!-- Legend -->
-        <mxCell id="legendBox" value="Legend" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#ffffff;strokeColor=#999999;fontStyle=1;align=left;spacingLeft=6;" vertex="1" parent="1">
-          <mxGeometry x="40" y="920" width="740" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="lg1" value="Adobe Platform" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5a623;strokeColor=#d68910;fontColor=#ffffff;fontSize=10;" vertex="1" parent="legendBox">
-          <mxGeometry x="10" y="25" width="120" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="lg2" value="TFS Services" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;fontSize=10;" vertex="1" parent="legendBox">
-          <mxGeometry x="145" y="25" width="120" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="lg3" value="Adobe Integration" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f0ff;strokeColor=#2f6fbf;fontSize=10;" vertex="1" parent="legendBox">
-          <mxGeometry x="280" y="25" width="130" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="lg4" value="Code / Dev" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5f5d5;strokeColor=#3a923a;fontSize=10;" vertex="1" parent="legendBox">
-          <mxGeometry x="425" y="25" width="120" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="lg5" value="Identity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f0ff;strokeColor=#2f6fbf;fontSize=10;" vertex="1" parent="legendBox">
-          <mxGeometry x="560" y="25" width="80" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="lg6" value="Browser" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#333333;fontSize=10;" vertex="1" parent="legendBox">
-          <mxGeometry x="655" y="25" width="75" height="26" as="geometry" />
-        </mxCell>
-
       </root>
     </mxGraphModel>
   </diagram>
