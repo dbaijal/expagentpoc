@@ -26,11 +26,23 @@ Because TFS does **not use or license Adobe Adaptive Forms**, this custom block 
 
 ### 2.1 Current State (AEM 6.4)
 
-- The **Form Container** is a parsys-style container; each field type is a **separate AEM component** (Text/Email/Phone Input, Dropdown, Hidden, File Upload, Captcha, Submit/Reset Button, XF Inclusion).
-- Each component has:
-  - Its own **`cq:dialog`** (Coral UI),
-  - Its own **Sling Model + HTL** rendering,
-  - **Dynamic dialog behaviour** where required — datasource servlets for dropdowns, conditional show/hide, and **live backend calls at authoring time** (see §4).
+Forms are built using a suite of core form components under the **`formcommons/components/form`** namespace. All configuration is stored as **JCR node properties**. The Form Container and each field component have their own **touch-UI dialog**, with tabs for **Properties, Constraints, and Accessibility**.
+
+| Component | Resource Type |
+|---|---|
+| Form Container | `formcommons/components/form/container/v1/container` |
+| Form Input | `formcommons/components/form/input` |
+| Form Options | `formcommons/components/form/options` |
+| Form Button | `formcommons/components/form/button` |
+| Form Hidden | `formcommons/components/form/hidden` |
+| Form Upload | `formcommons/components/form/upload` |
+| Form Textarea | `formcommons/components/form/textarea` |
+| Form Recaptcha | `formcommons/components/form/recaptcha` |
+| Form XF Inclusion | `formcommons/components/form/xf-inclusion` |
+
+- The **Form Container** is a parsys-style container; each field type is a **separate AEM component**.
+- Each component has: its own **`cq:dialog`** (Coral UI), its own **Sling Model + HTL** rendering, and **optional dynamic dialog behaviour** (datasource servlets, conditional show/hide, and **live backend calls at authoring time** — see §4.3).
+- **Conditional field visibility** is configured via a dedicated **Rule Editor toolbar button on each field component**, which opens a visual interface for building show/hide rules (documented on the Rule Handling page).
 - Rendering is **server-side** (HTL + Sling Models).
 
 ### 2.2 Target State (EDS + Universal Editor)
@@ -184,42 +196,47 @@ The current dialogs are richly configured, and — critically — several make *
 
 ### 4.2 Action types (current)
 
-The Form Container supports **11 action types**; each drives how the submission is routed downstream by the middleware, and each reveals its own configuration when selected.
+Authors choose **one or more** of **11 action types** in the Form Container dialog. Selecting an action type reveals a **conditional configuration panel** specific to that type. Each action type drives how the submission is routed downstream by the middleware.
 
-| Code | Action Type | Configuration (current) |
+| Code | Action Type | Key configuration fields (current) |
 |---|---|---|
-| 1001 | Eloqua | Form name, instance, regional config (repeatable) |
-| 1002 | GCMS | GCMS Form ID (via **Fetch** — Integration 2), regional config (each with Fetch) |
-| 1003 | LSG | Spec to be confirmed with TFS |
-| 1004 | Non-LSG | Type (lead / case / quote / bulk quote) |
-| 1005 | Marketo | Marketo form ID |
-| 1006 | Email | Template, subject, mailto (repeatable), regional config, **email key** (Integration 3) |
-| 1007 | CORA | Template, subject, mailto (repeatable), regional config, **email key** (Integration 3) |
-| 1009 | PDX S3 | Form ID |
-| 1010 | PDX ELMS | Type |
-| 1011 | FSBIO | Template, subject, mailto (repeatable), regional config, **email key** (Integration 3) |
-| 1013 | Genesys DB | Spec to be confirmed with TFS |
+| 1001 | Eloqua | `eloqua-form-name`, `eloqua-instance`, `eloqua-regions` (repeatable) |
+| 1002 | GCMS | `gcms-form-id` (**Fetch** button — Integration 2), `gcms-regions` (repeatable, each with Fetch) |
+| 1003 | LSG | Full spec TBD (to be confirmed with TFS) |
+| 1004 | Non-LSG | `nonlsg-type` (lead / case / quote / bulk quote) |
+| 1005 | Marketo | `marketo-form-id` |
+| 1006 | Email | `email-template`, `email-subject`, `email-mailto` (repeatable), regional config, `email-key` (Integration 3) |
+| 1007 | CORA | `cora-template`, `cora-subject`, `cora-mailto` (repeatable), regional CORA config, `email-key` (Integration 3) |
+| 1009 | PDX S3 | `s3-form-id` |
+| 1010 | PDX ELMS | `elms-type` |
+| 1011 | FSBIO | `fsbio-template`, `fsbio-subject`, `fsbio-mailto` (repeatable), regional config, `email-key` (Integration 3) |
+| 1013 | Genesys DB | Full spec TBD (to be confirmed with TFS) |
 
-**Regional configuration** (Eloqua, GCMS, Email, CORA, FSBIO) is authored today as **repeatable multifields** — per-region overrides.
+**Regional configuration** (action types 1001, 1002, 1006, 1007, 1011) is authored today via **repeatable Granite multifield** components — each storing per-region overrides (in AEM, individual JCR child nodes).
 
 ### 4.3 Authoring-time integration calls (the defining complexity)
 
-Three live backend calls are made **from within the dialog at authoring time**. Understanding these is essential — they are the reason this authoring experience is complex, and they are what §7 provides in the target model.
+Three live AJAX calls are made **from within the AEM dialog at authoring time**. Understanding these is essential — they are the reason this authoring experience is complex, and they are what §7 provides in the target model.
 
-**Integration 1 — Division (and MQO) dropdown**
-- **When:** dialog opens.
-- **Current:** a Sling datasource reads Content Fragments (division data) and populates the Division dropdown.
+**Integration 1 — Division dropdown**
+- **Trigger:** dialog open.
+- **Call:** Sling Datasource → Content Fragments at `/content/dam/formcommons/cf/division`.
+- **Response:** populates the Division dropdown with `{text, value}` pairs. (The MQO Form dropdown follows the same pattern.)
 - **Why:** authors must pick a valid division from a centrally-managed list, not free-type it.
 
-**Integration 2 — GCMS Form ID "Fetch"**
-- **When:** author clicks **Fetch** in the GCMS panel (and per region for regional GCMS IDs).
-- **Current:** a servlet call retrieves a **GCMS Form ID** and writes it into the field; the value remains editable for manual override.
-- **Why:** the GCMS Form ID is **required by the middleware** at submission and is issued by a backend system, not entered by hand.
+**Integration 2 — GCMS Form ID Fetch**
+- **Trigger:** author clicks the **Fetch** button in the GCMS action panel.
+- **Call:** `GET /apps/lifetech/generateFormId`.
+- **Response:** XML containing a `<formId>` element; the value is written into the `gcms-form-id` field. Also used **per-region** for regional GCMS IDs in the repeatable multifield. The value remains editable after fetching (manual override allowed).
+- **Why:** the GCMS Form ID is **required by the middleware** at submission and is issued by a backend system (GCMD), not entered by hand.
 
-**Integration 3 — Email attributes persistence (blocking on save)**
-- **When:** on **dialog save** — the call is **blocking**: the dialog does not close and the node is not saved until it succeeds.
-- **Current:** a servlet persists the email configuration (template, subject, mailto list, regional config) and returns/confirms an **`emailResourceAllocatorKey`**.
-- **Why:** the key links the submission to its email configuration downstream. Applies to **Email (1006), CORA (1007), FSBIO (1011)**.
+**Integration 3 — Email attributes persistence**
+- **Trigger:** **dialog save** — the call is **blocking** (`e.preventDefault()` holds submission; the dialog does not close and the node is not saved until the call succeeds).
+- **Call:** `POST /bin/servlet/tf/form/postemailattributes.json`.
+- **Payload:** email configuration (template, subject, mailto list, regional config).
+- **Response:** returns/confirms an **`emailResourceAllocatorKey`**.
+- **Applies to:** Email (1006), CORA (1007), FSBIO (1011).
+- **Note on key ownership:** in the current AEM system the `uniqueFormKey` was **pre-stored in JCR and sent to the middleware** — the key originated in AEM, and the middleware stored the key-to-email-config mapping. For EDS this ownership must be re-confirmed (see §7.1).
 
 ---
 
