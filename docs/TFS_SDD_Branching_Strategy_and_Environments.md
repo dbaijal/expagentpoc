@@ -29,12 +29,24 @@ Edge Delivery Services replaces traditional environment-based deployments with a
 - **Rollback is immediate and low-risk**, achieved by reverting a Git change rather than restoring environments or redeploying artifacts.
 - This model significantly reduces delivery time and operational overhead while maintaining enterprise-grade governance, making it ideal for large-scale, content-driven digital experiences.
 
-On every push, **AEM Code Sync** publishes the code to AEM's code bus for high availability and intelligently purges CDN caches when changes are made — so there is no manual build or deploy step for front-end code.
+### 2.1 AEM Code Sync
 
-### 2.1 Development flow
+When code is pushed to any branch, **AEM Code Sync** automatically:
 
-- Development happens on **feature branches** (e.g. `feature-<name>`) and **bugfix branches** (e.g. `bugfix-<description>`), each created from the **`dev`** branch.
-- Completed work is merged back into `dev` via a **Pull Request (PR)**.
+- Publishes the code to Edge Delivery Services' **code bus** for high availability.
+- **Purges the CDN caches** for that environment when changes are made.
+
+No manual build or deployment step is required — code changes are live on the target environment within seconds of the push.
+
+### 2.2 Branch types and naming
+
+Development happens on short-lived **feature** and **bugfix** branches, each created from the **`dev`** branch and merged back into `dev` via a **Pull Request (PR)**:
+
+| Type | Purpose | Naming convention | Example |
+|---|---|---|---|
+| **Feature** | Implement new features or blocks | `feature-<feature-name>` | `feature-accordion-block` |
+| **Bugfix** | Fix defects | `bugfix-<bug-description>` | `bugfix-hero-image-alignment` |
+| **Environment** | Long-lived branches mapped to environments | `dev`, `stage`, `main` | — |
 
 ---
 
@@ -49,7 +61,17 @@ Each Edge Delivery Services environment is a **site configuration** that pairs a
 | **Production** | `main` | Production author |
 
 - The **`main`** branch is used for **production** in Edge Delivery Services, and is the recommended production branch.
-- In each environment, authors validate their work using **Preview** (`.aem.page`) before **Publish** (`.aem.live`).
+
+### 3.1 Preview and Publish URLs
+
+Each branch/environment in Edge Delivery Services is served through **two URLs** — a **Preview** URL and a **Publish (Live)** URL:
+
+| URL | Purpose | Pattern |
+|---|---|---|
+| **Preview** (`.aem.page`) | Renders authored content that has been **previewed** but not yet published — used for validation before go-live | `https://<branch>--<site>--<org>.aem.page/` |
+| **Publish / Live** (`.aem.live`) | Serves **published** content — the delivery target fronted by the CDN | `https://<branch>--<site>--<org>.aem.live/` |
+
+In each environment, authors validate their work on the **Preview** URL before **Publish**, at which point the change is served from the **Live** URL. For example, the `main` branch exposes the production preview and live URLs, while `dev` and `stage` expose their respective environment URLs.
 
 ---
 
@@ -90,7 +112,30 @@ Using consistent branch names across both codebases keeps the development and pr
 
 ---
 
-## 6. References
+## 6. Environment Promotion Flow
+
+Code is promoted through the branches in sequence; each promotion is a reviewed Pull Request, validated on the target environment before promoting further.
+
+```
+feature / bugfix branch
+        │  (PR + code review)
+        ▼
+       dev  ──────────►  Dev environment
+        │  (PR, after Dev validation)
+        ▼
+      stage ──────────►  Stage environment
+        │  (PR, after Stage validation)
+        ▼
+      main  ──────────►  Production
+```
+
+Each promotion requires: a Pull Request, code review / approval, and validation on the target environment before promoting further.
+
+> `[SCREENSHOT / DIAGRAM: Environment promotion flow — feature/bugfix → dev → stage → main]`
+
+---
+
+## 7. References
 
 - Getting Started — Developer Tutorial: https://www.aem.live/developer/tutorial
 - AEM Code Sync: https://github.com/apps/aem-code-sync
