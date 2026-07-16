@@ -1224,6 +1224,12 @@
         "value": "",
         "label": "Attribution",
         "valueType": "string"
+      },
+      {
+        "component": "eaempoc:country-picker",
+        "name": "countries",
+        "label": "Countries",
+        "valueType": "string"
       }
     ]
   },
